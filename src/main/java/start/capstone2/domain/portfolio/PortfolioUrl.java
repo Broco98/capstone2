@@ -11,8 +11,6 @@ public class PortfolioUrl {
     @Column(name = "portfolio_url")
     private Long id;
 
-    // TODO: 보류, url을 어떻게 해야할지 햇갈림
-
-
-
+    // TODO: 보류, 작성 예정
+    
 }

@@ -1,9 +1,14 @@
 package start.capstone2.domain.portfolio;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import start.capstone2.domain.Image.Image;
 
 @Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PortfolioCardImage {
 
     @Id
@@ -16,4 +21,16 @@ public class PortfolioCardImage {
 
     @ManyToOne
     private Image image;
+
+    public static PortfolioCardImage createPortfolioCardImage(Portfolio portfolio, Image image) {
+        PortfolioCardImage portfolioCardImage = new PortfolioCardImage();
+        portfolioCardImage.portfolio = portfolio;
+        portfolioCardImage.image = image;
+
+        return portfolioCardImage;
+    }
+
+    public void remove() {
+        image.remove();
+    }
 }

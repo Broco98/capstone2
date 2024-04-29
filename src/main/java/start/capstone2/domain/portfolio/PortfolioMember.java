@@ -19,5 +19,7 @@ public class PortfolioMember {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
+    
+    // TODO 작성 예정
 
 }
