@@ -1,9 +1,6 @@
 package start.capstone2.domain.user;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "groups")
 public class Group {
 
     @Id
@@ -19,4 +17,11 @@ public class Group {
     @Column(name="group_id")
     private Long id;
     private String name;
+
+    public static Group createGroup(String name) {
+        Group group = new Group();
+        group.name = name;
+
+        return group;
+    }
 }

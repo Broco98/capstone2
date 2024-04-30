@@ -26,4 +26,13 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<UserGroup> groups = new ArrayList<>();
 
+    public static User createUser(String username, String password, String name) {
+        User user = new User();
+        user.username = username;
+        user.password = password;
+        user.name = name;
+
+        return user;
+    }
+
 }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import start.capstone2.domain.user.Group;
 import start.capstone2.domain.user.User;
 
 import java.time.LocalDate;
@@ -22,9 +23,10 @@ public class Portfolio {
     private Long id;
     
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private User user;
     
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "portfolio")
     private List<PortfolioMember> members = new ArrayList<>();
     
     private String title;
@@ -36,7 +38,10 @@ public class Portfolio {
     @Lob
     private String content;
 
-    @OneToMany(mappedBy = "portfolio")
+    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL)
+    private List<PortfolioGroup> shardGroups = new ArrayList<>();
+
+    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL)
     private List<PortfolioPost> posts = new ArrayList<>();
 
     @OneToMany(mappedBy = "portfolio")
@@ -45,14 +50,24 @@ public class Portfolio {
     @OneToMany(mappedBy = "portfolio")
     private List<PortfolioFeedback> feedbacks = new ArrayList<>();
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "portfolio_card_image_id")
-    private PortfolioCardImage cardImage;
+    // TODO: 일단 이미지 사용 X로 구현해봄
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "portfolio_card_image_id")
+//    private PortfolioCardImage cardImage;
 
-    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL)
-    private List<PortfolioImage> images = new ArrayList<>();
+//    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL)
+//    private List<PortfolioImage> images = new ArrayList<>();
 
-    public static Portfolio createPortfolio(User user, String title, LocalDateTime startDate, LocalDateTime endDate, Integer contribution, String purpose, String content, PortfolioCardImage cardImage, List<PortfolioImage> images) {
+    public static Portfolio createPortfolio(
+            User user, String title,
+            LocalDateTime startDate,
+            LocalDateTime endDate,
+            Integer contribution,
+            String purpose, String content,
+//            PortfolioCardImage cardImage,
+//            List<PortfolioImage> images,
+            List<PortfolioGroup> shardGroups) {
+
         Portfolio portfolio = new Portfolio();
         portfolio.user = user;
         portfolio.title = title;
@@ -61,29 +76,50 @@ public class Portfolio {
         portfolio.contribution = contribution;
         portfolio.purpose = purpose;
         portfolio.content = content;
-        portfolio.cardImage = cardImage;
+//        portfolio.cardImage = cardImage;
 
-        if (images != null && !images.isEmpty()) {
-            for (PortfolioImage image : images) {
-                portfolio.addImage(image);
+//        if (images != null && !images.isEmpty()) {
+//            for (PortfolioImage image : images) {
+//                portfolio.addImage(image);
+//            }
+//        }
+
+        if (shardGroups != null && !shardGroups.isEmpty()) {
+            for (PortfolioGroup group : shardGroups) {
+                portfolio.addGroup(group);
             }
         }
 
         return portfolio;
     }
 
-    public void update(String title, LocalDateTime startDate, LocalDateTime endDate, Integer contribution, String purpose, String content, PortfolioCardImage cardImage, List<PortfolioImage> images) {
+    public void update(
+            String title,
+            LocalDateTime startDate,
+            LocalDateTime endDate,
+            Integer contribution,
+            String purpose,
+            String content,
+//            PortfolioCardImage cardImage,
+//            List<PortfolioImage> images,
+            List<PortfolioGroup> shardGroups) {
+
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;
         this.contribution = contribution;
         this.purpose = purpose;
         this.content = content;
-        this.cardImage = cardImage;
+//        this.cardImage = cardImage;
 
-        if (images != null && !images.isEmpty()) {
-            this.images.clear();
-            this.images.addAll(images);
+//        if (images != null && !images.isEmpty()) {
+//            this.images.clear();
+//            this.images.addAll(images);
+//        }
+
+        if (shardGroups != null && !shardGroups.isEmpty()) {
+            this.shardGroups.clear();
+            this.shardGroups.addAll(shardGroups);
         }
     }
 
@@ -112,14 +148,18 @@ public class Portfolio {
         feedbacks.remove(feedback);
     }
 
-    public void updateCardImage(PortfolioCardImage image) {
-        cardImage.remove();
-        cardImage = image;
-    }
+//    public void updateCardImage(PortfolioCardImage image) {
+//        cardImage.remove();
+//        cardImage = image;
+//    }
 
-    public void addImage(PortfolioImage image) {
-        images.add(image);
-        image.setPortfolio(this);
-    }
+//    public void addImage(PortfolioImage image) {
+//        images.add(image);
+//        image.setPortfolio(this);
+//    }
 
+    public void addGroup(PortfolioGroup group) {
+        shardGroups.add(group);
+        group.setPortfolio(this);
+    }
 }

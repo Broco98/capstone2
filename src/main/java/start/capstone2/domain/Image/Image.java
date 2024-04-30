@@ -7,6 +7,9 @@ import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.util.StringTokenizer;
+import java.util.UUID;
+
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -25,7 +28,6 @@ public class Image {
         image.originalName = originalName;
 
         // TODO: savedName (Path) 만들기
-
         return image;
     }
 
