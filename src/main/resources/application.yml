@@ -1,9 +1,19 @@
+file:
+  dir: C:\Users\qkrgy\Desktop\capstone2\src\main\resources\file\
+
+image:
+  dir: C:\Users\qkrgy\Desktop\capstone2\src\main\resources\image\
+
 spring:
+  h2:
+    console:
+      enabled: true
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:tcp://localhost/~/capstone2
     username: sa
     password:
+
 
   jpa:
     hibernate:

@@ -4,27 +4,30 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import start.capstone2.domain.Image.Image;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PortfolioCardImage {
+public class PortfolioCardImage{
 
     @Id
     @GeneratedValue
     @Column(name = "portfolio_card_image_id")
     private Long id;
 
-    @ManyToOne
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "portfolio_id")
+    @Setter
     private Portfolio portfolio;
 
-    @ManyToOne
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "image_id")
     private Image image;
 
-    public static PortfolioCardImage createPortfolioCardImage(Portfolio portfolio, Image image) {
+    public static PortfolioCardImage createPortfolioCardImage(Image image) {
         PortfolioCardImage portfolioCardImage = new PortfolioCardImage();
-        portfolioCardImage.portfolio = portfolio;
         portfolioCardImage.image = image;
 
         return portfolioCardImage;

@@ -8,5 +8,4 @@ import start.capstone2.domain.Image.Image;
 public interface ImageRepository extends JpaRepository<Image, Long> {
 
 
-
 }

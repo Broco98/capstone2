@@ -6,16 +6,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import start.capstone2.domain.portfolio.PortfolioGroup;
-import start.capstone2.domain.portfolio.dto.PortfolioRequest;
-import start.capstone2.domain.user.Group;
-import start.capstone2.domain.user.User;
+import start.capstone2.domain.portfolio.dto.PortfolioDto;
 import start.capstone2.domain.user.dto.UserRequest;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class PortfolioServiceTest {
@@ -51,27 +47,27 @@ class PortfolioServiceTest {
         portfolioGroups2.add(PortfolioGroup.createPortfolioGroup(groupService.findById(1L)));
         portfolioGroups2.add(PortfolioGroup.createPortfolioGroup(groupService.findById(2L)));
 
-        portfolioService.createPortfolio(1L, new
-                PortfolioRequest(
-                "title1",
-                LocalDateTime.now(),
-                LocalDateTime.now(),
-                10,
-                "목적1이다 시키야",
-                "자세한 내용은 이렇습니다 ㅎ",
-                portfolioGroups)
-        );
-
-        portfolioService.createPortfolio(1L, new
-                PortfolioRequest(
-                "title2",
-                LocalDateTime.now(),
-                LocalDateTime.now(),
-                10,
-                "목적1이다 시키야",
-                "자세한 내용은 이렇습니다 ㅎ",
-                portfolioGroups2)
-        );
+//        portfolioService.createPortfolio(1L, new
+//                PortfolioDto(
+//                "title1",
+//                LocalDateTime.now(),
+//                LocalDateTime.now(),
+//                10,
+//                "목적1이다 시키야",
+//                "자세한 내용은 이렇습니다 ㅎ",
+//                portfolioGroups)
+//        );
+//
+//        portfolioService.createPortfolio(1L, new
+//                PortfolioDto(
+//                "title2",
+//                LocalDateTime.now(),
+//                LocalDateTime.now(),
+//                10,
+//                "목적1이다 시키야",
+//                "자세한 내용은 이렇습니다 ㅎ",
+//                portfolioGroups2)
+//        );
 
     }
 

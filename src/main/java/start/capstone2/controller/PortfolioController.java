@@ -7,17 +7,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import start.capstone2.ResponseResult;
 import start.capstone2.domain.portfolio.Portfolio;
-import start.capstone2.domain.portfolio.PortfolioGroup;
 import start.capstone2.domain.portfolio.dto.PortfolioRequest;
-import start.capstone2.domain.user.User;
-import start.capstone2.domain.user.dto.UserRequest;
 import start.capstone2.service.PortfolioService;
-import start.capstone2.service.UserService;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
 
 @Slf4j
 @RestController
@@ -28,7 +22,7 @@ public class PortfolioController {
     private final PortfolioService portfolioService;
 
     @PostMapping("/create")
-    public ResponseEntity<Long> createPortfolio(Long userId, PortfolioRequest portfolioRequest) {
+    public ResponseEntity<Long> createPortfolio(Long userId, PortfolioRequest portfolioRequest) throws IOException {
         Long portfolioId = portfolioService.createPortfolio(userId, portfolioRequest);
         Portfolio portfolio = portfolioService.findById(portfolioId);
 
@@ -36,5 +30,7 @@ public class PortfolioController {
 
         return ResponseEntity.ok(portfolioId);
     }
+
+
 
 }
