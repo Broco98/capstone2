@@ -21,10 +21,10 @@ public class ImageService {
     private ImageRepository imageRepository;
     private ImageStore imageStore;
 
-    @Transactional
-    public void saveImages(ImageRequest imageRequest) throws IOException {
-        List<Image> images = imageStore.saveImages(imageRequest.getImages());
-        imageRepository.saveAll(images);
-    }
+//    @Transactional
+//    public void saveImages(ImageRequest imageRequest) throws IOException {
+//        List<Image> images = imageStore.saveImages(imageRequest.getImages());
+//        imageRepository.saveAll(images);
+//    }
 
 }

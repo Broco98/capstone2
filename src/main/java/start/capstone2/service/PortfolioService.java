@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import start.capstone2.domain.Image.Image;
+import start.capstone2.domain.Image.ImageType;
 import start.capstone2.domain.Image.repository.ImageRepository;
 import start.capstone2.domain.file.ImageStore;
 import start.capstone2.domain.portfolio.*;
@@ -37,15 +38,15 @@ public class PortfolioService {
     private final PortfolioPostRepository postRepository;
 
     @Transactional
-    public List<PortfolioGroup> createPortfolioGroups(List<Long> sharedGroupIds) {
+    public List<PortfolioGroup> createPortfolioGroups(List<String> sharedGroupNames) {
 
-        if (sharedGroupIds == null || sharedGroupIds.isEmpty()) {
+        if (sharedGroupNames == null || sharedGroupNames.isEmpty()) {
             return null;
         }
 
         List<PortfolioGroup> groups = new ArrayList<>();
-        for (Long id : sharedGroupIds) {
-            groups.add(PortfolioGroup.createPortfolioGroup(groupRepository.findById(id).orElseThrow()));
+        for (String name : sharedGroupNames) {
+            groups.add(PortfolioGroup.createPortfolioGroup(groupRepository.findByName(name)));
         }
 
         return groups;
@@ -58,7 +59,7 @@ public class PortfolioService {
             return null;
         }
 
-        List<Image> images = imageStore.saveImages(multipartFiles);
+        List<Image> images = imageStore.saveImages(multipartFiles, ImageType.PORTFOLIO_IMAGE);
         List<PortfolioImage> portfolioImages = new ArrayList<>();
 //        imageRepository.saveAll(images);
 //        imageRepository.flush();
@@ -75,7 +76,7 @@ public class PortfolioService {
             return null;
         }
 
-        Image image = imageStore.saveImage(multipartFile);
+        Image image = imageStore.saveImage(multipartFile, ImageType.PORTFOLIO_CARD_IMAGE);
 //        imageRepository.save(image);
 //        imageRepository.flush();
         return PortfolioCardImage.createPortfolioCardImage(image);
@@ -84,7 +85,7 @@ public class PortfolioService {
     @Transactional
     public Long createPortfolio(Long userId, PortfolioRequest portfolioRequest) throws IOException {
         User user = userRepository.findById(userId).orElseThrow();
-        List<PortfolioGroup> groups = createPortfolioGroups(portfolioRequest.getSharedGroupIds());
+        List<PortfolioGroup> groups = createPortfolioGroups(portfolioRequest.getSharedGroupNames());
         List<PortfolioImage> images = createPortfolioImages(portfolioRequest.getImages());
         PortfolioCardImage cardImage = createCardImage(portfolioRequest.getCardImage());
 
@@ -105,14 +106,14 @@ public class PortfolioService {
         return portfolio.getId();
     }
     
-    // TODO 아직 완벽하진 않음
+    // TODO
     @Transactional
     public void updatePortfolio(Long userId, Long portfolioId, PortfolioRequest portfolioRequest) throws IOException {
         User user = userRepository.findById(userId).orElseThrow();
 
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
 
-        List<PortfolioGroup> groups = createPortfolioGroups(portfolioRequest.getSharedGroupIds());
+        List<PortfolioGroup> groups = createPortfolioGroups(portfolioRequest.getSharedGroupNames());
         List<PortfolioImage> images = createPortfolioImages(portfolioRequest.getImages());
         PortfolioCardImage cardImage = createCardImage(portfolioRequest.getCardImage());
 
@@ -129,16 +130,20 @@ public class PortfolioService {
                 portfolioRequest.getMemberNum());
     }
 
-    public List<Portfolio> findByUserId(Long userId) {
-        return portfolioRepository.findByUserId(userId);
-    }
-
-    public List<Portfolio> findPublicPortfolio() {
-        return portfolioRepository.findAll();
+    public List<Portfolio> findAllByUserId(Long userId) {
+        return portfolioRepository.findAllByUserId(userId);
     }
 
     public Portfolio findById(Long portfolioId) {
         return portfolioRepository.findById(portfolioId).orElseThrow();
+    }
+
+    public List<Portfolio> findAllByUserIdWithImages(Long userId) {
+        return portfolioRepository.findAllByUserIdWithImages(userId);
+    }
+
+    public Portfolio findByUserIdAndPortfolioIdWithImages(Long userId, Long portfolioId) {
+        return portfolioRepository.findByUserIdAndPortfolioIdWithImages(userId, portfolioId);
     }
 
 }

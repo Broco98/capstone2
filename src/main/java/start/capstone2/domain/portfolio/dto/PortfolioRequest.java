@@ -26,5 +26,5 @@ public class PortfolioRequest {
 //    private List<Long> memberIds = new ArrayList<>();
 //    private List<String> memberNames = new ArrayList<>();
 
-    private List<Long> sharedGroupIds = new ArrayList<>();
+    private List<String> sharedGroupNames = new ArrayList<>();
 }

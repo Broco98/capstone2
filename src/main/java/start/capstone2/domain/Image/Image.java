@@ -23,11 +23,13 @@ public class Image {
 
     private String uploadName;
     private String savedName;
+    private ImageType dtype;
 
-    public static Image createImage(String uploadName, String savedName) {
+    public static Image createImage(String uploadName, String savedName, ImageType dtype) {
         Image image = new Image();
         image.uploadName = uploadName;
         image.savedName = savedName;
+        image.dtype = dtype;
 
         return image;
     }
