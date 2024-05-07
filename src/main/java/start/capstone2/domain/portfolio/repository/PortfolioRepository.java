@@ -17,7 +17,6 @@ public interface PortfolioRepository extends JpaRepository<Portfolio, Long> {
             from Portfolio as p
             join fetch PortfolioImage as pl
             join fetch PortfolioCardImage as pc
-            join fetch Image as i
             join fetch PortfolioGroup as pg
             join fetch Group as g
             where p.user.id = :userId
@@ -30,8 +29,6 @@ public interface PortfolioRepository extends JpaRepository<Portfolio, Long> {
             from Portfolio as p
             join fetch p.cardImage
             join fetch p.images
-            join fetch p.cardImage.image
-            join fetch p.sharedGroups
             join fetch p.sharedGroups
             where p.user.id = :userId and p.id = :portfolioId
     """)

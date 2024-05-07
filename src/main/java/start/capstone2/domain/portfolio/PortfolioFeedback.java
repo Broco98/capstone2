@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import start.capstone2.domain.BaseEntity;
 import start.capstone2.domain.user.User;
 
 @Entity
@@ -24,6 +25,8 @@ public class PortfolioFeedback {
     private String content;
     private Integer location;
 
+    @Embedded
+    private BaseEntity baseEntity;
 
     public static PortfolioFeedback createPortfolioFeedback(User user, Portfolio portfolio, String content, Integer location) {
         PortfolioFeedback feedback = new PortfolioFeedback();

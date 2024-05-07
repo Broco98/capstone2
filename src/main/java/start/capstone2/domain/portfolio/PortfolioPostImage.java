@@ -19,8 +19,9 @@ public class PortfolioPostImage {
     @Setter
     private PortfolioPost post;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "image_id")
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "image_id")
+    @Embedded
     private Image image;
 
     public static PortfolioPostImage createPortfolioPostImage(Image image) {

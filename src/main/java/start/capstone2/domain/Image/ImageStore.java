@@ -1,4 +1,4 @@
-package start.capstone2.domain.file;
+package start.capstone2.domain.Image;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -24,17 +24,17 @@ public class ImageStore {
         return imageDir + fileName;
     }
 
-    public List<Image> saveImages(List<MultipartFile> multipartFiles, ImageType dtype) throws IOException {
+    public List<Image> saveImages(List<MultipartFile> multipartFiles) throws IOException {
         List<Image> images = new ArrayList<>();
         for (MultipartFile multipartFile : multipartFiles) {
             if (!multipartFile.isEmpty()) {
-                images.add(saveImage(multipartFile, dtype));
+                images.add(saveImage(multipartFile));
             }
         }
         return images;
     }
 
-    public Image saveImage(MultipartFile multipartFile, ImageType dtype) throws IOException {
+    public Image saveImage(MultipartFile multipartFile) throws IOException {
         if (multipartFile.isEmpty())
             return null;
 
@@ -43,9 +43,9 @@ public class ImageStore {
         multipartFile.transferTo(new File(getFullPath(saveImageName)));
 
         if (originalImageName == null) {
-            return Image.createImage(saveImageName, saveImageName, dtype);
+            return Image.createImage(saveImageName, saveImageName);
         }
-        return Image.createImage(originalImageName, saveImageName, dtype);
+        return Image.createImage(originalImageName, saveImageName);
     }
 
     private String createSaveFileName(String originalImageName) {

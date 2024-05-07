@@ -7,8 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import start.capstone2.domain.file.ImageStore;
-
+import start.capstone2.domain.Image.ImageStore;
 import java.net.MalformedURLException;
 
 
@@ -19,7 +18,7 @@ public class ImageController {
 
     private final ImageStore imageStore;
 
-    @GetMapping("{/imageName}")
+    @GetMapping("/{imageName}")
     public Resource downloadImage(@PathVariable String imageName) throws MalformedURLException {
         return new UrlResource("file:" + imageStore.getFullPath(imageName));
     }

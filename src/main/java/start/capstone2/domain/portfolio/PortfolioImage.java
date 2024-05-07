@@ -21,7 +21,8 @@ public class PortfolioImage {
     @Setter
     private Portfolio portfolio;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Embedded
     private Image image;
 
     public static PortfolioImage createPortfolioImage(Image image) {

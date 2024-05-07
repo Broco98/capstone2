@@ -22,8 +22,11 @@ public class PortfolioCardImage{
     @Setter
     private Portfolio portfolio;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "image_id")
+//    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JoinColumn(name = "image_id")
+//    private Image image;
+
+    @Embedded
     private Image image;
 
     public static PortfolioCardImage createPortfolioCardImage(Image image) {

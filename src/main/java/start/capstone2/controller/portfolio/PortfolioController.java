@@ -1,4 +1,4 @@
-package start.capstone2.controller;
+package start.capstone2.controller.portfolio;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +10,8 @@ import start.capstone2.domain.portfolio.PortfolioGroup;
 import start.capstone2.domain.portfolio.PortfolioImage;
 import start.capstone2.domain.portfolio.dto.PortfolioRequest;
 import start.capstone2.domain.portfolio.dto.PortfolioResponse;
-import start.capstone2.service.PortfolioService;
+import start.capstone2.domain.portfolio.repository.PortfolioRepository;
+import start.capstone2.service.portfolio.PortfolioService;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import java.util.List;
 public class PortfolioController {
 
     private final PortfolioService portfolioService;
+    private final PortfolioRepository portfolioRepository;
 
     @PostMapping("/")
     public ResponseEntity<Long> createPortfolio(Long userId, PortfolioRequest portfolioRequest) throws IOException {
@@ -34,7 +36,8 @@ public class PortfolioController {
     @GetMapping("/{portfolioId}")
     public ResponseResult<PortfolioResponse> getSinglePortfolio(Long userId, @PathVariable Long portfolioId) {
 
-        Portfolio portfolio = portfolioService.findByUserIdAndPortfolioIdWithImages(userId, portfolioId);
+//        Portfolio portfolio = portfolioService.findByUserIdAndPortfolioIdWithImages(userId, portfolioId);
+        Portfolio portfolio = portfolioService.findById(portfolioId);
 
         String cardImageName = portfolio.getCardImage().getImage().getSavedName();
         List<String> imageNames = new ArrayList<>();
@@ -63,6 +66,23 @@ public class PortfolioController {
         return new ResponseResult<>(portfolioResponse);
     }
 
+    // TODO
+    @PutMapping("/{portfolioId}")
+    public void updatePortfolio(Long userId, PortfolioRequest portfolioRequest, @PathVariable Long portfolioId) {
 
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+
+//        portfolio.updatePortfolio(
+//                portfolioRequest.getTitle(),
+//                portfolioRequest.getStartDate(),
+//                portfolioRequest.getEndDate(),
+//                portfolioRequest.getContribution(),
+//                portfolioRequest.getPurpose(),
+//                portfolioRequest.getContent(),
+//                portfolioRequest.getCardImage(),
+//                portfolioRequest.getImages(),
+//
+//        );
+    }
 
 }

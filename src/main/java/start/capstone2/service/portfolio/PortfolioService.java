@@ -1,4 +1,4 @@
-package start.capstone2.service;
+package start.capstone2.service.portfolio;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -6,9 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import start.capstone2.domain.Image.Image;
-import start.capstone2.domain.Image.ImageType;
-import start.capstone2.domain.Image.repository.ImageRepository;
-import start.capstone2.domain.file.ImageStore;
+import start.capstone2.domain.Image.ImageStore;
+//import start.capstone2.domain.Image.repository.ImageRepository;
 import start.capstone2.domain.portfolio.*;
 import start.capstone2.domain.portfolio.dto.PortfolioRequest;
 import start.capstone2.domain.portfolio.repository.*;
@@ -17,7 +16,6 @@ import start.capstone2.domain.user.repository.GroupRepository;
 import start.capstone2.domain.user.repository.UserRepository;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,22 +29,22 @@ public class PortfolioService {
     private final PortfolioRepository portfolioRepository;
     private final GroupRepository groupRepository;
     private final ImageStore imageStore;
-    private final ImageRepository imageRepository;
+//    private final ImageRepository imageRepository;
     private final PortfolioCardImageRepository cardRepository;
     private final PortfolioCommentRepository commentRepository;
     private final PortfolioFeedbackRepository feedbackRepository;
     private final PortfolioPostRepository postRepository;
 
     @Transactional
-    public List<PortfolioGroup> createPortfolioGroups(List<String> sharedGroupNames) {
+    public List<PortfolioGroup> createPortfolioGroups(List<Long> sharedGroupIds) {
 
-        if (sharedGroupNames == null || sharedGroupNames.isEmpty()) {
+        if (sharedGroupIds == null || sharedGroupIds.isEmpty()) {
             return null;
         }
 
         List<PortfolioGroup> groups = new ArrayList<>();
-        for (String name : sharedGroupNames) {
-            groups.add(PortfolioGroup.createPortfolioGroup(groupRepository.findByName(name)));
+        for (Long id : sharedGroupIds) {
+            groups.add(PortfolioGroup.createPortfolioGroup(groupRepository.findById(id).orElseThrow()));
         }
 
         return groups;
@@ -59,7 +57,7 @@ public class PortfolioService {
             return null;
         }
 
-        List<Image> images = imageStore.saveImages(multipartFiles, ImageType.PORTFOLIO_IMAGE);
+        List<Image> images = imageStore.saveImages(multipartFiles);
         List<PortfolioImage> portfolioImages = new ArrayList<>();
 //        imageRepository.saveAll(images);
 //        imageRepository.flush();
@@ -76,7 +74,7 @@ public class PortfolioService {
             return null;
         }
 
-        Image image = imageStore.saveImage(multipartFile, ImageType.PORTFOLIO_CARD_IMAGE);
+        Image image = imageStore.saveImage(multipartFile);
 //        imageRepository.save(image);
 //        imageRepository.flush();
         return PortfolioCardImage.createPortfolioCardImage(image);
@@ -85,9 +83,9 @@ public class PortfolioService {
     @Transactional
     public Long createPortfolio(Long userId, PortfolioRequest portfolioRequest) throws IOException {
         User user = userRepository.findById(userId).orElseThrow();
-        List<PortfolioGroup> groups = createPortfolioGroups(portfolioRequest.getSharedGroupNames());
-        List<PortfolioImage> images = createPortfolioImages(portfolioRequest.getImages());
-        PortfolioCardImage cardImage = createCardImage(portfolioRequest.getCardImage());
+        List<PortfolioGroup> groups = createPortfolioGroups(portfolioRequest.getSharedGroupIds()); // 그룹 생성
+        List<PortfolioImage> images = createPortfolioImages(portfolioRequest.getImages()); // 이미지 생성
+        PortfolioCardImage cardImage = createCardImage(portfolioRequest.getCardImage()); // 카드 이미지 생성
 
         Portfolio portfolio = Portfolio.createPortfolio(
                 user,
@@ -113,7 +111,7 @@ public class PortfolioService {
 
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
 
-        List<PortfolioGroup> groups = createPortfolioGroups(portfolioRequest.getSharedGroupNames());
+        List<PortfolioGroup> groups = createPortfolioGroups(portfolioRequest.getSharedGroupIds());
         List<PortfolioImage> images = createPortfolioImages(portfolioRequest.getImages());
         PortfolioCardImage cardImage = createCardImage(portfolioRequest.getCardImage());
 
