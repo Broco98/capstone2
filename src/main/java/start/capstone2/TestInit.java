@@ -1,11 +1,9 @@
 package start.capstone2;
 
 import jakarta.annotation.PostConstruct;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import start.capstone2.domain.user.dto.UserRequest;
+import start.capstone2.dto.UserRequest;
 import start.capstone2.service.GroupService;
 import start.capstone2.service.UserService;
 

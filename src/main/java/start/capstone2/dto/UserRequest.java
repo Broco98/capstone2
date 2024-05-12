@@ -1,4 +1,4 @@
-package start.capstone2.domain.user.dto;
+package start.capstone2.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -9,7 +9,7 @@ import start.capstone2.domain.Image.Image;
 import start.capstone2.domain.Image.ImageStore;
 //import start.capstone2.domain.Image.repository.ImageRepository;
 import start.capstone2.domain.portfolio.*;
-import start.capstone2.domain.portfolio.dto.PortfolioRequest;
+import start.capstone2.dto.portfolio.PortfolioRequest;
 import start.capstone2.domain.portfolio.repository.*;
 import start.capstone2.domain.user.User;
 import start.capstone2.domain.user.repository.GroupRepository;

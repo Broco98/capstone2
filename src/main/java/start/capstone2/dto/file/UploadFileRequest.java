@@ -1,9 +1,6 @@
-package start.capstone2.domain.file.dto;
+package start.capstone2.dto.file;
 
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 @Data
 public class UploadFileRequest {

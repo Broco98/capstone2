@@ -2,7 +2,7 @@ package start.capstone2.controller.portfolio;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import start.capstone2.domain.portfolio.dto.PortfolioFeedbackRequest;
+import start.capstone2.dto.portfolio.PortfolioFeedbackRequest;
 import start.capstone2.service.portfolio.PortfolioFeedbackService;
 
 @RestController

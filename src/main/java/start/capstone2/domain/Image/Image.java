@@ -9,28 +9,23 @@ import java.util.StringTokenizer;
 import java.util.UUID;
 
 
-//@Entity
+@Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-//@Inheritance(strategy = InheritanceType.JOINED)
-//@DiscriminatorColumn(name = "dtype")
-@Embeddable
 public class Image {
 
-//    @Id
-//    @GeneratedValue
-//    @Column(name = "image_id")
-//    private Long id;
+    @Id
+    @GeneratedValue
+    @Column(name = "image_id")
+    private Long id;
 
-    private String uploadName;
+    private String originalName;
     private String savedName;
-//    private ImageType dtype;
 
-    public static Image createImage(String uploadName, String savedName) {
+    public static Image createImage(String originalName, String savedName) {
         Image image = new Image();
-        image.uploadName = uploadName;
+        image.originalName = originalName;
         image.savedName = savedName;
-//        image.dtype = dtype;
 
         return image;
     }

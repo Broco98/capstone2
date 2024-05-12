@@ -4,8 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import start.capstone2.domain.user.User;
-import start.capstone2.domain.user.dto.UserRequest;
-import start.capstone2.domain.user.repository.GroupRepository;
+import start.capstone2.dto.UserRequest;
 import start.capstone2.domain.user.repository.UserGroupRepository;
 import start.capstone2.domain.user.repository.UserRepository;
 

@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import start.capstone2.domain.portfolio.PortfolioGroup;
 import start.capstone2.domain.portfolio.dto.PortfolioDto;
-import start.capstone2.domain.user.dto.UserRequest;
+import start.capstone2.dto.UserRequest;
 import start.capstone2.service.portfolio.PortfolioService;
 
 import java.util.ArrayList;

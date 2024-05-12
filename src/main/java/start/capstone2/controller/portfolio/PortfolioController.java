@@ -8,8 +8,8 @@ import start.capstone2.ResponseResult;
 import start.capstone2.domain.portfolio.Portfolio;
 import start.capstone2.domain.portfolio.PortfolioGroup;
 import start.capstone2.domain.portfolio.PortfolioImage;
-import start.capstone2.domain.portfolio.dto.PortfolioRequest;
-import start.capstone2.domain.portfolio.dto.PortfolioResponse;
+import start.capstone2.dto.portfolio.PortfolioRequest;
+import start.capstone2.dto.portfolio.PortfolioResponse;
 import start.capstone2.domain.portfolio.repository.PortfolioRepository;
 import start.capstone2.service.portfolio.PortfolioService;
 

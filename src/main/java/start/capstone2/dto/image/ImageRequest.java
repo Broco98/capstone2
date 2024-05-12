@@ -1,4 +1,4 @@
-package start.capstone2.domain.Image.dto;
+package start.capstone2.dto.image;
 
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;

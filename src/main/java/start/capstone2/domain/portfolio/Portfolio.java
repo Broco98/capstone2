@@ -4,12 +4,11 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Cascade;
-import start.capstone2.domain.user.Group;
+import start.capstone2.domain.BaseEntity;
+import start.capstone2.domain.Image.Image;
 import start.capstone2.domain.user.User;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,32 +18,20 @@ import java.util.List;
 public class Portfolio {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "portfolio_id")
     private Long id;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
-    
-    // 나를 제외한 멤버
-//    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL)
-//    private List<PortfolioMember> members = new ArrayList<>();
-    private Integer memberNum;
 
-    @Column(nullable = false)
     private String title;
     private LocalDate startDate;
     private LocalDate endDate;
     private Integer contribution;
     private String purpose;
-
-    @Lob
-    private String content;
-    
-    // 공개 그룹들
-    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL)
-    private List<PortfolioGroup> sharedGroups = new ArrayList<>();
+    private Integer memberNum;
 
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL)
     private List<PortfolioPost> posts = new ArrayList<>();
@@ -55,13 +42,37 @@ public class Portfolio {
     @OneToMany(mappedBy = "portfolio")
     private List<PortfolioFeedback> feedbacks = new ArrayList<>();
 
+    @OneToMany(mappedBy = "portfolio")
+    private List<PortfolioApi> apis = new ArrayList<>();
+
+    @OneToMany(mappedBy = "portfolio")
+    private List<PortfolioCode> codes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "portfolio")
+    private List<PortfolioSchedule> schedules = new ArrayList<>();
+
+    @OneToMany(mappedBy = "portfolio")
+    private List<PortfolioDesign> designs = new ArrayList<>();
+
+    @OneToMany(mappedBy = "portfolio")
+    private List<PortfolioFunction> functions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "portfolio")
+    private List<PortfolioTechStack> techStacks = new ArrayList<>();
+
+    @OneToMany(mappedBy = "portfolio")
+    private List<PortfolioUrl> urls = new ArrayList<>();
+
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "portfolio_card_image_id")
-    private PortfolioCardImage cardImage;
+    @JoinColumn(name = "image_id")
+    private Image cardImage;
 
-    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL)
-    private List<PortfolioImage> images = new ArrayList<>();
+    private ShareStatus status;
 
+    @Embedded
+    private BaseEntity baseEntity;
+
+    // TODO
     public static Portfolio createPortfolio(
             User user,
             String title,
@@ -166,7 +177,6 @@ public class Portfolio {
 
     public void removePost(PortfolioPost post) {
         posts.remove(post);
-        post.remove();
     }
 
     public void addComment(PortfolioComment comment) {
@@ -185,23 +195,48 @@ public class Portfolio {
         feedbacks.remove(feedback);
     }
 
-    public void updateCardImage(PortfolioCardImage image) {
+    public void addDesign(PortfolioDesign design) {
+        designs.add(design);
+    }
+
+    public void removeDesign(PortfolioDesign design) {
+        designs.remove(design);
+    }
+
+    public void addApi(PortfolioApi api) {
+        apis.add(api);
+    }
+
+    public void removeApi(PortfolioApi api) {
+        apis.remove(api);
+    }
+
+    public void addFunction(PortfolioFunction function) {
+        functions.add(function);
+    }
+
+    public void removeFunction(PortfolioFunction function) {
+        functions.remove(function);
+    }
+
+    public void addSchedule(PortfolioSchedule schedule) {
+        schedules.add(schedule);
+    }
+
+    public void removeSchedule(PortfolioSchedule schedule) {
+        schedules.remove(schedule);
+    }
+
+    public void addCode(PortfolioCode code) {
+        codes.add(code);
+    }
+
+    public void removeCode(PortfolioCode code) {
+        codes.remove(code);
+    }
+
+    public void updateCardImage(Image image) {
         cardImage.remove();
         cardImage = image;
-    }
-
-    public void addImage(PortfolioImage image) {
-        images.add(image);
-        image.setPortfolio(this);
-    }
-
-    public void addGroup(PortfolioGroup group) {
-        sharedGroups.add(group);
-        group.setPortfolio(this);
-    }
-
-    public void changeCardImage(PortfolioCardImage cardImage) {
-        this.cardImage = cardImage;
-        cardImage.setPortfolio(this);
     }
 }
