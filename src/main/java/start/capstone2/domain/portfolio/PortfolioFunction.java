@@ -40,4 +40,13 @@ public class PortfolioFunction {
         portfolioFunction.explain = explain;
         return portfolioFunction;
     }
+
+    public void update(Image image, String explain) {
+        this.image = image;
+        this.explain = explain;
+    }
+
+    public void remove() {
+        image.remove();
+    }
 }

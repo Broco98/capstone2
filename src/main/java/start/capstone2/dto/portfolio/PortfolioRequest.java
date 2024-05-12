@@ -3,6 +3,7 @@ package start.capstone2.dto.portfolio;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
+import start.capstone2.domain.portfolio.ShareStatus;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -19,13 +20,7 @@ public class PortfolioRequest {
     private String purpose;
     private String content;
     private Integer memberNum;
-
-
-
     private MultipartFile cardImage;
-    private List<MultipartFile> images = new ArrayList<>();
-//    private List<Long> memberIds = new ArrayList<>();
-//    private List<String> memberNames = new ArrayList<>();
+    private ShareStatus status;
 
-    private List<Long> sharedGroupIds = new ArrayList<>();
 }

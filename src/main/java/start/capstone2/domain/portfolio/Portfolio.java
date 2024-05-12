@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import start.capstone2.domain.BaseEntity;
 import start.capstone2.domain.Image.Image;
 import start.capstone2.domain.user.User;
@@ -23,7 +24,7 @@ public class Portfolio {
     private Long id;
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "users_id")
     private User user;
 
     private String title;
@@ -42,27 +43,28 @@ public class Portfolio {
     @OneToMany(mappedBy = "portfolio")
     private List<PortfolioFeedback> feedbacks = new ArrayList<>();
 
-    @OneToMany(mappedBy = "portfolio")
+    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL)
     private List<PortfolioApi> apis = new ArrayList<>();
 
-    @OneToMany(mappedBy = "portfolio")
+    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL)
     private List<PortfolioCode> codes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "portfolio")
+    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL)
     private List<PortfolioSchedule> schedules = new ArrayList<>();
 
-    @OneToMany(mappedBy = "portfolio")
+    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL)
     private List<PortfolioDesign> designs = new ArrayList<>();
 
-    @OneToMany(mappedBy = "portfolio")
+    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL)
     private List<PortfolioFunction> functions = new ArrayList<>();
 
-    @OneToMany(mappedBy = "portfolio")
+    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL)
     private List<PortfolioTechStack> techStacks = new ArrayList<>();
 
-    @OneToMany(mappedBy = "portfolio")
+    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL)
     private List<PortfolioUrl> urls = new ArrayList<>();
 
+    @Setter
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "image_id")
     private Image cardImage;
@@ -72,17 +74,21 @@ public class Portfolio {
     @Embedded
     private BaseEntity baseEntity;
 
-    // TODO
+
+    public static Portfolio createEmptyPortfolio(User user) {
+        Portfolio portfolio = new Portfolio();
+        portfolio.user = user;
+        portfolio.status = ShareStatus.NONE; // 기본은 공유 X
+        return portfolio;
+    }
+
     public static Portfolio createPortfolio(
             User user,
             String title,
             LocalDate startDate,
             LocalDate endDate,
             Integer contribution,
-            String purpose, String content,
-            PortfolioCardImage cardImage,
-            List<PortfolioImage> images,
-            List<PortfolioGroup> shardGroups,
+            String purpose,
             Integer memberNum) {
 
         Portfolio portfolio = new Portfolio();
@@ -92,22 +98,8 @@ public class Portfolio {
         portfolio.endDate = endDate;
         portfolio.contribution = contribution;
         portfolio.purpose = purpose;
-        portfolio.content = content;
-        portfolio.cardImage = cardImage;
         portfolio.memberNum = memberNum;
-
-        if (images != null && !images.isEmpty()) {
-            for (PortfolioImage image : images) {
-                portfolio.addImage(image);
-            }
-        }
-
-        if (shardGroups != null && !shardGroups.isEmpty()) {
-            for (PortfolioGroup group : shardGroups) {
-                portfolio.addGroup(group);
-            }
-        }
-
+        portfolio.status = ShareStatus.NONE; // 기본은 공유 X
         return portfolio;
     }
 
@@ -117,57 +109,28 @@ public class Portfolio {
             LocalDate endDate,
             Integer contribution,
             String purpose,
-            String content,
-            PortfolioCardImage cardImage,
-            List<PortfolioImage> images,
-            List<PortfolioGroup> sharedGroups,
-            Integer memberNum) {
+            Integer memberNum,
+            Image cardImage,
+            ShareStatus status) {
 
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;
         this.contribution = contribution;
         this.purpose = purpose;
-        this.content = content;
-
-        if (cardImage != null) {
-           changeCardImage(cardImage);
-        }
-
         this.memberNum = memberNum;
+        this.cardImage = cardImage;
+        this.status = status;
+    }
 
-        if (images != null && !images.isEmpty()) {
-            List<PortfolioImage> remove = new ArrayList<>();
-
-            for (PortfolioImage image : this.images) {
-                if (!images.contains(image))
-                    remove.add(image);
-            }
-
-            for (PortfolioImage image : images) {
-                if (!this.images.contains(image)) {
-                    this.addImage(image);
-                }
-            }
-
-            this.images.removeAll(remove);
+    // TODO -> 이미지 등 삭제해야 하므로
+    public void deletePortfolio() {
+        for (PortfolioDesign design : designs) {
+            design.remove();
         }
 
-        if (sharedGroups != null && !sharedGroups.isEmpty()) {
-            List<PortfolioGroup> remove = new ArrayList<>();
-
-            for (PortfolioGroup group : this.sharedGroups) {
-                if (!sharedGroups.contains(group))
-                    remove.add(group);
-            }
-
-            for (PortfolioGroup group : sharedGroups) {
-                if (!this.sharedGroups.contains(group)) {
-                    this.addGroup(group);
-                }
-            }
-
-            this.sharedGroups.removeAll(remove);
+        for (PortfolioFunction function : functions) {
+            function.remove();
         }
     }
 
@@ -233,10 +196,5 @@ public class Portfolio {
 
     public void removeCode(PortfolioCode code) {
         codes.remove(code);
-    }
-
-    public void updateCardImage(Image image) {
-        cardImage.remove();
-        cardImage = image;
     }
 }

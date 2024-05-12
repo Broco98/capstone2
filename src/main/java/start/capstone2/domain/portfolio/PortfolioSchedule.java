@@ -41,4 +41,10 @@ public class PortfolioSchedule {
         schedule.explain = explain;
         return schedule;
     }
+
+    public void updatePortfolioSchedule(LocalDate startDate, LocalDate endDate, String explain) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.explain = explain;
+    }
 }

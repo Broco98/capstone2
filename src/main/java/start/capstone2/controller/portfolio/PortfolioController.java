@@ -27,8 +27,8 @@ public class PortfolioController {
     private final PortfolioRepository portfolioRepository;
 
     @PostMapping("/")
-    public ResponseEntity<Long> createPortfolio(Long userId, PortfolioRequest portfolioRequest) throws IOException {
-        Long portfolioId = portfolioService.createPortfolio(userId, portfolioRequest);
+    public ResponseEntity<Long> createPortfolio(Long userId) {
+        Long portfolioId = portfolioService.createPortfolio(userId);
 
         return ResponseEntity.ok(portfolioId);
     }
@@ -36,53 +36,13 @@ public class PortfolioController {
     @GetMapping("/{portfolioId}")
     public ResponseResult<PortfolioResponse> getSinglePortfolio(Long userId, @PathVariable Long portfolioId) {
 
-//        Portfolio portfolio = portfolioService.findByUserIdAndPortfolioIdWithImages(userId, portfolioId);
-        Portfolio portfolio = portfolioService.findById(portfolioId);
 
-        String cardImageName = portfolio.getCardImage().getImage().getSavedName();
-        List<String> imageNames = new ArrayList<>();
-        for (PortfolioImage image : portfolio.getImages()) {
-            imageNames.add(image.getImage().getSavedName());
-        }
-
-        List<String> sharedGroupNames = new ArrayList<>();
-        for (PortfolioGroup group : portfolio.getSharedGroups()) {
-            sharedGroupNames.add(group.getGroup().getName());
-        }
-
-        PortfolioResponse portfolioResponse = new PortfolioResponse(
-                portfolio.getTitle(),
-                portfolio.getStartDate(),
-                portfolio.getEndDate(),
-                portfolio.getContribution(),
-                portfolio.getPurpose(),
-                portfolio.getContent(),
-                portfolio.getMemberNum(),
-                cardImageName,
-                imageNames,
-                sharedGroupNames
-        );
-
-        return new ResponseResult<>(portfolioResponse);
     }
 
-    // TODO
     @PutMapping("/{portfolioId}")
     public void updatePortfolio(Long userId, PortfolioRequest portfolioRequest, @PathVariable Long portfolioId) {
 
-        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
 
-//        portfolio.updatePortfolio(
-//                portfolioRequest.getTitle(),
-//                portfolioRequest.getStartDate(),
-//                portfolioRequest.getEndDate(),
-//                portfolioRequest.getContribution(),
-//                portfolioRequest.getPurpose(),
-//                portfolioRequest.getContent(),
-//                portfolioRequest.getCardImage(),
-//                portfolioRequest.getImages(),
-//
-//        );
     }
 
 }

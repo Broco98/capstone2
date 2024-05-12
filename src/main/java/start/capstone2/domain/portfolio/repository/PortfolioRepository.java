@@ -11,5 +11,5 @@ import java.util.List;
 public interface PortfolioRepository extends JpaRepository<Portfolio, Long> {
 
     List<Portfolio> findAllByUserId(Long userId); // JoinColum 설정해 놨으므로 id로 조회 가능
-
+    
 }

@@ -26,6 +26,7 @@ public class PortfolioTechStack {
     @JoinColumn(name = "techstack_id")
     private TechStack techStack;
 
+
     public static PortfolioTechStack createPortfolioTechStack(Portfolio portfolio, TechStack techStack) {
         PortfolioTechStack portfolioTechStack = new PortfolioTechStack();
         portfolioTechStack.portfolio = portfolio;

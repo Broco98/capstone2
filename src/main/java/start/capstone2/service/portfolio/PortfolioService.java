@@ -27,93 +27,30 @@ public class PortfolioService {
 
     private final UserRepository userRepository;
     private final PortfolioRepository portfolioRepository;
-    private final GroupRepository groupRepository;
     private final ImageStore imageStore;
-//    private final ImageRepository imageRepository;
-    private final PortfolioCardImageRepository cardRepository;
-    private final PortfolioCommentRepository commentRepository;
-    private final PortfolioFeedbackRepository feedbackRepository;
-    private final PortfolioPostRepository postRepository;
 
     @Transactional
-    public List<PortfolioGroup> createPortfolioGroups(List<Long> sharedGroupIds) {
-
-        if (sharedGroupIds == null || sharedGroupIds.isEmpty()) {
-            return null;
-        }
-
-        List<PortfolioGroup> groups = new ArrayList<>();
-        for (Long id : sharedGroupIds) {
-            groups.add(PortfolioGroup.createPortfolioGroup(groupRepository.findById(id).orElseThrow()));
-        }
-
-        return groups;
-    }
-
-    @Transactional
-    public List<PortfolioImage> createPortfolioImages(List<MultipartFile> multipartFiles) throws IOException {
-
-        if (multipartFiles == null || multipartFiles.isEmpty()) {
-            return null;
-        }
-
-        List<Image> images = imageStore.saveImages(multipartFiles);
-        List<PortfolioImage> portfolioImages = new ArrayList<>();
-//        imageRepository.saveAll(images);
-//        imageRepository.flush();
-        for (Image image : images) {
-            portfolioImages.add(PortfolioImage.createPortfolioImage(image));
-        }
-
-        return portfolioImages;
-    }
-
-    @Transactional
-    public PortfolioCardImage createCardImage(MultipartFile multipartFile) throws IOException {
-        if (multipartFile == null || multipartFile.isEmpty()) {
-            return null;
-        }
-
-        Image image = imageStore.saveImage(multipartFile);
-//        imageRepository.save(image);
-//        imageRepository.flush();
-        return PortfolioCardImage.createPortfolioCardImage(image);
-    }
-
-    @Transactional
-    public Long createPortfolio(Long userId, PortfolioRequest portfolioRequest) throws IOException {
+    public Long createPortfolio(Long userId) {
         User user = userRepository.findById(userId).orElseThrow();
-        List<PortfolioGroup> groups = createPortfolioGroups(portfolioRequest.getSharedGroupIds()); // 그룹 생성
-        List<PortfolioImage> images = createPortfolioImages(portfolioRequest.getImages()); // 이미지 생성
-        PortfolioCardImage cardImage = createCardImage(portfolioRequest.getCardImage()); // 카드 이미지 생성
-
-        Portfolio portfolio = Portfolio.createPortfolio(
-                user,
-                portfolioRequest.getTitle(),
-                portfolioRequest.getStartDate(),
-                portfolioRequest.getEndDate(),
-                portfolioRequest.getContribution(),
-                portfolioRequest.getPurpose(),
-                portfolioRequest.getContent(),
-                cardImage,
-                images,
-                groups,
-                portfolioRequest.getMemberNum());
-
+        Portfolio portfolio = Portfolio.createEmptyPortfolio(user);
         portfolioRepository.save(portfolio);
         return portfolio.getId();
     }
     
-    // TODO
+
     @Transactional
-    public void updatePortfolio(Long userId, Long portfolioId, PortfolioRequest portfolioRequest) throws IOException {
+    public void updatePortfolio(Long userId, Long portfolioId, PortfolioRequest portfolioRequest) {
         User user = userRepository.findById(userId).orElseThrow();
 
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+        Image image = portfolio.getCardImage();
+        if (portfolioRequest.getCardImage() != null) {
 
-        List<PortfolioGroup> groups = createPortfolioGroups(portfolioRequest.getSharedGroupIds());
-        List<PortfolioImage> images = createPortfolioImages(portfolioRequest.getImages());
-        PortfolioCardImage cardImage = createCardImage(portfolioRequest.getCardImage());
+            if (image != null) {
+                imageStore.removeImage(image);
+            }
+            image = imageStore.saveImage(portfolioRequest.getCardImage());
+        }
 
         portfolio.updatePortfolio(
                 portfolioRequest.getTitle(),
@@ -121,27 +58,20 @@ public class PortfolioService {
                 portfolioRequest.getEndDate(),
                 portfolioRequest.getContribution(),
                 portfolioRequest.getPurpose(),
-                portfolioRequest.getContent(),
-                cardImage,
-                images,
-                groups,
-                portfolioRequest.getMemberNum());
+                portfolioRequest.getMemberNum(),
+                image,
+                portfolioRequest.getStatus()
+        );
     }
 
-    public List<Portfolio> findAllByUserId(Long userId) {
-        return portfolioRepository.findAllByUserId(userId);
+    @Transactional
+    public void deletePortfolio(Long userId, Long portfolioId) {
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+        portfolio.deletePortfolio();
+        portfolioRepository.delete(portfolio);
     }
 
     public Portfolio findById(Long portfolioId) {
         return portfolioRepository.findById(portfolioId).orElseThrow();
     }
-
-    public List<Portfolio> findAllByUserIdWithImages(Long userId) {
-        return portfolioRepository.findAllByUserIdWithImages(userId);
-    }
-
-    public Portfolio findByUserIdAndPortfolioIdWithImages(Long userId, Long portfolioId) {
-        return portfolioRepository.findByUserIdAndPortfolioIdWithImages(userId, portfolioId);
-    }
-
 }

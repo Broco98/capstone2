@@ -8,6 +8,7 @@ import lombok.Data;
 public class PortfolioFeedbackRequest {
 
     private String content;
+    private Integer page;
     private Integer location;
 
 }

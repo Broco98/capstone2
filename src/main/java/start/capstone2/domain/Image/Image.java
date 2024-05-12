@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.io.File;
 import java.util.StringTokenizer;
 import java.util.UUID;
 
@@ -31,6 +32,6 @@ public class Image {
     }
 
     public void remove() {
-
+        ImageStore.removeImage(this);
     }
 }

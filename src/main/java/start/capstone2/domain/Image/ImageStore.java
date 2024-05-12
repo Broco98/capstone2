@@ -17,30 +17,25 @@ public class ImageStore {
 
     // 저장 위치
     @Value("${image.dir}")
-    private String imageDir;
+    private static String imageDir; // static 가능
 
     // 저장 위치 + 파일 이름
-    public String getFullPath(String fileName) {
+    public static String getFullPath(String fileName) {
         return imageDir + fileName;
     }
 
-    public List<Image> saveImages(List<MultipartFile> multipartFiles) throws IOException {
-        List<Image> images = new ArrayList<>();
-        for (MultipartFile multipartFile : multipartFiles) {
-            if (!multipartFile.isEmpty()) {
-                images.add(saveImage(multipartFile));
-            }
-        }
-        return images;
-    }
-
-    public Image saveImage(MultipartFile multipartFile) throws IOException {
+    public Image saveImage(MultipartFile multipartFile){
         if (multipartFile.isEmpty())
             return null;
 
         String originalImageName = multipartFile.getOriginalFilename();
         String saveImageName = createSaveFileName(originalImageName);
-        multipartFile.transferTo(new File(getFullPath(saveImageName)));
+
+        try {
+            multipartFile.transferTo(new File(getFullPath(saveImageName)));
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
 
         if (originalImageName == null) {
             return Image.createImage(saveImageName, saveImageName);
@@ -64,8 +59,10 @@ public class ImageStore {
         return uuid + "." + ext;
     }
 
-    // TODO
-    public void removeImage(Image image) {
-
+    public static void removeImage(Image image) {
+        File file = new File(getFullPath(image.getSavedName()));
+        if (file.exists()) {
+            file.delete(); // deleteOnExit 은 지연 삭제
+        }
     }
 }

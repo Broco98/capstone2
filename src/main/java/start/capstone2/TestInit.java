@@ -12,7 +12,6 @@ import start.capstone2.service.UserService;
 public class TestInit {
 
     private final UserService userService;
-    private final GroupService groupService;
 
     @PostConstruct
     public void init() {
@@ -20,8 +19,6 @@ public class TestInit {
         userService.createUser(new UserRequest("id2", "pw2", "test2"));
         userService.createUser(new UserRequest("id3", "pw3", "test3"));
 
-        groupService.createGroup("group1");
-        groupService.createGroup("all");
     }
 
 

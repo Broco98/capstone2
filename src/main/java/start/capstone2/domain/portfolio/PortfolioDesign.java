@@ -18,12 +18,13 @@ public class PortfolioDesign {
     @Column(name = "portfolio_design_id")
     private Long id;
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "portfolio_id")
-    @Setter
     private Portfolio portfolio;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @Setter
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "image_id")
     private Image image;
 
@@ -39,5 +40,14 @@ public class PortfolioDesign {
         portfolioDesign.image = image;
         portfolioDesign.explain = explain;
         return portfolioDesign;
+    }
+
+    public void update(Image image, String explain) {
+        this.image = image;
+        this.explain = explain;
+    }
+
+    public void remove() {
+        image.remove();
     }
 }
