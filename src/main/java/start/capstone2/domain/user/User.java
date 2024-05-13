@@ -8,23 +8,20 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
 @Table(name = "users")
+@Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
 
     private String username;
     private String password;
     private String name;
-
-    @OneToMany(mappedBy = "user")
-    private List<UserGroup> groups = new ArrayList<>();
 
     public static User createUser(String username, String password, String name) {
         User user = new User();

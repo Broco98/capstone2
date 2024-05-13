@@ -9,8 +9,6 @@ import start.capstone2.domain.Image.Image;
 @Data
 @AllArgsConstructor
 public class PortfolioDesignRequest {
-
     private MultipartFile image;
     private String explain;
-
 }

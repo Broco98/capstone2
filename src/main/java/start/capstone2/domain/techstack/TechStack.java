@@ -12,13 +12,14 @@ import start.capstone2.domain.Image.Image;
 public class TechStack {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "techstack_id")
     private Long id;
 
     private String name;
 
-    @Embedded
+    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinColumn(name = "image_id")
     private Image image;
 
 
@@ -28,5 +29,9 @@ public class TechStack {
         techStack.image = image;
 
         return techStack;
+    }
+
+    public void deleteTechStack() {
+        image.remove();
     }
 }

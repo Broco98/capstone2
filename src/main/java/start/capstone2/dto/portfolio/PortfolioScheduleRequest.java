@@ -9,9 +9,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 public class PortfolioScheduleRequest {
-
     private LocalDate startDate;
     private LocalDate endDate;
     private String explain;
-
 }

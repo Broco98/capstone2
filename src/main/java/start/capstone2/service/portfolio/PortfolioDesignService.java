@@ -6,12 +6,19 @@ import org.springframework.transaction.annotation.Transactional;
 import start.capstone2.domain.Image.Image;
 import start.capstone2.domain.Image.ImageStore;
 import start.capstone2.domain.portfolio.Portfolio;
+import start.capstone2.domain.portfolio.PortfolioApi;
 import start.capstone2.domain.portfolio.PortfolioDesign;
 import start.capstone2.domain.portfolio.repository.PortfolioDesignRepository;
 import start.capstone2.domain.portfolio.repository.PortfolioRepository;
 import start.capstone2.domain.user.User;
 import start.capstone2.domain.user.repository.UserRepository;
+import start.capstone2.dto.portfolio.PortfolioApiResponse;
+import start.capstone2.dto.portfolio.PortfolioCommentResponse;
 import start.capstone2.dto.portfolio.PortfolioDesignRequest;
+import start.capstone2.dto.portfolio.PortfolioDesignResponse;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -31,6 +38,7 @@ public class PortfolioDesignService {
         Image image = imageStore.saveImage(request.getImage());
 
         PortfolioDesign design = PortfolioDesign.createPortfolioDesign(
+                portfolio,
                 image,
                 request.getExplain()
         );
@@ -45,17 +53,26 @@ public class PortfolioDesignService {
 
         // 이미지 삭제
         Image oldImage = design.getImage();
-        imageStore.removeImage(oldImage);
+        ImageStore.removeImage(oldImage);
 
         Image newImage = imageStore.saveImage(request.getImage());
-        design.update(newImage, request.getExplain());
+        design.updatePortfolioDesign(newImage, request.getExplain());
     }
     
     @Transactional
-    public void deletePortfolioComment(Long userId, Long portfolioId, Long designId) {
+    public void deletePortfolioDesign(Long userId, Long portfolioId, Long designId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
         PortfolioDesign design = designRepository.findById(designId).orElseThrow(); // 삭제하기 위해 2번 조회 -> 1번 조회하기 위해선 또 다른 식별자가 필요함
         portfolio.removeDesign(design);
+    }
+
+    public List<PortfolioDesignResponse> findPortfolioDesigns(Long userId, Long portfolioId) {
+        List<PortfolioDesign> designs = designRepository.findAllByPortfolioId(portfolioId);
+        List<PortfolioDesignResponse> results = new ArrayList<>();
+        for (PortfolioDesign design : designs) {
+            results.add(new PortfolioDesignResponse(design.getId(), design.getImage().getSavedName(), design.getExplain()));
+        }
+        return results;
     }
 
 }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import start.capstone2.domain.user.User;
 
 @Entity
 @Getter
@@ -16,6 +17,7 @@ public class PortfolioPost {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
 
     private String title;
@@ -23,8 +25,9 @@ public class PortfolioPost {
     @Lob
     private String content;
 
-    public static PortfolioPost createPortfolioPost(String title, String content) {
+    public static PortfolioPost createPortfolioPost(Portfolio portfolio,String title, String content) {
         PortfolioPost post = new PortfolioPost();
+        post.portfolio = portfolio;
         post.title = title;
         post.content = content;
 

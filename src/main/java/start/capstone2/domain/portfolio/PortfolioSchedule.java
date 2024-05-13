@@ -21,7 +21,6 @@ public class PortfolioSchedule {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "portfolio_id")
-    @Setter
     private Portfolio portfolio;
 
     private LocalDate startDate;
@@ -34,8 +33,9 @@ public class PortfolioSchedule {
     private BaseEntity baseEntity;
 
 
-    public static PortfolioSchedule createPortfolioSchedule(LocalDate startDate, LocalDate endDate, String explain) {
+    public static PortfolioSchedule createPortfolioSchedule(Portfolio portfolio, LocalDate startDate, LocalDate endDate, String explain) {
         PortfolioSchedule schedule = new PortfolioSchedule();
+        schedule.portfolio = portfolio;
         schedule.startDate = startDate;
         schedule.endDate = endDate;
         schedule.explain = explain;

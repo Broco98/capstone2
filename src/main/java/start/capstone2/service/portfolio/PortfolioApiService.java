@@ -10,6 +10,10 @@ import start.capstone2.domain.portfolio.repository.PortfolioApiRepository;
 import start.capstone2.domain.portfolio.repository.PortfolioRepository;
 import start.capstone2.domain.user.User;
 import start.capstone2.domain.user.repository.UserRepository;
+import start.capstone2.dto.portfolio.PortfolioApiResponse;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -26,6 +30,7 @@ public class PortfolioApiService {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
 
         PortfolioApi api = PortfolioApi.createPortfolioApi(
+                portfolio,
                 request.getMethod(),
                 request.getUrl(),
                 request.getExplain(),
@@ -37,7 +42,7 @@ public class PortfolioApiService {
     }
 
     @Transactional
-    public void updatePortfolioApi(Long userId, Long portfolioId, Long apiId, PortfolioApi request) {
+    public void updatePortfolioApi(Long userId, Long portfolioId, Long apiId, PortfolioApiRequest request) {
         PortfolioApi api = apiRepository.findById(apiId).orElseThrow();
         api.updatePortfolioApi(
                 request.getMethod(),
@@ -53,6 +58,15 @@ public class PortfolioApiService {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
         PortfolioApi api = apiRepository.findById(apiId).orElseThrow();
         portfolio.removeApi(api);
+    }
+
+    public List<PortfolioApiResponse> findPortfolioApis(Long userId, Long portfolioId) {
+        List<PortfolioApi> apis = apiRepository.findAllByPortfolioId(portfolioId);
+        List<PortfolioApiResponse> results = new ArrayList<>();
+        for (PortfolioApi api : apis) {
+            results.add(new PortfolioApiResponse(api.getId(), api.getMethod(), api.getUrl(), api.getExplain(), api.getResponse()));
+        }
+        return results;
     }
 
 }

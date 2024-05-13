@@ -4,13 +4,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import start.capstone2.domain.portfolio.Portfolio;
+import start.capstone2.domain.portfolio.PortfolioApi;
 import start.capstone2.domain.portfolio.PortfolioFeedback;
+import start.capstone2.dto.portfolio.PortfolioApiResponse;
 import start.capstone2.dto.portfolio.PortfolioFeedbackRequest;
 import start.capstone2.domain.portfolio.repository.PortfolioFeedbackRepository;
 import start.capstone2.domain.portfolio.repository.PortfolioRepository;
 import start.capstone2.domain.user.User;
 import start.capstone2.domain.user.repository.UserRepository;
+import start.capstone2.dto.portfolio.PortfolioFeedbackResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,7 +27,7 @@ public class PortfolioFeedbackService {
     private final PortfolioFeedbackRepository feedbackRepository;
 
     @Transactional
-    public Long createPortfolioFeedback(Long userId, Long portfolioId, PortfolioFeedbackRequest portfolioFeedbackRequest) {
+    public Long createPortfolioFeedback(Long userId, Long portfolioId, PortfolioFeedbackRequest request) {
 
         User user = userRepository.findById(userId).orElseThrow();
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
@@ -31,8 +35,9 @@ public class PortfolioFeedbackService {
         PortfolioFeedback portfolioFeedback = PortfolioFeedback.createPortfolioFeedback(
                 user,
                 portfolio,
-                portfolioFeedbackRequest.getContent(),
-                portfolioFeedbackRequest.getLocation()
+                request.getContent(),
+                request.getPage(),
+                request.getLocation()
         );
 
         portfolio.addFeedback(portfolioFeedback);
@@ -52,10 +57,6 @@ public class PortfolioFeedbackService {
         );
     }
 
-    public List<PortfolioFeedback> findAllPortfolioFeedbacks(Long portfolioId) {
-        return feedbackRepository.findAllByPortfolioId(portfolioId);
-    }
-
     @Transactional
     public void deletePortfolioFeedback(Long userId, Long portfolioId, Long feedbackId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
@@ -63,4 +64,12 @@ public class PortfolioFeedbackService {
         portfolio.removeFeedback(feedback);
     }
 
+    public List<PortfolioFeedbackResponse> findPortfolioFeedbacks(Long userId, Long portfolioId) {
+        List<PortfolioFeedback> feedbacks = feedbackRepository.findAllByPortfolioId(portfolioId);
+        List<PortfolioFeedbackResponse> results = new ArrayList<>();
+        for (PortfolioFeedback feedback : feedbacks) {
+            results.add(new PortfolioFeedbackResponse(feedback.getId(), feedback.getContent(), feedback.getPage(), feedback.getLocation()));
+        }
+        return results;
+    }
 }

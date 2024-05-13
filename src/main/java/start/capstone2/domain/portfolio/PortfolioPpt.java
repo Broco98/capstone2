@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import start.capstone2.domain.BaseEntity;
+import start.capstone2.domain.user.User;
 
 @Entity
 @Getter

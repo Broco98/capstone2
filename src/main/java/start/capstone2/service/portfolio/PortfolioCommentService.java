@@ -10,6 +10,10 @@ import start.capstone2.domain.portfolio.repository.PortfolioCommentRepository;
 import start.capstone2.domain.portfolio.repository.PortfolioRepository;
 import start.capstone2.domain.user.User;
 import start.capstone2.domain.user.repository.UserRepository;
+import start.capstone2.dto.portfolio.PortfolioCommentResponse;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -49,4 +53,12 @@ public class PortfolioCommentService {
         portfolio.removeComment(comment);
     }
 
+    public List<PortfolioCommentResponse> findPortfolioComments(Long userId, Long portfolioId) {
+        List<PortfolioComment> comments = commentRepository.findAllByPortfolioId(portfolioId);
+        List<PortfolioCommentResponse> responses = new ArrayList<>();
+        for (PortfolioComment comment : comments) {
+            responses.add(new PortfolioCommentResponse(comment.getId(), comment.getContent()));
+        }
+        return responses;
+    }
 }

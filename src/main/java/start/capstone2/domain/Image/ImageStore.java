@@ -3,13 +3,9 @@ package start.capstone2.domain.Image;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
-import start.capstone2.domain.Image.Image;
-import start.capstone2.domain.Image.ImageType;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Component

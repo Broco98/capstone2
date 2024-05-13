@@ -1,4 +1,4 @@
-package start.capstone2;
+package start.capstone2.dto;
 
 import lombok.AllArgsConstructor;
 

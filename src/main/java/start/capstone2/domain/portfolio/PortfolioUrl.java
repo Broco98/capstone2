@@ -20,7 +20,7 @@ public class PortfolioUrl {
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "url_id")
     private Url url;
 
@@ -32,8 +32,7 @@ public class PortfolioUrl {
         return portfolioUrl;
     }
 
-    // TODO
     public void remove() {
-
+        // TODO: 삭제시, url에 아무것도 없다면 -> url도 삭제해야 함
     }
 }

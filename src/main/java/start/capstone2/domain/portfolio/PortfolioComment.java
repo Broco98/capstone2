@@ -17,13 +17,15 @@ public class PortfolioComment {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
 
+    @Lob
     private String content;
-
 
     public static PortfolioComment createPortfolioComment(User user, Portfolio portfolio, String content) {
         PortfolioComment comment = new PortfolioComment();

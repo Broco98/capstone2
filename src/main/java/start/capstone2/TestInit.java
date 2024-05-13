@@ -4,7 +4,6 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import start.capstone2.dto.UserRequest;
-import start.capstone2.service.GroupService;
 import start.capstone2.service.UserService;
 
 @Component
@@ -15,10 +14,9 @@ public class TestInit {
 
     @PostConstruct
     public void init() {
-        userService.createUser(new UserRequest("id1", "pw1", "test1"));
-        userService.createUser(new UserRequest("id2", "pw2", "test2"));
-        userService.createUser(new UserRequest("id3", "pw3", "test3"));
-
+        userService.createUser(new UserRequest("test1", "1111", "test1"));
+        userService.createUser(new UserRequest("test2", "2222", "test2"));
+        userService.createUser(new UserRequest("test3", "3333", "test3"));
     }
 
 

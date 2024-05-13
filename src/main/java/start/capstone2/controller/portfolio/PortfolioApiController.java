@@ -2,29 +2,39 @@ package start.capstone2.controller.portfolio;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import start.capstone2.dto.portfolio.PortfolioCommentRequest;
-import start.capstone2.service.portfolio.PortfolioCommentService;
+import start.capstone2.dto.ResponseResult;
+import start.capstone2.dto.portfolio.PortfolioApiRequest;
+import start.capstone2.dto.portfolio.PortfolioApiResponse;
+import start.capstone2.service.portfolio.PortfolioApiService;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/portfolio/api")
+@RequestMapping("/portfolio")
 public class PortfolioApiController {
 
-    private final PortfolioCommentService commentService;
+    private final PortfolioApiService apiService;
 
-    @PostMapping("/")
-    public Long createPortfolioApi(Long userId, Long portfolioId, PortfolioCommentRequest request) {
-        return commentService.createPortfolioComment(userId, portfolioId, request);
+    @PostMapping("/{portfolioId}/api")
+    public Long createPortfolioApi(Long userId, @PathVariable Long portfolioId, PortfolioApiRequest request) {
+        return apiService.createPortfolioApi(userId, portfolioId, request);
     }
 
-    @PutMapping("/{apiId}")
-    public void updatePortfolioApi(Long userId, Long portfolioId, @PathVariable Long apiId, PortfolioCommentRequest request) {
-        commentService.updatePortfolioComment(userId, portfolioId, apiId, request);
+    @PutMapping("/{portfolioId}/api/{apiId}")
+    public void updatePortfolioApi(Long userId, @PathVariable Long portfolioId, @PathVariable Long apiId, PortfolioApiRequest request) {
+        apiService.updatePortfolioApi(userId, portfolioId, apiId, request);
     }
 
-    @DeleteMapping("/{apiId}")
-    public void deletePortfolioApi(Long userId, Long portfolioId, @PathVariable Long apiId) {
-        commentService.deletePortfolioComment(userId, portfolioId, apiId);
+    @DeleteMapping("/{portfolioId}/api/{apiId}")
+    public void deletePortfolioApi(Long userId, @PathVariable Long portfolioId, @PathVariable Long apiId) {
+        apiService.deletePortfolioApi(userId, portfolioId, apiId);
+    }
+
+    @GetMapping("/{portfolioId}/api")
+    public ResponseResult<List<PortfolioApiResponse>> findAllPortfolioApi(Long userId, @PathVariable Long portfolioId) {
+        List<PortfolioApiResponse> result = apiService.findPortfolioApis(userId, portfolioId);
+        return new ResponseResult<>(result);
     }
 
 }

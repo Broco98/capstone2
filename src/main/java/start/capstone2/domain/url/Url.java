@@ -23,5 +23,4 @@ public class Url {
         myUrl.url = url;
         return myUrl;
     }
-
 }

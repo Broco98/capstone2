@@ -14,12 +14,11 @@ public class PortfolioApi {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "portfolio_api")
+    @Column(name = "portfolio_api_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "portfolio_id")
-    @Setter
     private Portfolio portfolio;
 
     private Method method;
@@ -31,8 +30,9 @@ public class PortfolioApi {
     private BaseEntity baseEntity;
 
 
-    public static PortfolioApi createPortfolioApi(Method method, String url, String explain, String response) {
+    public static PortfolioApi createPortfolioApi(Portfolio portfolio, Method method, String url, String explain, String response) {
         PortfolioApi portfolioApi = new PortfolioApi();
+        portfolioApi.portfolio = portfolio;
         portfolioApi.method = method;
         portfolioApi.url = url;
         portfolioApi.explain = explain;

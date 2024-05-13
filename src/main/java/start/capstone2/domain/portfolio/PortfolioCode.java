@@ -17,7 +17,6 @@ public class PortfolioCode {
     @Column(name = "portfolio_code_id")
     private Long id;
 
-    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
@@ -33,8 +32,9 @@ public class PortfolioCode {
     private BaseEntity baseEntity;
 
 
-    public static PortfolioCode createPortfolioCode(String code, String explain) {
+    public static PortfolioCode createPortfolioCode(Portfolio portfolio, String code, String explain) {
         PortfolioCode portfolioCode = new PortfolioCode();
+        portfolioCode.portfolio = portfolio;
         portfolioCode.code = code;
         portfolioCode.explain = explain;
 

@@ -5,22 +5,10 @@ import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 import start.capstone2.domain.portfolio.ShareStatus;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 public class PortfolioRequest {
-
-    private String title;
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private Integer contribution;
-    private String purpose;
-    private String content;
-    private Integer memberNum;
-    private MultipartFile cardImage;
+    private Long id;
+    private MultipartFile image;
     private ShareStatus status;
-
 }

@@ -20,7 +20,6 @@ public class PortfolioFunction {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "portfolio_id")
-    @Setter
     private Portfolio portfolio;
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -34,19 +33,20 @@ public class PortfolioFunction {
     private BaseEntity baseEntity;
 
 
-    public static PortfolioFunction createPortfolioFunction(Image image, String explain) {
-        PortfolioFunction portfolioFunction = new PortfolioFunction();
-        portfolioFunction.image = image;
-        portfolioFunction.explain = explain;
-        return portfolioFunction;
+    public static PortfolioFunction createPortfolioFunction(Portfolio portfolio, Image image, String explain) {
+        PortfolioFunction function = new PortfolioFunction();
+        function.portfolio = portfolio;
+        function.image = image;
+        function.explain = explain;
+        return function;
     }
 
-    public void update(Image image, String explain) {
+    public void updatePortfolioFunction(Image image, String explain) {
         this.image = image;
         this.explain = explain;
     }
 
-    public void remove() {
+    public void deletePortfolioFunction() {
         image.remove();
     }
 }

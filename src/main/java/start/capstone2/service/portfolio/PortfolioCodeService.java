@@ -4,11 +4,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import start.capstone2.domain.portfolio.Portfolio;
+import start.capstone2.domain.portfolio.PortfolioApi;
 import start.capstone2.domain.portfolio.PortfolioCode;
 import start.capstone2.domain.portfolio.repository.PortfolioCodeRepository;
 import start.capstone2.domain.portfolio.repository.PortfolioRepository;
 import start.capstone2.domain.user.repository.UserRepository;
+import start.capstone2.dto.portfolio.PortfolioApiResponse;
 import start.capstone2.dto.portfolio.PortfolioCodeRequest;
+import start.capstone2.dto.portfolio.PortfolioCodeResponse;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -24,7 +30,8 @@ public class PortfolioCodeService {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
 
         PortfolioCode code = PortfolioCode.createPortfolioCode(
-               request.getCode(),
+                portfolio,
+                request.getCode(),
                 request.getExplain()
         );
 
@@ -48,5 +55,12 @@ public class PortfolioCodeService {
         portfolio.removeCode(code);
     }
 
-
+    public List<PortfolioCodeResponse> findPortfolioCodes(Long userId, Long portfolioId) {
+        List<PortfolioCode> codes = codeRepository.findAllByPortfolioId(portfolioId);
+        List<PortfolioCodeResponse> results = new ArrayList<>();
+        for (PortfolioCode code : codes) {
+            results.add(new PortfolioCodeResponse(code.getId(), code.getCode(), code.getExplain()));
+        }
+        return results;
+    }
 }
