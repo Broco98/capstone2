@@ -16,7 +16,6 @@ public class PortfolioResponse {
     private LocalDate endDate;
     private Integer contribution;
     private String purpose;
-    private String content;
     private Integer memberNum;
 
 //    private MultipartFile cardImage;

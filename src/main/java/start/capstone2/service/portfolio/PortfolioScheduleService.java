@@ -4,14 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import start.capstone2.domain.portfolio.Portfolio;
-import start.capstone2.domain.portfolio.PortfolioComment;
 import start.capstone2.domain.portfolio.PortfolioSchedule;
-import start.capstone2.domain.portfolio.repository.PortfolioCommentRepository;
 import start.capstone2.domain.portfolio.repository.PortfolioRepository;
 import start.capstone2.domain.portfolio.repository.PortfolioScheduleRepository;
 import start.capstone2.domain.user.User;
 import start.capstone2.domain.user.repository.UserRepository;
-import start.capstone2.dto.portfolio.PortfolioCommentRequest;
 import start.capstone2.dto.portfolio.PortfolioScheduleRequest;
 
 @Service

@@ -13,8 +13,6 @@ import start.capstone2.domain.user.User;
 import start.capstone2.domain.user.repository.UserRepository;
 import start.capstone2.dto.portfolio.PortfolioDesignRequest;
 
-import java.io.IOException;
-
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor

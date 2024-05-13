@@ -10,12 +10,7 @@ import start.capstone2.domain.portfolio.PortfolioGroup;
 import start.capstone2.domain.portfolio.PortfolioImage;
 import start.capstone2.dto.portfolio.PortfolioRequest;
 import start.capstone2.dto.portfolio.PortfolioResponse;
-import start.capstone2.domain.portfolio.repository.PortfolioRepository;
-import start.capstone2.service.portfolio.PortfolioService;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import start.capstone2.service.portfolio.PortfolioDetailService;
 
 @Slf4j
 @RestController
@@ -23,8 +18,7 @@ import java.util.List;
 @RequestMapping("/portfolio")
 public class PortfolioController {
 
-    private final PortfolioService portfolioService;
-    private final PortfolioRepository portfolioRepository;
+    private final PortfolioDetailService portfolioService;
 
     @PostMapping("/")
     public ResponseEntity<Long> createPortfolio(Long userId) {
@@ -35,8 +29,9 @@ public class PortfolioController {
 
     @GetMapping("/{portfolioId}")
     public ResponseResult<PortfolioResponse> getSinglePortfolio(Long userId, @PathVariable Long portfolioId) {
+        Portfolio portfolio = portfolioService.findById(portfolioId);
 
-
+        return new ResponseResult<>(portfolio);
     }
 
     @PutMapping("/{portfolioId}")
