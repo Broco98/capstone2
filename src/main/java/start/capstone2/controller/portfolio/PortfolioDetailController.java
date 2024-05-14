@@ -2,8 +2,10 @@ package start.capstone2.controller.portfolio;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import start.capstone2.dto.ResponseResult;
 import start.capstone2.dto.portfolio.PortfolioDesignRequest;
 import start.capstone2.dto.portfolio.PortfolioDetailRequest;
+import start.capstone2.dto.portfolio.PortfolioDetailResponse;
 import start.capstone2.service.portfolio.PortfolioDesignService;
 import start.capstone2.service.portfolio.PortfolioDetailService;
 
