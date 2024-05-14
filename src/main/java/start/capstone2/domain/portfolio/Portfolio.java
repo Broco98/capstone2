@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Portfolio {
+public class Portfolio extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -66,9 +66,6 @@ public class Portfolio {
     private List<PortfolioTechStack> techStacks = new ArrayList<>();
 
     private ShareStatus status;
-
-    @Embedded
-    private BaseEntity baseEntity;
 
     public static Portfolio createPortfolio(User user) {
         Portfolio portfolio = new Portfolio();

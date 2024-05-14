@@ -10,7 +10,7 @@ import start.capstone2.domain.BaseEntity;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PortfolioCode {
+public class PortfolioCode extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,9 +27,6 @@ public class PortfolioCode {
 
     @Lob
     private String explain;
-
-    @Embedded
-    private BaseEntity baseEntity;
 
 
     public static PortfolioCode createPortfolioCode(Portfolio portfolio, String code, String explain) {

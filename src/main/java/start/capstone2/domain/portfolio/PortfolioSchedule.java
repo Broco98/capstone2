@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PortfolioSchedule {
+public class PortfolioSchedule extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,9 +28,6 @@ public class PortfolioSchedule {
 
     @Lob
     private String explain;
-
-    @Embedded
-    private BaseEntity baseEntity;
 
 
     public static PortfolioSchedule createPortfolioSchedule(Portfolio portfolio, LocalDate startDate, LocalDate endDate, String explain) {

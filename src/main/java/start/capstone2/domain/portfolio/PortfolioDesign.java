@@ -11,7 +11,7 @@ import start.capstone2.domain.Image.Image;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PortfolioDesign {
+public class PortfolioDesign extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,9 +28,6 @@ public class PortfolioDesign {
 
     @Lob
     private String explain;
-
-    @Embedded
-    private BaseEntity baseEntity;
 
 
     public static PortfolioDesign createPortfolioDesign(Portfolio portfolio, Image image, String explain) {

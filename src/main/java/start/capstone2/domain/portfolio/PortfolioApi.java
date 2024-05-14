@@ -10,7 +10,7 @@ import start.capstone2.domain.BaseEntity;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PortfolioApi {
+public class PortfolioApi extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,9 +25,6 @@ public class PortfolioApi {
     private String url;
     private String explain;
     private String response;
-
-    @Embedded
-    private BaseEntity baseEntity;
 
 
     public static PortfolioApi createPortfolioApi(Portfolio portfolio, Method method, String url, String explain, String response) {

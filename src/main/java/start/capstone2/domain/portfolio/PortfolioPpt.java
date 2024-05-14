@@ -10,7 +10,7 @@ import start.capstone2.domain.user.User;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PortfolioPpt {
+public class PortfolioPpt extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,9 +22,6 @@ public class PortfolioPpt {
     private Portfolio portfolio;
 
     private String savedName;
-
-    @Embedded
-    private BaseEntity baseEntity;
 
 
     public static PortfolioPpt createPortfolioPpt(Portfolio portfolio, String savedName) {

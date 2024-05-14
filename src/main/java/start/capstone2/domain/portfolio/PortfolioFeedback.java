@@ -10,7 +10,7 @@ import start.capstone2.domain.user.User;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PortfolioFeedback {
+public class PortfolioFeedback extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,9 +28,6 @@ public class PortfolioFeedback {
     private String content;
     private Integer page;
     private Integer location;
-
-    @Embedded
-    private BaseEntity baseEntity;
 
     public static PortfolioFeedback createPortfolioFeedback(User user, Portfolio portfolio, String content, Integer page, Integer location) {
         PortfolioFeedback feedback = new PortfolioFeedback();

@@ -17,13 +17,13 @@ public class PortfolioController {
 
     private final PortfolioService portfolioService;
 
-    @PostMapping("/")
+    @PostMapping("")
     public Long createPortfolio(Long userId) {
         return portfolioService.createPortfolio(userId);
     }
 
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseResult<List<PortfolioResponse>> findAllPortfolio(Long userId) {
         List<PortfolioResponse> results = portfolioService.findUserPortfolios(userId);
         return new ResponseResult<>(results);
