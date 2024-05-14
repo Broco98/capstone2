@@ -19,9 +19,9 @@ public class PortfolioDetail extends BaseEntity {
     @Column(name = "portfolio_detail")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "portfolio_id")
+    private Portfolio portfolio;
 
     private LocalDate startDate;
     private LocalDate endDate;
@@ -30,7 +30,12 @@ public class PortfolioDetail extends BaseEntity {
     private String purpose;
     private Integer contribution;
 
-    public static PortfolioDetail createPortfolioDetail(User user, LocalDate startDate, LocalDate endDate, Integer teamNum, String title, String purpose, Integer contribution) {
+
+    public static PortfolioDetail createEmptyDetail() {
+        return new PortfolioDetail();
+    }
+
+    public static PortfolioDetail createPortfolioDetail(LocalDate startDate, LocalDate endDate, Integer teamNum, String title, String purpose, Integer contribution) {
         PortfolioDetail detail = new PortfolioDetail();
         detail.user = user;
         detail.startDate = startDate;

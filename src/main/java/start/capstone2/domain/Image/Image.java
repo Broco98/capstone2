@@ -23,6 +23,10 @@ public class Image {
     private String originalName;
     private String savedName;
 
+    public static Image createEmptyImage() {
+        return new Image();
+    }
+
     public static Image createImage(String originalName, String savedName) {
         Image image = new Image();
         image.originalName = originalName;

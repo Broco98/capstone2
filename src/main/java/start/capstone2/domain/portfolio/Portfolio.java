@@ -67,9 +67,12 @@ public class Portfolio extends BaseEntity{
 
     private ShareStatus status;
 
-    public static Portfolio createPortfolio(User user) {
+    public static Portfolio createPortfolio(User user, Image cardImage, PortfolioDetail detail) {
         Portfolio portfolio = new Portfolio();
         portfolio.user = user;
+        portfolio.cardImage = cardImage;
+        portfolio.detail = detail;
+        portfolio.status = ShareStatus.NONE;
         return portfolio;
     }
 

@@ -31,9 +31,8 @@ public class PortfolioDetailService {
 
     @Transactional
     public Long createPortfolioDetail(Long userId, Long portfolioId, PortfolioDetailRequest request) {
-        User user = userRepository.findById(userId).orElseThrow();
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
-        PortfolioDetail detail = PortfolioDetail.createPortfolioDetail(user, request.getStartDate(), request.getEndDate(), request.getTeamNum(), request.getTitle(), request.getPurpose(), request.getContribution());
+        PortfolioDetail detail = PortfolioDetail.createPortfolioDetail(request.getStartDate(), request.getEndDate(), request.getTeamNum(), request.getTitle(), request.getPurpose(), request.getContribution());
         portfolio.setDetail(detail);
         return detail.getId();
     }

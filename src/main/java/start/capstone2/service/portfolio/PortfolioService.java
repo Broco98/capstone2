@@ -6,8 +6,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import start.capstone2.domain.Image.Image;
 import start.capstone2.domain.Image.ImageStore;
+import start.capstone2.domain.Image.repository.ImageRepository;
 import start.capstone2.domain.portfolio.Portfolio;
 import start.capstone2.domain.portfolio.PortfolioApi;
+import start.capstone2.domain.portfolio.PortfolioDetail;
 import start.capstone2.domain.portfolio.repository.PortfolioDetailRepository;
 import start.capstone2.domain.portfolio.repository.PortfolioRepository;
 import start.capstone2.domain.user.User;
@@ -31,7 +33,9 @@ public class PortfolioService {
     @Transactional
     public Long createPortfolio(Long userId) {
         User user = userRepository.findById(userId).orElseThrow();
-        Portfolio portfolio = Portfolio.createPortfolio(user);
+        Image image = Image.createEmptyImage();
+        PortfolioDetail detail = PortfolioDetail.createEmptyDetail();
+        Portfolio portfolio = Portfolio.createPortfolio(user, image, detail);
         portfolioRepository.save(portfolio);
         return portfolio.getId();
     }

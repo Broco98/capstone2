@@ -14,10 +14,10 @@ public class PortfolioDetailController {
 
     private final PortfolioDetailService detailService;
 
-    @PostMapping("/{portfolioId}/detail")
-    public Long createPortfolioDetail(Long userId, @PathVariable Long portfolioId, PortfolioDetailRequest request) {
-        return detailService.createPortfolioDetail(userId, portfolioId, request);
-    }
+//    @PostMapping("/{portfolioId}/detail")
+//    public Long createPortfolioDetail(Long userId, @PathVariable Long portfolioId, PortfolioDetailRequest request) {
+//        return detailService.createPortfolioDetail(userId, portfolioId, request);
+//    }
 
     @PutMapping("/{portfolioId}/detail")
     public void updatePortfolioDetail(Long userId, @PathVariable Long portfolioId, PortfolioDetailRequest request) {
@@ -25,7 +25,7 @@ public class PortfolioDetailController {
     }
 
     @GetMapping("/{portfolioId}/detail")
-    public void findPortfolioDetail(Long userId, @PathVariable Long portfolioId) {
-        detailService.findPortfolioDetail(userId, portfolioId);
+    public ResponseResult<PortfolioDetailResponse> findPortfolioDetail(Long userId, @PathVariable Long portfolioId) {
+        return new ResponseResult<>(detailService.findPortfolioDetail(userId, portfolioId));
     }
 }
