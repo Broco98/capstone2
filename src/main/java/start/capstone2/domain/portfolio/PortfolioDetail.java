@@ -37,7 +37,6 @@ public class PortfolioDetail extends BaseEntity {
 
     public static PortfolioDetail createPortfolioDetail(LocalDate startDate, LocalDate endDate, Integer teamNum, String title, String purpose, Integer contribution) {
         PortfolioDetail detail = new PortfolioDetail();
-        detail.user = user;
         detail.startDate = startDate;
         detail.endDate = endDate;
         detail.teamNum = teamNum;
