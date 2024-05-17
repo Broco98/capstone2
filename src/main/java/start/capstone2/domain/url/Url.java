@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import start.capstone2.domain.portfolio.PortfolioUrl;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -15,12 +19,23 @@ public class Url {
     @Column(name = "url_id")
     private Long id;
 
-    private String url;
+    @OneToMany(mappedBy = "url", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<PortfolioUrl> portfolioUrls = new ArrayList<>();
 
+    private String url;
 
     public static Url createUrl(String url) {
         Url myUrl = new Url();
         myUrl.url = url;
         return myUrl;
     }
+
+    public void addPortfolioUrl(PortfolioUrl portfolioUrl) {
+        portfolioUrls.add(portfolioUrl);
+    }
+
+    public void removePortfolioUrl(PortfolioUrl portfolioUrl){
+        portfolioUrls.remove(portfolioUrl);
+    }
+
 }
