@@ -4,6 +4,7 @@ file:
 image:
   dir: C:\Users\qkrgy\Desktop\capstone2\src\main\resources\image\
 
+
 spring:
   datasource:
 #    driver-class-name: com.mysql.cj.jdbc.Driver
@@ -21,3 +22,10 @@ spring:
       hibernate:
         format_sql: true
         default_batch_fetch_size: 1000
+  
+  # application-aws 활성화
+  profiles:
+    active: aws
+
+logging.level.org:
+      springframework=DEBUG:
