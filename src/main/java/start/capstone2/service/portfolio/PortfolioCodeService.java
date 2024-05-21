@@ -32,7 +32,7 @@ public class PortfolioCodeService {
         PortfolioCode code = PortfolioCode.createPortfolioCode(
                 portfolio,
                 request.getCode(),
-                request.getExplain()
+                request.getDescription()
         );
 
         portfolio.addCode(code);
@@ -44,7 +44,7 @@ public class PortfolioCodeService {
         PortfolioCode code = codeRepository.findById(codeId).orElseThrow();
         code.updatePortfolioCode(
                 request.getCode(),
-                request.getExplain()
+                request.getDescription()
         );
     }
 
@@ -59,7 +59,7 @@ public class PortfolioCodeService {
         List<PortfolioCode> codes = codeRepository.findAllByPortfolioId(portfolioId);
         List<PortfolioCodeResponse> results = new ArrayList<>();
         for (PortfolioCode code : codes) {
-            results.add(new PortfolioCodeResponse(code.getId(), code.getCode(), code.getExplain()));
+            results.add(new PortfolioCodeResponse(code.getId(), code.getCode(), code.getDescription()));
         }
         return results;
     }

@@ -23,25 +23,25 @@ public class PortfolioApi extends BaseEntity {
 
     private Method method;
     private String url;
-    private String explain;
+    private String description;
     private String response;
 
 
-    public static PortfolioApi createPortfolioApi(Portfolio portfolio, Method method, String url, String explain, String response) {
+    public static PortfolioApi createPortfolioApi(Portfolio portfolio, Method method, String url, String description, String response) {
         PortfolioApi portfolioApi = new PortfolioApi();
         portfolioApi.portfolio = portfolio;
         portfolioApi.method = method;
         portfolioApi.url = url;
-        portfolioApi.explain = explain;
+        portfolioApi.description = description;
         portfolioApi.response = response;
 
         return portfolioApi;
     }
 
-    public void updatePortfolioApi(Method method, String url, String explain, String response) {
+    public void updatePortfolioApi(Method method, String url, String description, String response) {
         this.method = method;
         this.url = url;
-        this.explain = explain;
+        this.description = description;
         this.response = response;
     }
 }

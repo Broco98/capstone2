@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import start.capstone2.domain.Image.Image;
 import start.capstone2.domain.Image.ImageStore;
+import start.capstone2.domain.Image.S3Store;
 import start.capstone2.domain.Image.repository.ImageRepository;
 import start.capstone2.domain.portfolio.Portfolio;
 import start.capstone2.domain.portfolio.PortfolioApi;
@@ -28,7 +29,7 @@ public class PortfolioService {
 
     private final UserRepository userRepository;
     private final PortfolioRepository portfolioRepository;
-    private final ImageStore imageStore;
+    private final S3Store imageStore;
 
     @Transactional
     public Long createPortfolio(Long userId) {
@@ -45,6 +46,7 @@ public class PortfolioService {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
 
         Image newImage = imageStore.saveImage(request.getImage());
+        imageStore.removeImage(portfolio.getCardImage().getSavedName());
 
         portfolio.updatePortfolio(newImage, request.getStatus());
     }
@@ -52,7 +54,7 @@ public class PortfolioService {
     @Transactional
     public void deletePortfolio(Long userId, Long portfolioId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
-        portfolio.deletePortfolio();
+        imageStore.removeImage(portfolio.getCardImage().getSavedName());
         portfolioRepository.delete(portfolio);
     }
 

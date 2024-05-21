@@ -27,21 +27,21 @@ public class PortfolioSchedule extends BaseEntity {
     private LocalDate endDate;
 
     @Lob
-    private String explain;
+    private String description;
 
 
-    public static PortfolioSchedule createPortfolioSchedule(Portfolio portfolio, LocalDate startDate, LocalDate endDate, String explain) {
+    public static PortfolioSchedule createPortfolioSchedule(Portfolio portfolio, LocalDate startDate, LocalDate endDate, String description) {
         PortfolioSchedule schedule = new PortfolioSchedule();
         schedule.portfolio = portfolio;
         schedule.startDate = startDate;
         schedule.endDate = endDate;
-        schedule.explain = explain;
+        schedule.description = description;
         return schedule;
     }
 
-    public void updatePortfolioSchedule(LocalDate startDate, LocalDate endDate, String explain) {
+    public void updatePortfolioSchedule(LocalDate startDate, LocalDate endDate, String description) {
         this.startDate = startDate;
         this.endDate = endDate;
-        this.explain = explain;
+        this.description = description;
     }
 }

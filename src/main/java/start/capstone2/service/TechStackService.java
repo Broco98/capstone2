@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import start.capstone2.domain.Image.Image;
 import start.capstone2.domain.Image.ImageStore;
+import start.capstone2.domain.Image.S3Store;
 import start.capstone2.domain.portfolio.PortfolioTechStack;
 import start.capstone2.domain.portfolio.repository.PortfolioTechStackRepository;
 import start.capstone2.domain.techstack.TechStack;
@@ -21,7 +22,7 @@ import java.util.List;
 public class TechStackService {
 
     private final TechStackRepository techStackRepository;
-    private final ImageStore imageStore;
+    private final S3Store imageStore;
 
     @Transactional
     public Long createTechStack(TechStackRequest request) {

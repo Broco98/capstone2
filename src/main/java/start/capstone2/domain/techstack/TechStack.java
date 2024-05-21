@@ -31,7 +31,4 @@ public class TechStack {
         return techStack;
     }
 
-    public void deleteTechStack() {
-        image.remove();
-    }
 }

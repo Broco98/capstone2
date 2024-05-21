@@ -10,6 +10,6 @@ public class PortfolioApiResponse {
     private Long id;
     private Method method;
     private String url;
-    private String explain;
+    private String description;
     private String response;
 }

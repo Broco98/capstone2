@@ -2,15 +2,16 @@ package start.capstone2.domain.Image;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
+import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.UUID;
 
 @Component
@@ -26,7 +27,7 @@ public class S3Store {
         return "image/" + fileName;
     }
 
-    public String saveImage(MultipartFile multipartFile) {
+    public Image saveImage(MultipartFile multipartFile) {
 
         String originalName = multipartFile.getOriginalFilename();
         String saveName = createSaveFileName(originalName);
@@ -42,7 +43,7 @@ public class S3Store {
             throw new IllegalStateException("파일이 존재하지 않습니다");
         }
 
-        return saveName;
+        return Image.createImage(originalName, saveName);
     }
 
     private String createSaveFileName(String originalName) {
@@ -63,4 +64,8 @@ public class S3Store {
         amazonS3.deleteObject(request);
     }
 
+    public InputStream findImageBytes(String fileName) {
+        GetObjectRequest request = new GetObjectRequest(bucket, getFullName(fileName));
+        return amazonS3.getObject(request).getObjectContent();
+    }
 }

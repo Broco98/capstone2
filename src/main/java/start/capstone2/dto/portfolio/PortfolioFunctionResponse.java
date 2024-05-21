@@ -8,6 +8,5 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 public class PortfolioFunctionResponse {
     private Long id;
-    private String imageUrl;
-    private String explain;
+    private String description;
 }

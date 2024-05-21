@@ -3,18 +3,10 @@ package start.capstone2.service.portfolio;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import start.capstone2.domain.Image.Image;
-import start.capstone2.domain.Image.ImageStore;
 import start.capstone2.domain.portfolio.Portfolio;
-import start.capstone2.domain.portfolio.PortfolioDesign;
 import start.capstone2.domain.portfolio.PortfolioDetail;
-import start.capstone2.domain.portfolio.repository.PortfolioDesignRepository;
-import start.capstone2.domain.portfolio.repository.PortfolioDetailRepository;
 import start.capstone2.domain.portfolio.repository.PortfolioRepository;
-import start.capstone2.domain.user.User;
 import start.capstone2.domain.user.repository.UserRepository;
-import start.capstone2.dto.portfolio.PortfolioDesignRequest;
-import start.capstone2.dto.portfolio.PortfolioDesignResponse;
 import start.capstone2.dto.portfolio.PortfolioDetailRequest;
 import start.capstone2.dto.portfolio.PortfolioDetailResponse;
 

@@ -35,7 +35,7 @@ public class PortfolioScheduleService {
                 portfolio,
                 request.getStartDate(),
                 request.getEndDate(),
-                request.getExplain()
+                request.getDescription()
         );
 
         portfolio.addSchedule(schedule);
@@ -48,7 +48,7 @@ public class PortfolioScheduleService {
         schedule.updatePortfolioSchedule(
                 request.getStartDate(),
                 request.getEndDate(),
-                request.getExplain()
+                request.getDescription()
         );
     }
 
@@ -64,7 +64,7 @@ public class PortfolioScheduleService {
         List<PortfolioSchedule> schedules = scheduleRepository.findAllByPortfolioId(portfolioId);
         List<PortfolioScheduleResponse> results = new ArrayList<>();
         for (PortfolioSchedule schedule : schedules) {
-            results.add(new PortfolioScheduleResponse(schedule.getId(), schedule.getStartDate(), schedule.getEndDate(), schedule.getExplain()));
+            results.add(new PortfolioScheduleResponse(schedule.getId(), schedule.getStartDate(), schedule.getEndDate(), schedule.getDescription()));
         }
         return results;
     }

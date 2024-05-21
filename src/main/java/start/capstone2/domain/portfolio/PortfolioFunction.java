@@ -22,28 +22,19 @@ public class PortfolioFunction extends BaseEntity {
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "image_id")
-    private Image image;
-
     @Lob
-    private String explain;
+    private String description;
 
 
-    public static PortfolioFunction createPortfolioFunction(Portfolio portfolio, Image image, String explain) {
+    public static PortfolioFunction createPortfolioFunction(Portfolio portfolio, String description) {
         PortfolioFunction function = new PortfolioFunction();
         function.portfolio = portfolio;
-        function.image = image;
-        function.explain = explain;
+        function.description = description;
         return function;
     }
 
-    public void updatePortfolioFunction(Image image, String explain) {
-        this.image = image;
-        this.explain = explain;
+    public void updatePortfolioFunction(String description) {
+        this.description = description;
     }
 
-    public void deletePortfolioFunction() {
-        image.remove();
-    }
 }

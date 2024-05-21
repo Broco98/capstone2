@@ -40,6 +40,7 @@ public class PortfolioTechStackService {
     public void deletePortfolioTechStack(Long userId, Long portfolioId, Long techStackId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
         PortfolioTechStack techStack = portfolioTechStackRepository.findById(techStackId).orElseThrow();
+
         portfolio.removeTechStack(techStack);
     }
 

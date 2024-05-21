@@ -40,7 +40,7 @@ public class PortfolioDesignService {
         PortfolioDesign design = PortfolioDesign.createPortfolioDesign(
                 portfolio,
                 image,
-                request.getExplain()
+                request.getDescription()
         );
 
         portfolio.addDesign(design);
@@ -56,7 +56,7 @@ public class PortfolioDesignService {
         ImageStore.removeImage(oldImage);
 
         Image newImage = imageStore.saveImage(request.getImage());
-        design.updatePortfolioDesign(newImage, request.getExplain());
+        design.updatePortfolioDesign(newImage, request.getDescription());
     }
     
     @Transactional
@@ -70,7 +70,7 @@ public class PortfolioDesignService {
         List<PortfolioDesign> designs = designRepository.findAllByPortfolioId(portfolioId);
         List<PortfolioDesignResponse> results = new ArrayList<>();
         for (PortfolioDesign design : designs) {
-            results.add(new PortfolioDesignResponse(design.getId(), design.getImage().getSavedName(), design.getExplain()));
+            results.add(new PortfolioDesignResponse(design.getId(), design.getImage().getSavedName(), design.getDescription()));
         }
         return results;
     }

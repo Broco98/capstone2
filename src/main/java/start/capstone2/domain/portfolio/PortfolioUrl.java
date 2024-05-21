@@ -32,8 +32,4 @@ public class PortfolioUrl extends BaseEntity {
         portfolioUrl.url = url;
         return portfolioUrl;
     }
-
-    public void remove() {
-        // TODO: 삭제시, url에 아무것도 없다면 -> url도 삭제해야 함
-    }
 }

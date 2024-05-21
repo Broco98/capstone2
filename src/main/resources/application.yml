@@ -1,20 +1,10 @@
 file:
   dir: C:\Users\qkrgy\Desktop\capstone2\src\main\resources\file\
-
 image:
   dir: C:\Users\qkrgy\Desktop\capstone2\src\main\resources\image\
 
 
 spring:
-  datasource:
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-    driver-class-name: org.h2.Driver
-#    url: jdbc:mysql://awslearner.ctsq4ue24ukb.ap-southeast-2.rds.amazonaws.com:3306/awslearner?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    url: jdbc:h2:tcp://localhost/~/capstone2
-    username: sa
-    password:
-
-
   jpa:
     hibernate:
       ddl-auto: create-drop
@@ -25,7 +15,8 @@ spring:
   
   # application-aws 활성화
   profiles:
-    active: aws
+      active: aws, db
 
-logging.level.org:
-      springframework=DEBUG:
+logging.level.org.hibernate:
+  SQL: DEBUG
+  type.descriptor.sql.BasicBinder: TRACE

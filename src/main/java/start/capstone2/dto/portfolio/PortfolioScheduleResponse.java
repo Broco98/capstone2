@@ -11,5 +11,5 @@ public class PortfolioScheduleResponse {
     private Long id;
     private LocalDate startDate;
     private LocalDate endDate;
-    private String explain;
+    private String description;
 }

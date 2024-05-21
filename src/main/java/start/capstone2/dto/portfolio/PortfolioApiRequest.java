@@ -9,6 +9,6 @@ import start.capstone2.domain.portfolio.Method;
 public class PortfolioApiRequest {
     private Method method;
     private String url;
-    private String explain;
+    private String description;
     private String response;
 }

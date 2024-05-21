@@ -22,7 +22,7 @@ public class PortfolioTechStack extends BaseEntity {
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "techstack_id")
     private TechStack techStack;
 

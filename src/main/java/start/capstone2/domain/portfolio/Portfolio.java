@@ -77,15 +77,8 @@ public class Portfolio extends BaseEntity{
     }
 
     public void updatePortfolio(Image cardImage, ShareStatus status) {
-        this.cardImage.remove();
         this.cardImage = cardImage;
         this.status = status;
-    }
-
-
-    public void deletePortfolio() {
-        // TODO: 이미지 삭제 필요함
-        cardImage.remove();
     }
 
     public void addPost(PortfolioPost post) {

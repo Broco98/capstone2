@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
-@Component
+//@Component
 public class ImageStore {
 
     // 저장 위치

@@ -8,5 +8,5 @@ import lombok.Data;
 public class PortfolioCodeResponse {
     private Long id;
     private String code;
-    private String explain;
+    private String description;
 }

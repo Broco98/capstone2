@@ -27,23 +27,19 @@ public class PortfolioDesign extends BaseEntity {
     private Image image;
 
     @Lob
-    private String explain;
+    private String description;
 
 
-    public static PortfolioDesign createPortfolioDesign(Portfolio portfolio, Image image, String explain) {
+    public static PortfolioDesign createPortfolioDesign(Portfolio portfolio, Image image, String description) {
         PortfolioDesign design = new PortfolioDesign();
         design.portfolio = portfolio;
         design.image = image;
-        design.explain = explain;
+        design.description = description;
         return design;
     }
 
-    public void updatePortfolioDesign(Image image, String explain) {
+    public void updatePortfolioDesign(Image image, String description) {
         this.image = image;
-        this.explain = explain;
-    }
-
-    public void deletePortfolioDesign() {
-        image.remove();
+        this.description = description;
     }
 }

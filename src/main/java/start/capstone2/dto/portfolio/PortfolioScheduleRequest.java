@@ -11,5 +11,5 @@ import java.time.LocalDate;
 public class PortfolioScheduleRequest {
     private LocalDate startDate;
     private LocalDate endDate;
-    private String explain;
+    private String description;
 }

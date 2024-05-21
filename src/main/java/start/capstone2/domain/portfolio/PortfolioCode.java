@@ -26,20 +26,20 @@ public class PortfolioCode extends BaseEntity {
     private String code;
 
     @Lob
-    private String explain;
+    private String description;
 
 
-    public static PortfolioCode createPortfolioCode(Portfolio portfolio, String code, String explain) {
+    public static PortfolioCode createPortfolioCode(Portfolio portfolio, String code, String description) {
         PortfolioCode portfolioCode = new PortfolioCode();
         portfolioCode.portfolio = portfolio;
         portfolioCode.code = code;
-        portfolioCode.explain = explain;
+        portfolioCode.description = description;
 
         return portfolioCode;
     }
 
-    public void updatePortfolioCode(String code, String explain) {
+    public void updatePortfolioCode(String code, String description) {
         this.code = code;
-        this.explain = explain;
+        this.description = description;
     }
 }

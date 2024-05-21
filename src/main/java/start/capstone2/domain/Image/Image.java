@@ -34,8 +34,4 @@ public class Image {
 
         return image;
     }
-
-    public void remove() {
-        ImageStore.removeImage(this);
-    }
 }

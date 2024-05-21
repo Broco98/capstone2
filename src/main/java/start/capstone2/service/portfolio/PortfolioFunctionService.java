@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import start.capstone2.domain.Image.Image;
 import start.capstone2.domain.Image.ImageStore;
+import start.capstone2.domain.Image.S3Store;
 import start.capstone2.domain.portfolio.Portfolio;
 import start.capstone2.domain.portfolio.PortfolioApi;
 import start.capstone2.domain.portfolio.PortfolioFeedback;
@@ -28,19 +29,15 @@ public class PortfolioFunctionService {
     private final UserRepository userRepository;
     private final PortfolioRepository portfolioRepository;
     private final PortfolioFunctionRepository functionRepository;
-    private final ImageStore imageStore; // 이미지 필요한지 아직 미정
 
     @Transactional
     public Long createPortfolioFunction(Long userId, Long portfolioId, PortfolioFunctionRequest request) {
         User user = userRepository.findById(userId).orElseThrow();
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
 
-        Image image = imageStore.saveImage(request.getImage());
-
         PortfolioFunction function = PortfolioFunction.createPortfolioFunction(
                 portfolio,
-                image,
-                request.getExplain()
+                request.getDescription()
         );
 
         portfolio.addFunction(function);
@@ -51,12 +48,7 @@ public class PortfolioFunctionService {
     public void updatePortfolioFunction(Long userId, Long portfolioId, Long functionId, PortfolioFunctionRequest request) {
         PortfolioFunction function = functionRepository.findByIdWithImage(portfolioId);
 
-        // 이미지 삭제
-        Image oldImage = function.getImage();
-        ImageStore.removeImage(oldImage);
-
-        Image newImage = imageStore.saveImage(request.getImage());
-        function.updatePortfolioFunction(newImage, request.getExplain());
+        function.updatePortfolioFunction(request.getDescription());
     }
 
     @Transactional
@@ -70,7 +62,7 @@ public class PortfolioFunctionService {
         List<PortfolioFunction> functions = functionRepository.findAllByPortfolioId(portfolioId);
         List<PortfolioFunctionResponse> results = new ArrayList<>();
         for (PortfolioFunction function : functions) {
-            results.add(new PortfolioFunctionResponse(function.getId(), function.getImage().getSavedName(), function.getExplain()));
+            results.add(new PortfolioFunctionResponse(function.getId(), function.getDescription()));
         }
         return results;
     }

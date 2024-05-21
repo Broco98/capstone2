@@ -12,7 +12,6 @@ import start.capstone2.domain.url.repository.UrlRepository;
 import start.capstone2.domain.user.User;
 import start.capstone2.domain.user.repository.UserRepository;
 import start.capstone2.dto.UrlRequest;
-import start.capstone2.dto.UserRequest;
 import start.capstone2.dto.portfolio.PortfolioResponse;
 
 import java.util.ArrayList;

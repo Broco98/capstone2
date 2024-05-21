@@ -33,7 +33,7 @@ public class PortfolioApiService {
                 portfolio,
                 request.getMethod(),
                 request.getUrl(),
-                request.getExplain(),
+                request.getDescription(),
                 request.getResponse()
         );
 
@@ -47,7 +47,7 @@ public class PortfolioApiService {
         api.updatePortfolioApi(
                 request.getMethod(),
                 request.getUrl(),
-                request.getExplain(),
+                request.getDescription(),
                 request.getResponse()
         );
     }
@@ -64,7 +64,7 @@ public class PortfolioApiService {
         List<PortfolioApi> apis = apiRepository.findAllByPortfolioId(portfolioId);
         List<PortfolioApiResponse> results = new ArrayList<>();
         for (PortfolioApi api : apis) {
-            results.add(new PortfolioApiResponse(api.getId(), api.getMethod(), api.getUrl(), api.getExplain(), api.getResponse()));
+            results.add(new PortfolioApiResponse(api.getId(), api.getMethod(), api.getUrl(), api.getDescription(), api.getResponse()));
         }
         return results;
     }

@@ -10,5 +10,5 @@ import start.capstone2.domain.Image.Image;
 @AllArgsConstructor
 public class PortfolioDesignRequest {
     private MultipartFile image;
-    private String explain;
+    private String description;
 }

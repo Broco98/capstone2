@@ -7,5 +7,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class PortfolioCodeRequest {
     private String code;
-    private String explain;
+    private String description;
 }
