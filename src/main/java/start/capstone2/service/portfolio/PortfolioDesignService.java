@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import start.capstone2.domain.Image.Image;
 import start.capstone2.domain.Image.ImageStore;
+import start.capstone2.domain.Image.S3Store;
 import start.capstone2.domain.portfolio.Portfolio;
 import start.capstone2.domain.portfolio.PortfolioApi;
 import start.capstone2.domain.portfolio.PortfolioDesign;
@@ -28,7 +29,7 @@ public class PortfolioDesignService {
     private final UserRepository userRepository;
     private final PortfolioRepository portfolioRepository;
     private final PortfolioDesignRepository designRepository;
-    private final ImageStore imageStore;
+    private final S3Store imageStore;
 
     @Transactional
     public Long createPortfolioDesign(Long userId, Long portfolioId, PortfolioDesignRequest request) {
