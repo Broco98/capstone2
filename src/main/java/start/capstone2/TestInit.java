@@ -12,12 +12,12 @@ public class TestInit {
 
     private final UserService userService;
 
-    @PostConstruct
-    public void init() {
-        userService.createUser(new UserRequest("test1", "1111", "test1"));
-        userService.createUser(new UserRequest("test2", "2222", "test2"));
-        userService.createUser(new UserRequest("test3", "3333", "test3"));
-    }
+//    @PostConstruct
+//    public void init() {
+////        userService.createUser(new UserRequest("test1", "1111", "test1"));
+////        userService.createUser(new UserRequest("test2", "2222", "test2"));
+////        userService.createUser(new UserRequest("test3", "3333", "test3"));
+//    }
 
 
 
