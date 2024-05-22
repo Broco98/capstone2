@@ -65,6 +65,7 @@ public class Portfolio extends BaseEntity{
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PortfolioTechStack> techStacks = new ArrayList<>();
 
+    @Enumerated(EnumType.STRING)
     private ShareStatus status;
 
     public static Portfolio createPortfolio(User user, Image cardImage, PortfolioDetail detail) {

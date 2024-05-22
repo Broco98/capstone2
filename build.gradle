@@ -4,6 +4,10 @@ plugins {
 	id 'io.spring.dependency-management' version '1.1.4'
 }
 
+ext {
+	springCloudVersion = "2023.0.1"
+}
+
 
 group = 'start'
 version = '0.0.1-SNAPSHOT'
@@ -27,15 +31,39 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework:spring-tx'
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
-	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0' // SwaggerUI
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0' // SwaggerUI
 	implementation 'mysql:mysql-connector-java:8.0.32' // mysql
-	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE' // aws
+
+	// aws
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+//	implementation platform("io.awspring.cloud:spring-cloud-aws-dependencies:3.1.1")
+//	implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3'
+
+	// Spring Boot Starter for security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.security:spring-security-test'
+	implementation 'org.jetbrains:annotations:24.0.0'
+
+	//jwt
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-orgjson:0.11.5'
+
 	compileOnly 'org.projectlombok:lombok'
-//	runtimeOnly 'com.h2database:h2'
-	runtimeOnly 'mysql:mysql-connector-java'
+	runtimeOnly 'com.h2database:h2'
+//	runtimeOnly 'mysql:mysql-connector-java'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion"
+	}
 }
 
 

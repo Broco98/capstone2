@@ -1,22 +1,5 @@
-file:
-  dir: C:\Users\qkrgy\Desktop\capstone2\src\main\resources\file\
-image:
-  dir: C:\Users\qkrgy\Desktop\capstone2\src\main\resources\image\
-
-
 spring:
-  jpa:
-#    hibernate:
-#      ddl-auto: create-drop
-    properties:
-      hibernate:
-        format_sql: true
-        default_batch_fetch_size: 1000
-  
-  # application-aws 활성화
+  # application-xxx 활성화
   profiles:
-      active: aws, db
-
-logging.level.org.hibernate:
-  SQL: DEBUG
-  type.descriptor.sql.BasicBinder: TRACE
+    active: dev, aws
+#      active: prod, aws
