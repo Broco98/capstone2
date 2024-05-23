@@ -24,7 +24,7 @@ public class PortfolioDetailService {
     @Transactional
     public Long createPortfolioDetail(Long userId, Long portfolioId, PortfolioDetailRequest request) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
-        PortfolioDetail detail = PortfolioDetail.createPortfolioDetail(request.getStartDate(), request.getEndDate(), request.getTeamNum(), request.getTitle(), request.getPurpose(), request.getContribution());
+        PortfolioDetail detail = PortfolioDetail.createPortfolioDetail(request.getStartDate(), request.getEndDate(), request.getTeamNum(), request.getTitle(), request.getDescription(), request.getContribution());
         portfolio.setDetail(detail);
         return detail.getId();
     }
@@ -37,7 +37,7 @@ public class PortfolioDetailService {
                 request.getEndDate(),
                 request.getTeamNum(),
                 request.getTitle(),
-                request.getPurpose(),
+                request.getDescription(),
                 request.getContribution()
         );
     }
@@ -51,7 +51,7 @@ public class PortfolioDetailService {
                 detail.getStartDate(),
                 detail.getEndDate(),
                 detail.getContribution(),
-                detail.getPurpose(),
+                detail.getDescription(),
                 detail.getTeamNum()
         );
     }

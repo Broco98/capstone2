@@ -5,12 +5,11 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import start.capstone2.domain.BaseEntity;
-import start.capstone2.domain.user.User;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PortfolioPost extends BaseEntity {
+public class PortfolioInterview extends BaseEntity {
 
     @Id
     @GeneratedValue
@@ -21,23 +20,24 @@ public class PortfolioPost extends BaseEntity {
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
 
-    private String title;
+    @Lob
+    private String question;
 
     @Lob
-    private String content;
+    private String answer;
 
-    public static PortfolioPost createPortfolioPost(Portfolio portfolio,String title, String content) {
-        PortfolioPost post = new PortfolioPost();
+    public static PortfolioInterview createPortfolioInterview(Portfolio portfolio, String question, String answer) {
+        PortfolioInterview post = new PortfolioInterview();
         post.portfolio = portfolio;
-        post.title = title;
-        post.content = content;
+        post.question = question;
+        post.answer = answer;
 
         return post;
     }
 
-    public void updatePortfolioPost(String title, String content) {
-        this.title = title;
-        this.content = content;
+    public void updatePortfolioInterview(String question, String answer) {
+        this.question = question;
+        this.answer = answer;
     }
 
 }

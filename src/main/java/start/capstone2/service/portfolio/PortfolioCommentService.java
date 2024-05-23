@@ -23,7 +23,8 @@ public class PortfolioCommentService {
     private final UserRepository userRepository;
     private final PortfolioRepository portfolioRepository;
     private final PortfolioCommentRepository commentRepository;
-
+    
+    // TODO user 정보 필요
     @Transactional
     public Long createPortfolioComment(Long userId, Long portfolioId, PortfolioCommentRequest request) {
         User user = userRepository.findById(userId).orElseThrow();
@@ -39,6 +40,7 @@ public class PortfolioCommentService {
         return comment.getId();
     }
 
+    // TODO user 정보 필요
     @Transactional
     public void updatePortfolioComment(Long userId, Long portfolioId, Long commentId, PortfolioCommentRequest request) {
         PortfolioComment comment = commentRepository.findById(commentId).orElseThrow();
@@ -46,6 +48,7 @@ public class PortfolioCommentService {
     }
 
 
+    // TODO user 정보 필요
     @Transactional
     public void deletePortfolioComment(Long userId, Long portfolioId, Long commentId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
@@ -53,6 +56,8 @@ public class PortfolioCommentService {
         portfolio.removeComment(comment);
     }
 
+    // TODO user 정보 필요
+    // 유저의 comments 조회
     public List<PortfolioCommentResponse> findPortfolioComments(Long userId, Long portfolioId) {
         List<PortfolioComment> comments = commentRepository.findAllByPortfolioId(portfolioId);
         List<PortfolioCommentResponse> responses = new ArrayList<>();

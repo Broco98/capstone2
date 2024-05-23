@@ -25,6 +25,7 @@ public class PortfolioCodeService {
     private final PortfolioRepository portfolioRepository;
     private final PortfolioCodeRepository codeRepository;
 
+    // TODO user 정보 필요
     @Transactional
     public Long createPortfolioCode(Long userId, Long portfolioId, PortfolioCodeRequest request) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
@@ -39,6 +40,7 @@ public class PortfolioCodeService {
         return code.getId();
     }
 
+    // TODO user 정보 필요
     @Transactional
     public void updatePortfolioCode(Long userId, Long portfolioId, Long codeId, PortfolioCodeRequest request) {
         PortfolioCode code = codeRepository.findById(codeId).orElseThrow();
@@ -48,6 +50,7 @@ public class PortfolioCodeService {
         );
     }
 
+    // TODO user 정보 필요
     @Transactional
     public void deletePortfolioCode(Long userId, Long portfolioId, Long codeId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
@@ -55,6 +58,8 @@ public class PortfolioCodeService {
         portfolio.removeCode(code);
     }
 
+    // TODO user 정보 필요
+    // 포트폴리오 정보 조회
     public List<PortfolioCodeResponse> findPortfolioCodes(Long userId, Long portfolioId) {
         List<PortfolioCode> codes = codeRepository.findAllByPortfolioId(portfolioId);
         List<PortfolioCodeResponse> results = new ArrayList<>();

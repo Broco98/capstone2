@@ -10,10 +10,5 @@ import java.util.List;
 
 public interface PortfolioFunctionRepository extends JpaRepository<PortfolioFunction, Long> {
 
-    @Query("select pf from PortfolioFunction pf where pf.id =: id")
-    @EntityGraph(attributePaths = {"Image"})
-    PortfolioFunction findByIdWithImage(Long id);
-
-    @EntityGraph(attributePaths = {"Image"})
     List<PortfolioFunction> findAllByPortfolioId(Long portfolioId);
 }

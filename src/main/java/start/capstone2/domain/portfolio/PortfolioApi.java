@@ -21,11 +21,11 @@ public class PortfolioApi extends BaseEntity {
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
 
+    @Enumerated(EnumType.STRING)
     private Method method;
     private String url;
     private String description;
     private String response;
-
 
     public static PortfolioApi createPortfolioApi(Portfolio portfolio, Method method, String url, String description, String response) {
         PortfolioApi portfolioApi = new PortfolioApi();

@@ -4,11 +4,12 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import start.capstone2.domain.Image.Image;
 
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TechStack {
 
     @Id
@@ -17,8 +18,9 @@ public class TechStack {
     private Long id;
 
     private String name;
-
-    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    
+    @Setter
+    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "image_id")
     private Image image;
 

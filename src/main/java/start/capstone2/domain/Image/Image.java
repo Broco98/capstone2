@@ -20,16 +20,16 @@ public class Image {
     @Column(name = "image_id")
     private Long id;
 
-    private String originalName;
+    private String originName;
     private String savedName;
 
     public static Image createEmptyImage() {
         return new Image();
     }
 
-    public static Image createImage(String originalName, String savedName) {
+    public static Image createImage(String originName, String savedName) {
         Image image = new Image();
-        image.originalName = originalName;
+        image.originName = originName;
         image.savedName = savedName;
 
         return image;

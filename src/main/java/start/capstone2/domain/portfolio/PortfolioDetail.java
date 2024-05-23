@@ -27,7 +27,7 @@ public class PortfolioDetail extends BaseEntity {
     private LocalDate endDate;
     private Integer teamNum;
     private String title;
-    private String purpose;
+    private String description;
     private Integer contribution;
 
 
@@ -35,20 +35,20 @@ public class PortfolioDetail extends BaseEntity {
         return new PortfolioDetail();
     }
 
-    public static PortfolioDetail createPortfolioDetail(LocalDate startDate, LocalDate endDate, Integer teamNum, String title, String purpose, Integer contribution) {
+    public static PortfolioDetail createPortfolioDetail(LocalDate startDate, LocalDate endDate, Integer teamNum, String title, String description, Integer contribution) {
         PortfolioDetail detail = new PortfolioDetail();
         detail.startDate = startDate;
         detail.endDate = endDate;
         detail.teamNum = teamNum;
         detail.title = title;
-        detail.purpose = purpose;
+        detail.description = description;
         detail.contribution = contribution;
         return detail;
     }
 
-    public void updatePortfolioDetail(LocalDate startDate, LocalDate endDate, Integer teamNum, String title, String purpose, Integer contribution) {
+    public void updatePortfolioDetail(LocalDate startDate, LocalDate endDate, Integer teamNum, String title, String description, Integer contribution) {
         this.startDate = startDate;
-        this.purpose = purpose;
+        this.description = description;
         this.endDate = endDate;
         this.teamNum = teamNum;
         this.title = title;

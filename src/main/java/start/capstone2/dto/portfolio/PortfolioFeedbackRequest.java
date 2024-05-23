@@ -7,6 +7,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class PortfolioFeedbackRequest {
     private String content;
-    private Integer page;
+    private String page;
     private Integer location;
 }

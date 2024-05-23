@@ -22,12 +22,11 @@ import java.util.List;
 public class TechStackService {
 
     private final TechStackRepository techStackRepository;
-    private final S3Store imageStore;
+    private final S3Store store;
 
     @Transactional
     public Long createTechStack(TechStackRequest request) {
-
-        Image image = imageStore.saveImage(request.getImage());
+        Image image = store.saveImage(request.getImage());
         TechStack techStack = TechStack.createTechStack(request.getName(), image);
         techStackRepository.save(techStack);
         return techStack.getId();

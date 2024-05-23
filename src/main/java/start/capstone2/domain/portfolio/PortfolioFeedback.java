@@ -26,10 +26,11 @@ public class PortfolioFeedback extends BaseEntity {
     private Portfolio portfolio;
 
     private String content;
-    private Integer page;
+    // TODO
+    private String page;
     private Integer location;
 
-    public static PortfolioFeedback createPortfolioFeedback(User user, Portfolio portfolio, String content, Integer page, Integer location) {
+    public static PortfolioFeedback createPortfolioFeedback(User user, Portfolio portfolio, String content, String page, Integer location) {
         PortfolioFeedback feedback = new PortfolioFeedback();
         feedback.user = user;
         feedback.portfolio = portfolio;

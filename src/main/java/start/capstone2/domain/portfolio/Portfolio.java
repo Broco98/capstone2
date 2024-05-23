@@ -28,7 +28,7 @@ public class Portfolio extends BaseEntity{
     private Image cardImage;
 
     @Setter
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "portfolio_detail_id")
     private PortfolioDetail detail;
 
@@ -51,16 +51,7 @@ public class Portfolio extends BaseEntity{
     private List<PortfolioFunction> functions = new ArrayList<>();
 
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PortfolioSchedule> schedules = new ArrayList<>();
-
-    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PortfolioPpt> ppts = new ArrayList<>();
-
-    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PortfolioUrl> urls = new ArrayList<>();
-
-    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PortfolioPost> posts = new ArrayList<>();
 
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PortfolioTechStack> techStacks = new ArrayList<>();
@@ -80,14 +71,6 @@ public class Portfolio extends BaseEntity{
     public void updatePortfolio(Image cardImage, ShareStatus status) {
         this.cardImage = cardImage;
         this.status = status;
-    }
-
-    public void addPost(PortfolioPost post) {
-        posts.add(post);
-    }
-
-    public void removePost(PortfolioPost post) {
-        posts.remove(post);
     }
 
     public void addComment(PortfolioComment comment) {
@@ -128,14 +111,6 @@ public class Portfolio extends BaseEntity{
 
     public void removeFunction(PortfolioFunction function) {
         functions.remove(function);
-    }
-
-    public void addSchedule(PortfolioSchedule schedule) {
-        schedules.add(schedule);
-    }
-
-    public void removeSchedule(PortfolioSchedule schedule) {
-        schedules.remove(schedule);
     }
 
     public void addCode(PortfolioCode code) {

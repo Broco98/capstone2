@@ -29,37 +29,31 @@ public class PortfolioDesignService {
     private final UserRepository userRepository;
     private final PortfolioRepository portfolioRepository;
     private final PortfolioDesignRepository designRepository;
-    private final S3Store imageStore;
-
+    
+    // TODO user 정보 필요
     @Transactional
     public Long createPortfolioDesign(Long userId, Long portfolioId, PortfolioDesignRequest request) {
         User user = userRepository.findById(userId).orElseThrow();
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
 
-        Image image = imageStore.saveImage(request.getImage());
-
         PortfolioDesign design = PortfolioDesign.createPortfolioDesign(
                 portfolio,
-                image,
+                request.getDesign(),
                 request.getDescription()
         );
 
         portfolio.addDesign(design);
         return design.getId();
     }
-
+    
+    // TODO user 정보 필요
     @Transactional
     public void updatePortfolioDesign(Long userId, Long portfolioId, Long designId, PortfolioDesignRequest request) {
         PortfolioDesign design = designRepository.findByIdWithImage(portfolioId);
-
-        // 이미지 삭제
-        Image oldImage = design.getImage();
-        ImageStore.removeImage(oldImage);
-
-        Image newImage = imageStore.saveImage(request.getImage());
-        design.updatePortfolioDesign(newImage, request.getDescription());
+        design.updatePortfolioDesign(request.getDesign(), request.getDescription());
     }
     
+    // TODO user 정보 필요
     @Transactional
     public void deletePortfolioDesign(Long userId, Long portfolioId, Long designId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
@@ -67,11 +61,12 @@ public class PortfolioDesignService {
         portfolio.removeDesign(design);
     }
 
+    // TODO user 정보 필요
     public List<PortfolioDesignResponse> findPortfolioDesigns(Long userId, Long portfolioId) {
         List<PortfolioDesign> designs = designRepository.findAllByPortfolioId(portfolioId);
         List<PortfolioDesignResponse> results = new ArrayList<>();
         for (PortfolioDesign design : designs) {
-            results.add(new PortfolioDesignResponse(design.getId(), design.getImage().getSavedName(), design.getDescription()));
+            results.add(new PortfolioDesignResponse(design.getId(), design.getDesign(), design.getDescription()));
         }
         return results;
     }

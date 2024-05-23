@@ -22,24 +22,23 @@ public class PortfolioDesign extends BaseEntity {
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "image_id")
-    private Image image;
+    @Lob
+    private String design;
 
     @Lob
     private String description;
 
 
-    public static PortfolioDesign createPortfolioDesign(Portfolio portfolio, Image image, String description) {
-        PortfolioDesign design = new PortfolioDesign();
-        design.portfolio = portfolio;
-        design.image = image;
-        design.description = description;
-        return design;
+    public static PortfolioDesign createPortfolioDesign(Portfolio portfolio, String design, String description) {
+        PortfolioDesign portfolioDesign = new PortfolioDesign();
+        portfolioDesign.portfolio = portfolio;
+        portfolioDesign.design = design;
+        portfolioDesign.description = description;
+        return portfolioDesign;
     }
 
-    public void updatePortfolioDesign(Image image, String description) {
-        this.image = image;
+    public void updatePortfolioDesign(String design, String description) {
+        this.design = design;
         this.description = description;
     }
 }

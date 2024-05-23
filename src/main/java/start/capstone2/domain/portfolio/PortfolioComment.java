@@ -12,7 +12,7 @@ import start.capstone2.domain.user.User;
 public class PortfolioComment {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "portfolio_comment_id")
     private Long id;
 

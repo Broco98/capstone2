@@ -21,7 +21,6 @@ public class PortfolioCode extends BaseEntity {
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
 
-    @Column(nullable = false)
     @Lob
     private String code;
 

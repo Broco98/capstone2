@@ -17,6 +17,6 @@ public class PortfolioDetailResponse {
     private LocalDate startDate;
     private LocalDate endDate;
     private Integer contribution;
-    private String purpose;
+    private String description;
     private Integer teamNum;
 }

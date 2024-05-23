@@ -8,6 +8,6 @@ import lombok.Data;
 public class PortfolioFeedbackResponse {
     private Long id;
     private String content;
-    private Integer page;
+    private String page;
     private Integer location;
 }

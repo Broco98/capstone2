@@ -1,6 +1,7 @@
 package start.capstone2.service.portfolio;
 
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -58,12 +59,23 @@ public class PortfolioService {
         portfolioRepository.delete(portfolio);
     }
 
-    public List<PortfolioResponse> findUserPortfolios(Long userId) {
-        List<Portfolio> portfolios = portfolioRepository.findAllByUserId(userId);
+    private List<PortfolioResponse> getPortfolioResponses(List<Portfolio> portfolios) {
         List<PortfolioResponse> results = new ArrayList<>();
         for (Portfolio portfolio : portfolios) {
             results.add(new PortfolioResponse(portfolio.getId(), portfolio.getCardImage().getSavedName(), portfolio.getStatus()));
         }
         return results;
+    }
+    
+    // 해당 유저의 모든 포트폴리오 조회
+    public List<PortfolioResponse> findUserPortfolios(Long userId) {
+        List<Portfolio> portfolios = portfolioRepository.findAllByUserId(userId);
+        return getPortfolioResponses(portfolios);
+    }
+    
+    // 공유된 모든 포트폴리오 조회
+    public List<PortfolioResponse> findSharedPortfolios() {
+        List<Portfolio> portfolios = portfolioRepository.findAllBySharedStatus();
+        return getPortfolioResponses(portfolios);
     }
 }
