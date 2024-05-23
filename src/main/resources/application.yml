@@ -1,5 +1,5 @@
 spring:
   # application-xxx 활성화
   profiles:
-    active: dev, aws
+    active: dev, aws, ai
 #      active: prod, aws
