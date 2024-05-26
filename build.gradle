@@ -45,8 +45,8 @@ dependencies {
 //	implementation 'io.awspring.cloud:spring-cloud-aws-starter'
 
 	// Spring Boot Starter for security
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.security:spring-security-test'
+//	implementation 'org.springframework.boot:spring-boot-starter-security'
+//	implementation 'org.springframework.security:spring-security-test'
 	implementation 'org.jetbrains:annotations:24.0.0'
 
 	// jwt

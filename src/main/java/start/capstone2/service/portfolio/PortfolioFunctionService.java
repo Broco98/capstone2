@@ -46,7 +46,7 @@ public class PortfolioFunctionService {
 
     @Transactional
     public void updatePortfolioFunction(Long userId, Long portfolioId, Long functionId, PortfolioFunctionRequest request) {
-        PortfolioFunction function = functionRepository.findByIdWithImage(portfolioId);
+        PortfolioFunction function = functionRepository.findById(functionId).orElseThrow();
 
         function.updatePortfolioFunction(request.getDescription());
     }
