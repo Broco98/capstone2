@@ -10,11 +10,11 @@ import start.capstone2.domain.BaseEntity;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PortfolioApi extends BaseEntity {
+public class PortfolioDatabase extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "portfolio_api_id")
+    @Column(name = "portfolio_datebase_id")
     private Long id;
 
     @NotNull
@@ -22,17 +22,10 @@ public class PortfolioApi extends BaseEntity {
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
 
-    @Enumerated(EnumType.STRING)
-    private Method method;
-    private String url;
+    @Lob
+    private String schema;
+
+    @Lob
     private String description;
-    private String response;
 
-
-    public void updatePortfolioApi(Method method, String url, String description, String response) {
-        this.method = method;
-        this.url = url;
-        this.description = description;
-        this.response = response;
-    }
 }

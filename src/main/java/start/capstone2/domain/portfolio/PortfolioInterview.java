@@ -1,13 +1,14 @@
 package start.capstone2.domain.portfolio;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 import start.capstone2.domain.BaseEntity;
 
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PortfolioInterview extends BaseEntity {
 
@@ -16,6 +17,7 @@ public class PortfolioInterview extends BaseEntity {
     @Column(name = "portfolio_post_id")
     private Long id;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
@@ -26,14 +28,6 @@ public class PortfolioInterview extends BaseEntity {
     @Lob
     private String answer;
 
-    public static PortfolioInterview createPortfolioInterview(Portfolio portfolio, String question, String answer) {
-        PortfolioInterview post = new PortfolioInterview();
-        post.portfolio = portfolio;
-        post.question = question;
-        post.answer = answer;
-
-        return post;
-    }
 
     public void updatePortfolioInterview(String question, String answer) {
         this.question = question;

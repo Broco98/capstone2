@@ -1,15 +1,15 @@
 package start.capstone2.domain.portfolio;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 import start.capstone2.domain.BaseEntity;
 import start.capstone2.domain.Image.Image;
 
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PortfolioFunction extends BaseEntity {
 
@@ -18,6 +18,7 @@ public class PortfolioFunction extends BaseEntity {
     @Column(name = "portfolio_function_id")
     private Long id;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
@@ -25,13 +26,6 @@ public class PortfolioFunction extends BaseEntity {
     @Lob
     private String description;
 
-
-    public static PortfolioFunction createPortfolioFunction(Portfolio portfolio, String description) {
-        PortfolioFunction function = new PortfolioFunction();
-        function.portfolio = portfolio;
-        function.description = description;
-        return function;
-    }
 
     public void updatePortfolioFunction(String description) {
         this.description = description;

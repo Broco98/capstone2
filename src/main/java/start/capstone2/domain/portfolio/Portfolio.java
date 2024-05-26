@@ -1,16 +1,21 @@
 package start.capstone2.domain.portfolio;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import start.capstone2.domain.BaseEntity;
 import start.capstone2.domain.Image.Image;
 import start.capstone2.domain.user.User;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Portfolio extends BaseEntity{
 
@@ -19,18 +24,21 @@ public class Portfolio extends BaseEntity{
     @Column(name = "portfolio_id")
     private Long id;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
+    private String title;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private Integer teamNum;
+    private String description;
+    private Integer contribution;
+
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "image_id")
     private Image cardImage;
-
-    @Setter
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "portfolio_detail_id")
-    private PortfolioDetail detail;
 
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PortfolioDesign> designs = new ArrayList<>();
@@ -56,20 +64,22 @@ public class Portfolio extends BaseEntity{
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PortfolioTechStack> techStacks = new ArrayList<>();
 
+    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PortfolioInterview> interviews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PortfolioDatabase> databases = new ArrayList<>();
+
     @Enumerated(EnumType.STRING)
     private ShareStatus status;
 
-    public static Portfolio createPortfolio(User user, Image cardImage, PortfolioDetail detail) {
-        Portfolio portfolio = new Portfolio();
-        portfolio.user = user;
-        portfolio.cardImage = cardImage;
-        portfolio.detail = detail;
-        detail.setPortfolio(portfolio);
-        portfolio.status = ShareStatus.NONE;
-        return portfolio;
-    }
-
-    public void updatePortfolio(Image cardImage, ShareStatus status) {
+    public void updatePortfolio(String title, LocalDate startDate, LocalDate endDate, Integer teamNum, String description, Integer contribution, Image cardImage, ShareStatus status) {
+        this.title = title;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.teamNum = teamNum;
+        this.description = description;
+        this.contribution = contribution;
         this.cardImage = cardImage;
         this.status = status;
     }
