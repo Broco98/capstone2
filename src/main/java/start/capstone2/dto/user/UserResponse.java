@@ -1,9 +1,8 @@
-package start.capstone2.dto;
+package start.capstone2.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-// TODO
 @Data
 @AllArgsConstructor
 public class UserResponse {

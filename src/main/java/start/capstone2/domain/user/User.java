@@ -1,16 +1,16 @@
 package start.capstone2.domain.user;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import start.capstone2.domain.BaseEntity;
 
 @Table(name = "users")
 @Entity
 @Getter
+//@Builder
+//@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User {
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,15 +22,16 @@ public class User {
     private String password;
     private String name;
 
-//    @Enumerated(EnumType.STRING)
-//    private Role role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
 
     @Builder
     private User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
-//        this.role = Role.USER;
+        this.role = Role.USER;
     }
     public static User of(String username, String email) {
         return User.builder()
@@ -38,9 +39,10 @@ public class User {
                 .email(email)
                 .build();
     }
-//    public String getRoleValue() {
-//        return this.getRole().getValue();
-//    }
+
+    public String getRoleValue() {
+        return this.getRole().getValue();
+    }
 
 
     public static User createUser(String username, String password, String name) {

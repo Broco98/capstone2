@@ -1,6 +1,8 @@
 package start.capstone2.controller.portfolio;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import start.capstone2.dto.ResponseResult;
 import start.capstone2.dto.portfolio.PortfolioRequest;
@@ -10,6 +12,7 @@ import start.capstone2.service.portfolio.PortfolioService;
 import java.util.List;
 
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/portfolio")
@@ -17,8 +20,13 @@ public class PortfolioController {
 
     private final PortfolioService portfolioService;
 
+    // TODO: test중
     @PostMapping("")
-    public Long createPortfolio(Long userId) {
+    public Long createPortfolio(HttpServletRequest request) {
+
+        Long userId = (Long) request.getAttribute("userId");
+        log.info("userId={}", userId);
+
         return portfolioService.createPortfolio(userId);
     }
 
