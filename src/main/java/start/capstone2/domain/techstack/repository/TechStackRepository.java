@@ -12,4 +12,8 @@ public interface TechStackRepository extends JpaRepository<TechStack, Long> {
     @Query("select t from TechStack as t")
     @EntityGraph(attributePaths = {"image"})
     List<TechStack> findAllWithImage();
+
+    @EntityGraph(attributePaths = {"image"})
+    List<TechStack> findAllByIdIn(List<Long> ids);
+
 }

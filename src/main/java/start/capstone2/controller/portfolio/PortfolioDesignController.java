@@ -24,7 +24,7 @@ public class PortfolioDesignController {
 
     @PutMapping("/{portfolioId}/design/{designId}")
     public void updatePortfolioDesign(Long userId, @PathVariable Long portfolioId, @PathVariable Long designId, PortfolioDesignRequest request) {
-        designService.updatePortfolioDesign(userId, portfolioId, designId, request);
+        designService.updatePortfolioDesign(userId, designId, request);
     }
 
     @DeleteMapping("/{portfolioId}/design/{designId}")

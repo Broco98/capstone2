@@ -18,9 +18,9 @@ public class PortfolioController {
     private final PortfolioService portfolioService;
 
     @PostMapping("")
-    public Long createPortfolio(Long userId) {
-        return portfolioService.createPortfolio(userId);
-    }
+//    public Long createPortfolio(Long userId) {
+//        return portfolioService.createPortfolio(userId);
+//    }
 
 
     @GetMapping("")

@@ -6,6 +6,9 @@ import lombok.*;
 import start.capstone2.domain.BaseEntity;
 import start.capstone2.domain.Image.Image;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Builder
@@ -23,12 +26,21 @@ public class PortfolioFunction extends BaseEntity {
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
 
-    @Lob
-    private String description;
+    private String name;
 
+    @OneToMany(mappedBy = "function", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<PortfolioFunctionModule> modules = new ArrayList<>();
 
-    public void updatePortfolioFunction(String description) {
-        this.description = description;
+    public void updatePortfolioFunction(String name) {
+        this.name = name;
+    }
+
+    public void addModule(PortfolioFunctionModule module) {
+        modules.add(module);
+    }
+
+    public void removeModule(PortfolioFunctionModule module) {
+        modules.remove(module);
     }
 
 }

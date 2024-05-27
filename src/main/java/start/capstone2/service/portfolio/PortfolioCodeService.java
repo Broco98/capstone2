@@ -30,11 +30,11 @@ public class PortfolioCodeService {
     public Long createPortfolioCode(Long userId, Long portfolioId, PortfolioCodeRequest request) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
 
-        PortfolioCode code = PortfolioCode.createPortfolioCode(
-                portfolio,
-                request.getCode(),
-                request.getDescription()
-        );
+        PortfolioCode code = PortfolioCode.builder()
+                .portfolio(portfolio)
+                .code(request.getCode())
+                .description(request.getDescription())
+                .build();
 
         portfolio.addCode(code);
         return code.getId();
@@ -59,7 +59,7 @@ public class PortfolioCodeService {
     }
 
     // TODO user 정보 필요
-    // 포트폴리오 정보 조회
+    // 해당 포트폴리오의 모든 코드 조회
     public List<PortfolioCodeResponse> findPortfolioCodes(Long userId, Long portfolioId) {
         List<PortfolioCode> codes = codeRepository.findAllByPortfolioId(portfolioId);
         List<PortfolioCodeResponse> results = new ArrayList<>();

@@ -23,7 +23,7 @@ public class PortfolioFeedbackController {
 
     @PutMapping("/{portfolioId}/feedback/{feedbackId}")
     public void updatePortfolioFeedback(Long userId, @PathVariable Long portfolioId, @PathVariable Long feedbackId, PortfolioFeedbackRequest request) {
-        feedbackService.updatePortfolioFeedback(userId, portfolioId, feedbackId, request);
+        feedbackService.updatePortfolioFeedback(userId, feedbackId, request);
     }
 
     @DeleteMapping("/{portfolioId}/feedback/{feedbackId}")

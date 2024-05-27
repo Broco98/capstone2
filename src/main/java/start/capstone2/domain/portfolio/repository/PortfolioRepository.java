@@ -11,11 +11,7 @@ public interface PortfolioRepository extends JpaRepository<Portfolio, Long> {
 
     @EntityGraph(attributePaths = {"cardImage"})
     List<Portfolio> findAllByUserId(Long userId); // JoinColum 설정해 놨으므로 id로 조회 가능
-
-    @Query("select p from Portfolio p where p.id =:id")
-    @EntityGraph(attributePaths = {"detail"})
-    Portfolio findByIdWithDetail(Long id);
-
+    
     @Query("select p from Portfolio p where p.status =: SHARE")
     @EntityGraph(attributePaths = {"cardImage"})
     List<Portfolio> findAllBySharedStatus();

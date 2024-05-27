@@ -23,7 +23,7 @@ public class PortfolioApiController {
 
     @PutMapping("/{portfolioId}/api/{apiId}")
     public void updatePortfolioApi(Long userId, @PathVariable Long portfolioId, @PathVariable Long apiId, PortfolioApiRequest request) {
-        apiService.updatePortfolioApi(userId, portfolioId, apiId, request);
+        apiService.updatePortfolioApi(userId, apiId, request);
     }
 
     @DeleteMapping("/{portfolioId}/api/{apiId}")

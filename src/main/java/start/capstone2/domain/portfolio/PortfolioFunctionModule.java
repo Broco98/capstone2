@@ -1,37 +1,33 @@
 package start.capstone2.domain.portfolio;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import start.capstone2.domain.BaseEntity;
 
 @Entity
 @Getter
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PortfolioDatabase extends BaseEntity {
+public class PortfolioFunctionModule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "portfolio_datebase_id")
+    @Column(name = "portfolio_function_module")
     private Long id;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "portfolio_id")
-    private Portfolio portfolio;
+    @JoinColumn(name = "portfolio_function_id")
+    private PortfolioFunction function;
 
-    @Lob
-    private String schema;
+    private String name;
 
     @Lob
     private String description;
 
-
-    public void updateDatabase(String schema, String description) {
-        this.schema = schema;
+    public void updateFunctionModule(String name, String description) {
+        this.name = name;
         this.description = description;
     }
+
 
 }

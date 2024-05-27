@@ -36,11 +36,11 @@ public class PortfolioDesignService {
         User user = userRepository.findById(userId).orElseThrow();
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
 
-        PortfolioDesign design = PortfolioDesign.createPortfolioDesign(
-                portfolio,
-                request.getDesign(),
-                request.getDescription()
-        );
+        PortfolioDesign design = PortfolioDesign.builder()
+                .portfolio(portfolio)
+                .design(request.getDesign())
+                .description(request.getDescription())
+                .build();
 
         portfolio.addDesign(design);
         return design.getId();
@@ -48,8 +48,8 @@ public class PortfolioDesignService {
     
     // TODO user 정보 필요
     @Transactional
-    public void updatePortfolioDesign(Long userId, Long portfolioId, Long designId, PortfolioDesignRequest request) {
-        PortfolioDesign design = designRepository.findByIdWithImage(portfolioId);
+    public void updatePortfolioDesign(Long userId, Long designId, PortfolioDesignRequest request) {
+        PortfolioDesign design = designRepository.findById(designId).orElseThrow();
         design.updatePortfolioDesign(request.getDesign(), request.getDescription());
     }
     
@@ -62,6 +62,7 @@ public class PortfolioDesignService {
     }
 
     // TODO user 정보 필요
+    // 해당 포트폴리오의 모든 디자인 조회
     public List<PortfolioDesignResponse> findPortfolioDesigns(Long userId, Long portfolioId) {
         List<PortfolioDesign> designs = designRepository.findAllByPortfolioId(portfolioId);
         List<PortfolioDesignResponse> results = new ArrayList<>();

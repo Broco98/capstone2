@@ -36,7 +36,8 @@ public class Portfolio extends BaseEntity{
     private String description;
     private Integer contribution;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @Setter
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "image_id")
     private Image cardImage;
 
@@ -147,4 +148,21 @@ public class Portfolio extends BaseEntity{
     public void removeUrl(PortfolioUrl url) {
         urls.remove(url);
     }
+
+    public void addDatabase(PortfolioDatabase database) {
+        databases.add(database);
+    }
+
+    public void removeDatabase(PortfolioDatabase database) {
+        databases.remove(database);
+    }
+
+    public void addInterview(PortfolioInterview interview) {
+        interviews.add(interview);
+    }
+
+    public void removeInterview(PortfolioInterview interview) {
+        interviews.remove(interview);
+    }
+
 }

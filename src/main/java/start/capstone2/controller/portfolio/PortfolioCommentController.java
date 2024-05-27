@@ -25,7 +25,7 @@ public class PortfolioCommentController {
 
     @PutMapping("/{portfolioId}/comment/{commentId}")
     public void updatePortfolioComment(Long userId, @PathVariable Long portfolioId, @PathVariable Long commentId, PortfolioCommentRequest request) {
-        commentService.updatePortfolioComment(userId, portfolioId, commentId, request);
+        commentService.updatePortfolioComment(userId, portfolioId, request);
     }
 
     @DeleteMapping("/{portfolioId}/comment/{commentId}")

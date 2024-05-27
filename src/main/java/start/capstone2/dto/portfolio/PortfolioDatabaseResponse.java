@@ -2,11 +2,12 @@ package start.capstone2.dto.portfolio;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @AllArgsConstructor
-public class PortfolioFunctionResponse {
+public class PortfolioDatabaseResponse {
     private Long id;
-    private String name;
+    private String schema;
+    private String description;
+    
 }

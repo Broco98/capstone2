@@ -20,7 +20,6 @@ public class TestInit {
 
     private final UserService userService;
     private final PortfolioService portfolioService;
-    private final PortfolioDetailService portfolioDetailService;
 
     @PostConstruct
     public void init() {
@@ -28,18 +27,18 @@ public class TestInit {
         userService.createUser(new UserRequest("test2", "2222", "test2"));
         userService.createUser(new UserRequest("test3", "3333", "test3"));
 
-        portfolioService.createPortfolio(1L);
-        portfolioDetailService.updatePortfolioDetail(1L, 1L, new PortfolioDetailRequest(
-                "test",
-                LocalDate.now(),
-                LocalDate.now(),
-                30,
-                "간단한 게시판을 가진 쇼핑몰 프로젝트",
-                "간단한 게시판을 가진 쇼핑몰 프로젝트",
-                3,
-                null,
-                ShareStatus.SHARE)
-        );
+//        portfolioService.createPortfolio(1L);
+//        portfolioDetailService.updatePortfolioDetail(1L, 1L, new PortfolioDetailRequest(
+//                "test",
+//                LocalDate.now(),
+//                LocalDate.now(),
+//                30,
+//                "간단한 게시판을 가진 쇼핑몰 프로젝트",
+//                "간단한 게시판을 가진 쇼핑몰 프로젝트",
+//                3,
+//                null,
+//                ShareStatus.SHARE)
+//        );
     }
 
 

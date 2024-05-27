@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import start.capstone2.domain.Image.Image;
-import start.capstone2.domain.Image.ImageStore;
 import start.capstone2.domain.Image.S3Store;
-import start.capstone2.domain.portfolio.PortfolioTechStack;
-import start.capstone2.domain.portfolio.repository.PortfolioTechStackRepository;
 import start.capstone2.domain.techstack.TechStack;
 import start.capstone2.domain.techstack.repository.TechStackRepository;
 import start.capstone2.dto.TechStackRequest;
@@ -27,7 +24,10 @@ public class TechStackService {
     @Transactional
     public Long createTechStack(TechStackRequest request) {
         Image image = store.saveImage(request.getImage());
-        TechStack techStack = TechStack.createTechStack(request.getName(), image);
+        TechStack techStack = TechStack.builder()
+                        .name(request.getName())
+                        .image(image)
+                        .build();
         techStackRepository.save(techStack);
         return techStack.getId();
     }

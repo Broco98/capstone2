@@ -27,15 +27,28 @@ public class PortfolioTechStackService {
     private final TechStackRepository techStackRepository;
     private final PortfolioTechStackRepository portfolioTechStackRepository;
 
+    // TODO user 정보 필요
+    // List로 받은 모든 techstack 생성
     @Transactional
-    public Long createPortfolioTechStack(Long userId, Long portfolioId, PortfolioTechStackRequest request) {
+    public void createPortfolioTechStack(Long userId, Long portfolioId, PortfolioTechStackRequest request) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
-        TechStack techStack = techStackRepository.findById(request.getTechStackId()).orElseThrow();
-        PortfolioTechStack portfolioTechStack = PortfolioTechStack.createPortfolioTechStack(portfolio, techStack);
-        portfolio.addTechStack(portfolioTechStack);
-        return portfolioTechStack.getId();
-    }
 
+        if (!request.getTechStackId().isEmpty()) {
+            List<TechStack> techStacks = techStackRepository.findAllByIdIn(request.getTechStackId());
+
+            for (TechStack techStack : techStacks) {
+                PortfolioTechStack portfolioTechStack = PortfolioTechStack.builder()
+                        .techStack(techStack)
+                        .portfolio(portfolio)
+                        .build();
+
+                portfolio.addTechStack(portfolioTechStack);
+            }
+        }
+    }
+    
+    // TODO user 정보 필요
+    // 단일 삭제
     @Transactional
     public void deletePortfolioTechStack(Long userId, Long portfolioId, Long techStackId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
@@ -44,6 +57,7 @@ public class PortfolioTechStackService {
         portfolio.removeTechStack(techStack);
     }
 
+    // 포트폴리오의 모든 techstack 조회
     public List<PortfolioTechStackResponse> findAllPortfolioTechStack(Long userId, Long portfolioId) {
         List<PortfolioTechStack> techStacks = portfolioTechStackRepository.findAllByPortfolioId(portfolioId);
         List<PortfolioTechStackResponse> results = new ArrayList<>();

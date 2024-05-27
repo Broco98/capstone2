@@ -26,29 +26,29 @@ public class PortfolioFeedbackService {
     private final PortfolioRepository portfolioRepository;
     private final PortfolioFeedbackRepository feedbackRepository;
 
+    // TODO user 확인 필요
     @Transactional
     public Long createPortfolioFeedback(Long userId, Long portfolioId, PortfolioFeedbackRequest request) {
 
         User user = userRepository.findById(userId).orElseThrow();
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
 
-        PortfolioFeedback portfolioFeedback = PortfolioFeedback.createPortfolioFeedback(
-                user,
-                portfolio,
-                request.getContent(),
-                request.getPage(),
-                request.getLocation()
-        );
+        PortfolioFeedback portfolioFeedback = PortfolioFeedback.builder()
+                .user(user)
+                .portfolio(portfolio)
+                .content(request.getContent())
+                .page(request.getPage())
+                .location(request.getLocation())
+                .build();
 
         portfolio.addFeedback(portfolioFeedback);
         return portfolioFeedback.getId();
     }
 
+    // TODO user 확인 필요
     @Transactional
-    public void updatePortfolioFeedback(Long userId, Long portfolioId, Long feedbackId, PortfolioFeedbackRequest request) {
+    public void updatePortfolioFeedback(Long userId, Long feedbackId, PortfolioFeedbackRequest request) {
 
-        User user = userRepository.findById(userId).orElseThrow();
-        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
         PortfolioFeedback feedback = feedbackRepository.findById(feedbackId).orElseThrow();
 
         feedback.updateFeedback(
@@ -56,14 +56,17 @@ public class PortfolioFeedbackService {
                 request.getLocation()
         );
     }
-
+    
+    // TODO user 확인 필요
     @Transactional
     public void deletePortfolioFeedback(Long userId, Long portfolioId, Long feedbackId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
         PortfolioFeedback feedback = feedbackRepository.findById(feedbackId).orElseThrow();
         portfolio.removeFeedback(feedback);
     }
-
+    
+    // TODO user 확인 필요
+    // portfolio의 모든 feedback 조회
     public List<PortfolioFeedbackResponse> findPortfolioFeedbacks(Long userId, Long portfolioId) {
         List<PortfolioFeedback> feedbacks = feedbackRepository.findAllByPortfolioId(portfolioId);
         List<PortfolioFeedbackResponse> results = new ArrayList<>();

@@ -30,27 +30,29 @@ public class PortfolioFunctionService {
     private final PortfolioRepository portfolioRepository;
     private final PortfolioFunctionRepository functionRepository;
 
+    // TODO user 확인 필요
     @Transactional
     public Long createPortfolioFunction(Long userId, Long portfolioId, PortfolioFunctionRequest request) {
         User user = userRepository.findById(userId).orElseThrow();
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
 
-        PortfolioFunction function = PortfolioFunction.createPortfolioFunction(
-                portfolio,
-                request.getDescription()
-        );
+        PortfolioFunction function = PortfolioFunction.builder()
+                .portfolio(portfolio)
+                .name(request.getName())
+                .build();
 
         portfolio.addFunction(function);
         return function.getId();
     }
 
+    // TODO user 확인 필요
     @Transactional
     public void updatePortfolioFunction(Long userId, Long portfolioId, Long functionId, PortfolioFunctionRequest request) {
         PortfolioFunction function = functionRepository.findById(functionId).orElseThrow();
-
-        function.updatePortfolioFunction(request.getDescription());
+        function.updatePortfolioFunction(request.getName());
     }
 
+    // TODO user 확인 필요
     @Transactional
     public void deletePortfolioFunction(Long userId, Long portfolioId, Long functionId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
@@ -58,11 +60,13 @@ public class PortfolioFunctionService {
         portfolio.removeFunction(function);
     }
 
+    // TODO user 확인 필요
+    // 포트폴리오의 모든 function 조회
     public List<PortfolioFunctionResponse> findPortfolioFunctions(Long userId, Long portfolioId) {
         List<PortfolioFunction> functions = functionRepository.findAllByPortfolioId(portfolioId);
         List<PortfolioFunctionResponse> results = new ArrayList<>();
         for (PortfolioFunction function : functions) {
-            results.add(new PortfolioFunctionResponse(function.getId(), function.getDescription()));
+            results.add(new PortfolioFunctionResponse(function.getId(), function.getName()));
         }
         return results;
     }
