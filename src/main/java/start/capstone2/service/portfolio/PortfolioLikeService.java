@@ -4,16 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import start.capstone2.domain.portfolio.Portfolio;
-import start.capstone2.domain.portfolio.PortfolioClipping;
-import start.capstone2.domain.portfolio.PortfolioInterview;
 import start.capstone2.domain.portfolio.PortfolioLike;
-import start.capstone2.domain.portfolio.repository.PortfolioInterviewRepository;
 import start.capstone2.domain.portfolio.repository.PortfolioLikeRepository;
 import start.capstone2.domain.portfolio.repository.PortfolioRepository;
 import start.capstone2.domain.user.User;
 import start.capstone2.domain.user.repository.UserRepository;
-import start.capstone2.dto.portfolio.PortfolioInterviewRequest;
-import start.capstone2.dto.portfolio.PortfolioInterviewResponse;
 import start.capstone2.dto.portfolio.PortfolioResponse;
 
 import java.util.ArrayList;
@@ -54,12 +49,12 @@ public class PortfolioLikeService {
 
     // TODO user 확인 필요
     // user가 스크랩한 portfolio 모두 조회
-    public List<PortfolioResponse> findPortfolioLike(Long userId) {
+    public List<Portfolio> findPortfolioLike(Long userId) {
         List<PortfolioLike> likes = likeRepository.findAllByUserId(userId);
-        List<PortfolioResponse> results = new ArrayList<>();
+        List<Portfolio> results = new ArrayList<>();
         for (PortfolioLike like : likes) {
             Portfolio portfolio = like.getPortfolio();
-            results.add(new PortfolioResponse(portfolio.getId(), portfolio.getCardImage().getSavedName(), portfolio.getStatus()));
+            results.add(portfolio);
         }
 
         return results;

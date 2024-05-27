@@ -51,12 +51,12 @@ public class PortfolioClippingService {
 
     // TODO user 확인 필요
     // user가 스크랩한 portfolio 모두 조회
-    public List<PortfolioResponse> findPortfolioClippings(Long userId) {
+    public List<Portfolio> findPortfolioClippings(Long userId) {
         List<PortfolioClipping> clippings = clippingRepository.findAllByUserId(userId);
-        List<PortfolioResponse> results = new ArrayList<>();
+        List<Portfolio> results = new ArrayList<>();
         for (PortfolioClipping clipping : clippings) {
             Portfolio portfolio = clipping.getPortfolio();
-            results.add(new PortfolioResponse(portfolio.getId(), portfolio.getCardImage().getSavedName(), portfolio.getStatus()));
+            results.add(portfolio);
         }
 
         return results;

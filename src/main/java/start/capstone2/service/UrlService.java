@@ -24,58 +24,36 @@ import java.util.UUID;
 public class UrlService {
 
     private final UserRepository userRepository;
-    private final PortfolioRepository portfolioRepository;
     private final PortfolioUrlRepository portfolioUrlRepository;
     private final UrlRepository urlRepository;
 
+    // TODO user 조회 필요
+    // 빈 url 생성
     @Transactional
     public Long createUrl(Long userId,  UrlRequest request) {
         User user = userRepository.findById(userId).orElseThrow();
-        Url url = Url.createUrl(UUID.randomUUID().toString()); // random url 생성
-        List<Portfolio> portfolios = portfolioRepository.findAllById(request.getPortfolioIds());
-
-        for (Portfolio portfolio : portfolios) {
-            PortfolioUrl portfolioUrl = PortfolioUrl.createPortfolioUrl(portfolio, url);
-            portfolio.addUrl(portfolioUrl);
-            url.addPortfolioUrl(portfolioUrl);
-        }
+        Url url = Url.builder().url(UUID.randomUUID().toString()).build();
 
         urlRepository.save(url);
         return url.getId();
     }
 
-    @Transactional
-    public void updateUrl(Long userId, Long urlId, UrlRequest request) {
-        Url url = urlRepository.findById(urlId).orElseThrow();
-        List<PortfolioUrl> portfolioUrls = url.getPortfolioUrls();
-
-        List<Portfolio> newPortfolios = portfolioRepository.findAllById(request.getPortfolioIds());
-        List<PortfolioUrl> newPortfolioUrls = new ArrayList<>();
-        for (Portfolio portfolio : newPortfolios) {
-            PortfolioUrl portfolioUrl = PortfolioUrl.createPortfolioUrl(portfolio, url);
-            portfolio.addUrl(portfolioUrl);
-            newPortfolioUrls.add(portfolioUrl);
-        }
-
-        url.getPortfolioUrls().clear();
-        url.getPortfolioUrls().addAll(newPortfolioUrls);
-    }
-
+    // TODO user 조회 필요
     @Transactional
     public void deleteUrl(Long userId, Long urlId) {
         Url url = urlRepository.findById(urlId).orElseThrow();
         urlRepository.delete(url);
     }
 
-    // TODO 최적화 필요
-    public List<PortfolioResponse> findAllById(Long userId, Long urlId) {
+    // TODO user 조회 필요
+    // url 에 있는 모든 portfolio 조회
+    public List<Portfolio> findAllById(Long userId, Long urlId) {
         Url url = urlRepository.findById(urlId).orElseThrow();
         List<PortfolioUrl> portfolioUrls = url.getPortfolioUrls();
-        List<PortfolioResponse> results = new ArrayList<>();
-
+        List<Portfolio> results = new ArrayList<>();
         for (PortfolioUrl portfolioUrl : portfolioUrls) {
             Portfolio portfolio = portfolioUrl.getPortfolio();
-            results.add(new PortfolioResponse(portfolio.getId(), portfolio.getCardImage().getSavedName(), portfolio.getStatus()));
+            results.add(portfolio);
         }
 
         return results;

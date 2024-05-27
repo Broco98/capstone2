@@ -87,9 +87,15 @@ public class PortfolioService {
     private List<PortfolioResponse> getPortfolioResponses(List<Portfolio> portfolios) {
         List<PortfolioResponse> results = new ArrayList<>();
         for (Portfolio portfolio : portfolios) {
+
+            String imageUrl = "default";
+            if (portfolio.getCardImage() != null) {
+                imageUrl = portfolio.getCardImage().getSavedName();
+            }
+
             results.add(new PortfolioResponse(
                     portfolio.getId(),
-                    portfolio.getCardImage().getSavedName(),
+                    imageUrl,
                     portfolio.getTitle(),
                     portfolio.getStartDate(),
                     portfolio.getEndDate(),
