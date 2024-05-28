@@ -15,6 +15,7 @@ import start.capstone2.domain.user.repository.UserRepository;
 import start.capstone2.dto.portfolio.PortfolioFunctionRequest;
 import start.capstone2.dto.portfolio.PortfolioFunctionResponse;
 import start.capstone2.dto.portfolio.PortfolioUrlRequest;
+import start.capstone2.dto.portfolio.PortfolioUrlResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +57,16 @@ public class PortfolioUrlService {
         portfolio.removeUrl(portfolioUrl);
         url.removePortfolioUrl(portfolioUrl);
     }
-
+    
+    // TODO 미완
+    public List<PortfolioUrlResponse> findAllByPortfolioId(Long userId, Long portfolioId) {
+        List<PortfolioUrl> urls = portfolioUrlRepository.findAllByPortfolioIdWithUrl(portfolioId);
+        List<PortfolioUrlResponse> results = new ArrayList<>();
+        for (PortfolioUrl portfolioUrl : urls) {
+            Url url = portfolioUrl.getUrl();
+            results.add(new PortfolioUrlResponse(url.getId(), url.getUrl()));
+        }
+        return results;
+    }
 
 }

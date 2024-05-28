@@ -5,8 +5,8 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class PortfolioUrlRequest {
+public class PortfolioUrlResponse {
 
     private Long urlId;
-
+    private String url;
 }

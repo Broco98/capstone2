@@ -23,7 +23,7 @@ public class UrlController {
 
     @PutMapping("/{urlId}")
     public void updateUrl(Long userId, @PathVariable Long urlId, UrlRequest request) {
-        urlService.updateUrl(userId, urlId, request);
+        urlService.createUrl(userId, request);
     }
 
     @DeleteMapping("/{urlId}")
@@ -31,9 +31,9 @@ public class UrlController {
         urlService.deleteUrl(userId, urlId);
     }
 
-    @GetMapping("/{urlId}/portfolio")
-    public ResponseResult<List<PortfolioResponse>> findAllPortfolioInUrl(Long userId, @PathVariable Long urlId) {
-        List<PortfolioResponse> result = urlService.findAllById(userId, urlId);
-        return new ResponseResult<>(result);
-    }
+//    @GetMapping("/{urlId}/portfolio")
+//    public ResponseResult<List<PortfolioResponse>> findAllPortfolioInUrl(Long userId, @PathVariable Long urlId) {
+//        List<PortfolioResponse> result = urlService.findAllById(userId, urlId);
+//        return new ResponseResult<>(result);
+//    }
 }

@@ -55,7 +55,7 @@ public class PortfolioDatabaseService {
 
     // TODO user 정보 필요
     // 해당 포트폴리오의 모든 database 조회
-    public List<PortfolioDatabaseResponse> findPortfolioComments(Long userId, Long portfolioId) {
+    public List<PortfolioDatabaseResponse> findPortfolioDatabase(Long userId, Long portfolioId) {
         List<PortfolioDatabase> databases = databaseRepository.findAllByPortfolioId(portfolioId);
         List<PortfolioDatabaseResponse> results = new ArrayList<>();
         for (PortfolioDatabase database : databases) {
