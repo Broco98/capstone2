@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import start.capstone2.domain.portfolio.PortfolioUrl;
+import start.capstone2.domain.user.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,11 +21,16 @@ public class Url {
     @Column(name = "url_id")
     private Long id;
 
-    @OneToMany(mappedBy = "url", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<PortfolioUrl> portfolioUrls = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @NotNull
     private String url;
+
+    @OneToMany(mappedBy = "url", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<PortfolioUrl> portfolioUrls = new ArrayList<>();
+
 
 
     public void addPortfolioUrl(PortfolioUrl portfolioUrl) {

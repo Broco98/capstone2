@@ -12,7 +12,7 @@ public class PortfolioFunctionModule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "portfolio_function_module")
+    @Column(name = "portfolio_function_module_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

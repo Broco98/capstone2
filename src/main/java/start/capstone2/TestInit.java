@@ -4,14 +4,9 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
-import start.capstone2.domain.portfolio.ShareStatus;
 import start.capstone2.dto.UserRequest;
-import start.capstone2.dto.portfolio.PortfolioDetailRequest;
 import start.capstone2.service.UserService;
-import start.capstone2.service.portfolio.PortfolioDetailService;
 import start.capstone2.service.portfolio.PortfolioService;
-
-import java.time.LocalDate;
 
 @Component
 @RequiredArgsConstructor

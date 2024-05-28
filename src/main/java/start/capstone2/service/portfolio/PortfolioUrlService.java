@@ -49,10 +49,10 @@ public class PortfolioUrlService {
 
     // TODO user 확인 필요
     @Transactional
-    public void deletePortfolioUrl(Long userId, Long portfolioId, Long urlId, Long portfolioUrlId) {
+    public void deletePortfolioUrl(Long userId, Long portfolioId, Long portfolioUrlId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
         PortfolioUrl portfolioUrl = portfolioUrlRepository.findById(portfolioUrlId).orElseThrow();
-        Url url = urlRepository.findById(urlId).orElseThrow();
+        Url url = portfolioUrl.getUrl();
 
         portfolio.removeUrl(portfolioUrl);
         url.removePortfolioUrl(portfolioUrl);

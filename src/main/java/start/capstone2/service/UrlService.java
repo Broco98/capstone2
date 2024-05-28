@@ -32,7 +32,10 @@ public class UrlService {
     @Transactional
     public Long createUrl(Long userId,  UrlRequest request) {
         User user = userRepository.findById(userId).orElseThrow();
-        Url url = Url.builder().url(UUID.randomUUID().toString()).build();
+        Url url = Url.builder()
+                .user(user)
+                .url(UUID.randomUUID().toString())
+                .build();
 
         urlRepository.save(url);
         return url.getId();

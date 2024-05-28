@@ -12,7 +12,7 @@ import start.capstone2.service.portfolio.PortfolioUrlService;
 
 import java.util.List;
 
-@Tag(name = "PortfolioUrl api", description = "[미완] 포트폴리오 공유 url 관리")
+@Tag(name = "PortfolioUrl api", description = "포트폴리오 공유 url 관리")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/portfolio")
@@ -20,22 +20,22 @@ public class PortfolioUrlController {
 
     private final PortfolioUrlService urlService;
 
-    @Operation(summary = "create portfolio tech-stack", description = "선택한 여러개의 techstack을 portfolio에 등록(생성)")
+    @Operation(summary = "create portfolio url", description = "프로젝트를 선택한 url에 공유")
     @PostMapping("/{portfolioId}/url")
     public Long createPortfolioUrl(Long userId, @PathVariable Long portfolioId, PortfolioUrlRequest request) {
         return urlService.createPortfolioUrl(userId, portfolioId, request.getUrlId());
     }
 
-    @Operation(summary = "find all portfolio tech-stack", description = "해당 portfolio의 모든 tech-stack 조회")
+    @Operation(summary = "find all portfolio url", description = "해당 portfolio가 공유된 url 조회")
     @GetMapping("/{portfolioId}/url")
     public ResponseResult<List<PortfolioUrlResponse>> findAllPortfolioUrl(Long userId, @PathVariable Long portfolioId) {
         return new ResponseResult<>(urlService.findAllByPortfolioId(userId, portfolioId));
     }
 
-    @Operation(summary = "delete portfolio tech-stack", description = "해당 portfolio에서 techstack 단일 삭제")
-    @DeleteMapping("/{portfolioId}/url/{urlId}")
-    public void deletePortfolioUrl(Long userId, @PathVariable Long portfolioId, @PathVariable Long urlId) {
-        urlService.deletePortfolioUrl(userId, portfolioId, urlId, null);
+    @Operation(summary = "delete portfolio url", description = "선택한 프로젝트 url 공유 취소(삭제)")
+    @DeleteMapping("/{portfolioId}/url/{portfolioUrlId}")
+    public void deletePortfolioUrl(Long userId, @PathVariable Long portfolioId, @PathVariable Long portfolioUrlId) {
+        urlService.deletePortfolioUrl(userId, portfolioId, portfolioUrlId);
     }
 
 }

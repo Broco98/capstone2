@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface PortfolioFunctionModuleRepository extends JpaRepository<PortfolioFunctionModule, Long> {
 
-    List<PortfolioFunctionModule> findAllByPortfolioFunctionId(Long portfolioFunctionId);
+    List<PortfolioFunctionModule> findAllByFunction_Id(Long portfolioFunctionId);
 
 }
