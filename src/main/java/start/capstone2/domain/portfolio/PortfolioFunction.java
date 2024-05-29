@@ -28,6 +28,7 @@ public class PortfolioFunction extends BaseEntity {
 
     private String name;
 
+    @Builder.Default
     @OneToMany(mappedBy = "function", cascade = CascadeType.ALL, orphanRemoval = true)
     List<PortfolioFunctionModule> modules = new ArrayList<>();
 

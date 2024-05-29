@@ -27,6 +27,18 @@ public class PortfolioFunctionModuleService {
     private final PortfolioFunctionRepository functionRepository;
     private final PortfolioFunctionModuleRepository moduleRepository;
 
+    public Long createPortfolioFunctionModule(Long userId, PortfolioFunction function, PortfolioFunctionModuleRequest request) {
+        User user = userRepository.findById(userId).orElseThrow();
+        PortfolioFunctionModule functionModule = PortfolioFunctionModule.builder()
+                .function(function)
+                .name(request.getName())
+                .description(request.getDescription())
+                .build();
+
+        function.addModule(functionModule);
+        return functionModule.getId();
+    }
+
 
     // TODO user 확인 필요
     @Transactional

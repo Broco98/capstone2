@@ -45,6 +45,21 @@ public class PortfolioFunctionService {
         return function.getId();
     }
 
+    // TODO
+    @Transactional
+    public PortfolioFunction createPortfolioFunctionReturnObject(Long userId, Long portfolioId, PortfolioFunctionRequest request) {
+        User user = userRepository.findById(userId).orElseThrow();
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+
+        PortfolioFunction function = PortfolioFunction.builder()
+                .portfolio(portfolio)
+                .name(request.getName())
+                .build();
+
+        portfolio.addFunction(function);
+        return function;
+    }
+
     // TODO user 확인 필요
     @Transactional
     public void updatePortfolioFunction(Long userId, Long portfolioId, Long functionId, PortfolioFunctionRequest request) {

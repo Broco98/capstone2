@@ -24,7 +24,6 @@ public class Portfolio extends BaseEntity{
     @Column(name = "portfolio_id")
     private Long id;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;

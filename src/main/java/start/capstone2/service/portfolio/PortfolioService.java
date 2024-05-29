@@ -120,4 +120,9 @@ public class PortfolioService {
         List<Portfolio> portfolios = portfolioRepository.findAllBySharedStatus();
         return getPortfolioResponses(portfolios);
     }
+    
+    // 단일 조회
+    public Portfolio findById(Long portfolioId) {
+        return portfolioRepository.findById(portfolioId).orElseThrow();
+    }
 }
