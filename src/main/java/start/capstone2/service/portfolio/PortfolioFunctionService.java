@@ -85,5 +85,10 @@ public class PortfolioFunctionService {
         }
         return results;
     }
+    
+    // 포트폴리오 function 단일 조회
+    public PortfolioFunction findById(Long portfolioFunctionId) {
+        return functionRepository.findByIdWithModules(portfolioFunctionId);
+    }
 
 }

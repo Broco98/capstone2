@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.ai.chat.ChatClient;
-import org.springframework.ai.chat.ChatResponse;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.SystemMessage;
 import org.springframework.ai.chat.prompt.Prompt;
@@ -24,7 +23,6 @@ import start.capstone2.service.portfolio.PortfolioFunctionService;
 import start.capstone2.service.portfolio.PortfolioService;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +30,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/ai/portfolio/")
-public class PortfolioAiFunctionController {
+public class PortfolioFunctionAiController {
 
     private final PortfolioService portfolioService;
     private final PortfolioFunctionService functionService;
