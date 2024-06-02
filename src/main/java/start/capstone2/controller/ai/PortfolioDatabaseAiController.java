@@ -84,7 +84,7 @@ public class PortfolioDatabaseAiController {
                             "schema" : (Table 생성 SQL문, 필요한 속성을 포함해야 하고, 그 속성이 어떤 속성인지 주석으로 설명해야함)
                             "descriptopn" : (어떤 Table인지 설명)
                         },
-                        ... (너가 필요한 Table 만큼 반복)
+                        ... (너가 필요한 Table 만큼 반복, 1개도 상관 없음)
                     ]
                 
                 }
@@ -117,7 +117,7 @@ public class PortfolioDatabaseAiController {
         // 생성
         Prompt prompt = new Prompt(prompts);
         String jsonResult = chatClient.call(prompt).getResult().getOutput().getContent();
-        System.out.println(jsonResult);
+//        System.out.println(jsonResult);
 
         // parsing
         ObjectMapper objectMapper = new ObjectMapper();

@@ -44,42 +44,50 @@ public class PortfolioDesignAiController {
         // 프롬프트 셋팅
         List<Message> prompts = new ArrayList<>();
         Message prompt1 = new SystemMessage("""
-        너는 간단한 프로젝트 설명을 입력받으면 그 프로젝트에 필요한 ER 다이어그램를 작성해야 돼.
-        예를 들어서 입력으로 
-        
-        유저 기능
+        너는 프로젝트 기능을 입력으로 받으면 그 프로젝트의 UML 다이어그램을 만들어 줘야돼.
+        예를 들어서 입력으로
+        ---
+        유저기능
         유저 생성
         유저 삭제
-        유저 수정
-        유저 조회
+        ---
+        이런 입력을 받으면
         
-        게시판 기능
-        게시글 작성
-        게시글 조회
-        게시글 삭제
-        게시글 스크랩
-        게시글 좋아요
-        게시글 수정
-        
-        이렇게 입력 받으면 먼저 필요한 Entity와 속성을 생각하고,
-        그 후 연결관계를 생각해서 ER 다이어그램을 생성하는거야
-        ER 다이어그램으로 코드를 작성할 수 있을 정도로 자세하게 작성해줘
-        
-        답변은 json형식으로 해주고, 기능별로 파싱할 수 있도록 나눠서 답변해줘야해
-        
-        다음은 너가 보내줘야 할 json 양식의 예시야
         {
-            "data": {
-                "design": (ER 다이어그램)
-                "description": (설명)
-            }
+            "data" : [
+                {
+                    "design" : (시퀸스 다이어그램 PlantUML 사용)
+                    "description" : (다이어그램 설명)
+                },
+                {
+                    "design" : (유스케이스 다이어그램 PlantUML 사용)
+                    "description" : (다이어그램 설명)
+                },
+                {
+                    "design" : (클래스 다이어그램 PlantUML 사용, 변수와 메서드 포함)
+                    "description" : (다이어그램 설명)
+                },
+                {
+                    "design" : (상태 다이어그램 PlantUML 사용)
+                    "description" : (다이어그램 설명)
+                },
+                {
+                    "design" : (유스케이스 다이어그램 PlantUML 사용)
+                    "description" : (다이어그램 설명)
+                },
+            ]
         }
         
-        모든 데이터가 data안에 있고,
-        ER 다이어그램 정보는 "design"안에, 그 설명은 "description"에 작성해줘
+        이런 json 형식의 답변을 기대하고 있어.
+        json 응답은 다음과 같은 조건을 만족해야 돼
+          
+        1. 모든 데이터가 data안에 있고,
+        2. 그 안에 여러개의 db 정보(design, description)이 있는 형식이야
+        3. data[0].design, data[0].description, data[1].schema 이런 식으로 접근 가능하도록 하게 보내줘야 돼
+        4. data[0].design 로 접근하면 ER diagram 정보를 가져올 수 있어야 돼
+        5. ER 다이어그램의 갯수 (schema, description)의 쌍은 너가 필요하다고 생각되는 만큼만 작성해줘
         
-        ER 다이어그램을 바탕으로 설계를 진행하고 코드를 작성할 수 있도록 자세하게 작성해줘
-        그리고 ER 다이어그램은 PlantUML 사용할 예정이니까 PlantUML을 사용할 수 있도록 작성해줘
+        이 결과를 바탕으로 실제로 설계와 코딩을 진행할 수 있도록 최대한 자세하고 세밀하게 알려줘
         """);
 
         StringBuilder builder = new StringBuilder();
