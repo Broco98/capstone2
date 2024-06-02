@@ -40,33 +40,43 @@ public class Portfolio extends BaseEntity{
     @JoinColumn(name = "image_id")
     private Image cardImage;
 
+    @Builder.Default
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PortfolioDesign> designs = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PortfolioApi> apis = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PortfolioCode> codes = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PortfolioFeedback> feedbacks = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PortfolioComment> comments = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PortfolioFunction> functions = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PortfolioUrl> urls = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PortfolioTechStack> techStacks = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PortfolioInterview> interviews = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PortfolioDatabase> databases = new ArrayList<>();
 

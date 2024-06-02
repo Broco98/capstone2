@@ -125,4 +125,5 @@ public class PortfolioService {
     public Portfolio findById(Long portfolioId) {
         return portfolioRepository.findById(portfolioId).orElseThrow();
     }
+
 }

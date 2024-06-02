@@ -28,6 +28,7 @@ public class Url {
     @NotNull
     private String url;
 
+    @Builder.Default
     @OneToMany(mappedBy = "url", cascade = CascadeType.ALL, orphanRemoval = true)
     List<PortfolioUrl> portfolioUrls = new ArrayList<>();
 

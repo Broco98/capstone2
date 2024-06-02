@@ -91,4 +91,8 @@ public class PortfolioFunctionService {
         return functionRepository.findByIdWithModules(portfolioFunctionId);
     }
 
+    public List<PortfolioFunction> findAllByPortfolioIdWithModule(Long portfolioId) {
+        return functionRepository.findAllByPortfolioIdWithModule(portfolioId);
+    }
+
 }
