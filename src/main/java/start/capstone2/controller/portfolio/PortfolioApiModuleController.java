@@ -5,43 +5,45 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import start.capstone2.dto.ResponseResult;
+import start.capstone2.dto.portfolio.PortfolioApiModuleRequest;
 import start.capstone2.dto.portfolio.PortfolioApiRequest;
 import start.capstone2.dto.portfolio.PortfolioApiResponse;
+import start.capstone2.service.portfolio.PortfolioApiModuleService;
 import start.capstone2.service.portfolio.PortfolioApiService;
 
 import java.util.List;
 
-@Tag(name="PortfolioApi api", description = "portfolio api명세 관리")
+@Tag(name="PortfolioApiModule api")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/portfolio")
+@RequestMapping("/portfolio-api")
 public class PortfolioApiModuleController {
 
-    private final PortfolioApiService apiService;
+    private final PortfolioApiModuleService apiModuleService;
 
-    @Operation(summary = "create portfolio_api", description = "portfolio api 명세 하나를 생성합니다.")
-    @PostMapping("/{portfolioId}/api")
-    public Long createPortfolioApi(Long userId, @PathVariable Long portfolioId, PortfolioApiRequest request) {
-        return apiService.createPortfolioApi(userId, portfolioId, request);
+    @Operation(summary = "create portfolio api module")
+    @PostMapping("/{apiId}/module")
+    public Long createPortfolioApiModule(Long userId, @PathVariable Long apiId, PortfolioApiModuleRequest request) {
+        return apiModuleService.createPortfolioApiModule(userId, apiId, request);
     }
 
-    @Operation(summary = "update portfolio_api", description = "portfolio api 명세 하나를 수정합니다.")
-    @PutMapping("/{portfolioId}/api/{apiId}")
-    public void updatePortfolioApi(Long userId, @PathVariable Long portfolioId, @PathVariable Long apiId, PortfolioApiRequest request) {
-        apiService.updatePortfolioApi(userId, apiId, request);
+    @Operation(summary = "update portfolio api module")
+    @PutMapping("/{apiId}/module/{moduleId}")
+    public void updatePortfolioApi(Long userId, @PathVariable Long apiId, @PathVariable Long moduleId, PortfolioApiModuleRequest request) {
+        apiModuleService.updatePortfolioApiModule(userId, apiId, moduleId, request);
     }
 
-    @Operation(summary = "delete portfolio_api", description = "portfolio api 명세 하나를 삭제합니다.")
-    @DeleteMapping("/{portfolioId}/api/{apiId}")
-    public void deletePortfolioApi(Long userId, @PathVariable Long portfolioId, @PathVariable Long apiId) {
-        apiService.deletePortfolioApi(userId, portfolioId, apiId);
+    @Operation(summary = "delete portfolio api module")
+    @DeleteMapping("/{apiId}/module/{moduleId}")
+    public void deletePortfolioApi(Long userId, @PathVariable Long apiId, @PathVariable Long moduleId) {
+        apiModuleService.deletePortfolioApiModule(userId, apiId, moduleId);
     }
 
-    @Operation(summary = "find all portfolio_api", description = "portfolio에 있는 모든 portfolio_api를 조회합니다.")
-    @GetMapping("/{portfolioId}/api")
-    public ResponseResult<List<PortfolioApiResponse>> findAllPortfolioApi(Long userId, @PathVariable Long portfolioId) {
-        List<PortfolioApiResponse> result = apiService.findPortfolioApis(userId, portfolioId);
-        return new ResponseResult<>(result);
-    }
+//    @Operation(summary = "find all portfolio_api_module", description = "portfolio에 있는 모든 portfolio_api를 조회합니다.")
+//    @GetMapping("/{portfolioId}/api")
+//    public ResponseResult<List<PortfolioApiResponse>> findAllPortfolioApi(Long userId, @PathVariable Long portfolioId) {
+//        List<PortfolioApiResponse> result = apiService.findPortfolioApis(userId, portfolioId);
+//        return new ResponseResult<>(result);
+//    }
 
 }

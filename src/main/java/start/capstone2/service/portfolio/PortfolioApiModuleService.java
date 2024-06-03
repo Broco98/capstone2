@@ -29,19 +29,20 @@ public class PortfolioApiModuleService {
 
     // TODO user 확인 필요
     @Transactional
-    public PortfolioApiModule createPortfolioApiModule(Long userId, PortfolioApi portfolioApi, PortfolioApiModuleRequest request) {
+    public Long createPortfolioApiModule(Long userId, Long apiId, PortfolioApiModuleRequest request) {
+
+        PortfolioApi api = apiRepository.findById(apiId).orElseThrow();
 
         PortfolioApiModule module = PortfolioApiModule.builder()
                 .method(request.getMethod())
                 .url(request.getUrl())
-                .api(portfolioApi)
+                .api(api)
                 .description(request.getDescription())
                 .response(request.getResponse())
                 .build();
 
-        portfolioApi.addModule(module);
-
-        return module;
+        api.addModule(module);
+        return module.getId();
     }
     
     // TODO user 확인 필요
