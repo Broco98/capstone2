@@ -5,10 +5,11 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import start.capstone2.domain.BaseEntity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PortfolioDatabase extends BaseEntity {
 
@@ -17,21 +18,25 @@ public class PortfolioDatabase extends BaseEntity {
     @Column(name = "portfolio_datebase_id")
     private Long id;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
 
-    @Lob
-    private String schema;
+    private String name;
 
-    @Lob
-    private String description;
+    @OneToMany(mappedBy = "database", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PortfolioDatabaseSchema> schemas = new ArrayList<>();
 
+    public void updateDatabase(String name) {
+        this.name = name;
+    }
 
-    public void updateDatabase(String schema, String description) {
-        this.schema = schema;
-        this.description = description;
+    public void addSchema(PortfolioDatabaseSchema schema) {
+        schemas.add(schema);
+    }
+
+    public void removeSchema(PortfolioDatabaseSchema schema) {
+        schemas.remove(schema);
     }
 
 }

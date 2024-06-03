@@ -5,10 +5,11 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import start.capstone2.domain.BaseEntity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PortfolioApi extends BaseEntity {
 
@@ -17,22 +18,30 @@ public class PortfolioApi extends BaseEntity {
     @Column(name = "portfolio_api_id")
     private Long id;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
 
-    @Enumerated(EnumType.STRING)
-    private Method method;
-    private String url;
-    private String description;
-    private String response;
+    private String name;
 
+    @OneToMany(mappedBy = "api", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PortfolioApiModule> modules = new ArrayList<>();
 
-    public void updatePortfolioApi(Method method, String url, String description, String response) {
-        this.method = method;
-        this.url = url;
-        this.description = description;
-        this.response = response;
+    @Builder
+    public PortfolioApi(Portfolio portfolio, String name) {
+        this.portfolio = portfolio;
+        this.name = name;
+    }
+
+    public void updatePortfolioApi(String name) {
+        this.name = name;
+    }
+
+    public void addModule(PortfolioApiModule module) {
+        modules.add(module);
+    }
+
+    public void removeModule(PortfolioApiModule module) {
+        modules.remove(module);
     }
 }

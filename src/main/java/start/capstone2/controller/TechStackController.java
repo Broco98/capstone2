@@ -15,12 +15,12 @@ public class TechStackController {
 
     private final TechStackService techStackService;
 
-    @GetMapping("/")
+    @GetMapping("")
     public List<TechStackResponse> findAllTechStack() {
         return techStackService.findAllWithImage();
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     public Long createTechStack(TechStackRequest techStackRequest) {
         return techStackService.createTechStack(techStackRequest);
     }

@@ -4,15 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import start.capstone2.domain.portfolio.Portfolio;
-import start.capstone2.domain.portfolio.PortfolioApi;
 import start.capstone2.domain.portfolio.PortfolioClipping;
 import start.capstone2.domain.portfolio.repository.PortfolioClippingRepository;
 import start.capstone2.domain.portfolio.repository.PortfolioRepository;
 import start.capstone2.domain.user.User;
 import start.capstone2.domain.user.repository.UserRepository;
-import start.capstone2.dto.portfolio.PortfolioApiRequest;
-import start.capstone2.dto.portfolio.PortfolioApiResponse;
-import start.capstone2.dto.portfolio.PortfolioResponse;
 
 import java.util.ArrayList;
 import java.util.List;

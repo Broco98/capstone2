@@ -1,14 +1,11 @@
 package start.capstone2.domain.techstack;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import start.capstone2.domain.Image.Image;
 
 @Entity
 @Getter
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TechStack {
 
@@ -17,13 +14,17 @@ public class TechStack {
     @Column(name = "techstack_id")
     private Long id;
 
-    @NotNull
     private String name;
 
-    @NotNull
+    @Setter
     @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "image_id")
     private Image image;
 
 
+    @Builder
+    private TechStack(String name, Image image) {
+        this.name = name;
+        this.image = image;
+    }
 }

@@ -7,8 +7,5 @@ import start.capstone2.domain.portfolio.Method;
 @Data
 @AllArgsConstructor
 public class PortfolioApiRequest {
-    private Method method;
-    private String url;
-    private String description;
-    private String response;
+    private String name;
 }

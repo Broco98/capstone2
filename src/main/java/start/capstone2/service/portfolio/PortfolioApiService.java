@@ -7,9 +7,8 @@ import start.capstone2.domain.portfolio.Portfolio;
 import start.capstone2.domain.portfolio.PortfolioApi;
 import start.capstone2.domain.portfolio.repository.PortfolioApiRepository;
 import start.capstone2.domain.portfolio.repository.PortfolioRepository;
-import start.capstone2.domain.user.User;
 import start.capstone2.domain.user.repository.UserRepository;
-import start.capstone2.dto.portfolio.PortfolioApiRequest;
+import start.capstone2.dto.portfolio.PortfolioApiModuleRequest;
 import start.capstone2.dto.portfolio.PortfolioApiResponse;
 
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ public class PortfolioApiService {
     private final UserRepository userRepository;
     private final PortfolioRepository portfolioRepository;
     private final PortfolioApiRepository apiRepository;
-    
+
     // TODO user 확인 필요
     @Transactional
     public Long createPortfolioApi(Long userId, Long portfolioId, PortfolioApiRequest request) {
@@ -44,7 +43,7 @@ public class PortfolioApiService {
     
     // TODO user 확인 필요
     @Transactional
-    public void updatePortfolioApi(Long userId, Long apiId, PortfolioApiRequest request) {
+    public void updatePortfolioApi(Long userId, Long apiId, PortfolioApiModuleRequest request) {
         PortfolioApi api = apiRepository.findById(apiId).orElseThrow();
         api.updatePortfolioApi(
                 request.getMethod(),

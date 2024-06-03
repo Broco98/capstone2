@@ -43,7 +43,7 @@ public class S3Store {
             throw new IllegalStateException("파일이 존재하지 않습니다");
         }
 
-        return Image.createImage(originalName, saveName);
+        return Image.builder().originName(originalName).savedName(saveName).build();
     }
 
     private String createSaveFileName(String originalName) {

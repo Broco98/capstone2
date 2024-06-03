@@ -1,8 +1,10 @@
 package start.capstone2.domain.url;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import start.capstone2.domain.portfolio.PortfolioUrl;
 import start.capstone2.domain.user.User;
 
@@ -11,8 +13,6 @@ import java.util.List;
 
 @Entity
 @Getter
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Url {
 
@@ -25,14 +25,18 @@ public class Url {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @NotNull
     private String url;
 
-    @Builder.Default
     @OneToMany(mappedBy = "url", cascade = CascadeType.ALL, orphanRemoval = true)
     List<PortfolioUrl> portfolioUrls = new ArrayList<>();
 
 
+    @Builder
+    private Url(User user, String url, List<PortfolioUrl> portfolioUrls) {
+        this.user = user;
+        this.url = url;
+        this.portfolioUrls = portfolioUrls;
+    }
 
     public void addPortfolioUrl(PortfolioUrl portfolioUrl) {
         portfolioUrls.add(portfolioUrl);

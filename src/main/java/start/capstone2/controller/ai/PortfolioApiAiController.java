@@ -12,7 +12,6 @@ import net.sourceforge.plantuml.SourceStringReader;
 import org.springframework.ai.chat.ChatClient;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.SystemMessage;
-import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,14 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
 import start.capstone2.domain.portfolio.Portfolio;
 import start.capstone2.domain.portfolio.PortfolioFunction;
 import start.capstone2.domain.portfolio.PortfolioFunctionModule;
+import start.capstone2.service.portfolio.PortfolioApiService;
 import start.capstone2.service.portfolio.PortfolioDesignService;
 import start.capstone2.service.portfolio.PortfolioFunctionService;
 import start.capstone2.service.portfolio.PortfolioService;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -39,15 +37,16 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/ai/portfolio/")
-public class PortfolioDesignAiController {
+public class PortfolioApiAiController {
 
     private final PortfolioService portfolioService;
     private final PortfolioDesignService designService;
     private final PortfolioFunctionService functionService;
+    private final PortfolioApiService apiService;
     private final ChatClient chatClient;
 
     @PostMapping("/{portfolioId}/design")
-    public ResponseEntity<String> generatePortfolioDesign(Long userId, @PathVariable Long portfolioId) {
+    public ResponseEntity<String> generatePortfolioApi(Long userId, @PathVariable Long portfolioId) {
 
         Portfolio portfolio = portfolioService.findById(portfolioId);
         List<PortfolioFunction> functions = portfolio.getFunctions();

@@ -1,12 +1,14 @@
 package start.capstone2.domain.portfolio;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 
 @Entity
 @Getter
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PortfolioFunctionModule {
 
@@ -23,6 +25,13 @@ public class PortfolioFunctionModule {
 
     @Lob
     private String description;
+
+    @Builder
+    private PortfolioFunctionModule(PortfolioFunction function, String name, String description) {
+        this.function = function;
+        this.name = name;
+        this.description = description;
+    }
 
     public void updateFunctionModule(String name, String description) {
         this.name = name;

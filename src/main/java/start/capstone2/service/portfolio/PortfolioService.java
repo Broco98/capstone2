@@ -122,7 +122,7 @@ public class PortfolioService {
     }
     
     // 단일 조회
-    public Portfolio findById(Long portfolioId) {
+    public PortfolioResponse findById(Long portfolioId) {
         return portfolioRepository.findById(portfolioId).orElseThrow();
     }
 

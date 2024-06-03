@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import start.capstone2.domain.BaseEntity;
 
+// TODO
 @Getter
 @Entity
 @Builder

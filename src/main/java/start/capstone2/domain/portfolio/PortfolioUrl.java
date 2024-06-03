@@ -8,8 +8,6 @@ import start.capstone2.domain.url.Url;
 
 @Entity
 @Getter
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PortfolioUrl extends BaseEntity {
 
@@ -18,15 +16,17 @@ public class PortfolioUrl extends BaseEntity {
     @Column(name = "portfolio_url_id")
     private Long id;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "url_id")
     private Url url;
 
-
+    @Builder
+    private PortfolioUrl(Portfolio portfolio, Url url) {
+        this.portfolio = portfolio;
+        this.url = url;
+    }
 }

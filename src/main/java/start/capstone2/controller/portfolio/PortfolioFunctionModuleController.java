@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import start.capstone2.dto.ResponseResult;
 import start.capstone2.dto.portfolio.PortfolioFunctionModuleRequest;
 import start.capstone2.dto.portfolio.PortfolioFunctionModuleResponse;
-import start.capstone2.dto.portfolio.PortfolioFunctionRequest;
-import start.capstone2.dto.portfolio.PortfolioFunctionResponse;
 import start.capstone2.service.portfolio.PortfolioFunctionModuleService;
 import start.capstone2.service.portfolio.PortfolioFunctionService;
 

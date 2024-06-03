@@ -1,17 +1,14 @@
 package start.capstone2.domain.Image;
 
 import jakarta.persistence.*;
-import lombok.*;
-
-import java.io.File;
-import java.util.StringTokenizer;
-import java.util.UUID;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 
 @Entity
 @Getter
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Image {
 
@@ -23,15 +20,9 @@ public class Image {
     private String originName;
     private String savedName;
 
-    public static Image createEmptyImage() {
-        return new Image();
-    }
-
-    public static Image createImage(String originName, String savedName) {
-        Image image = new Image();
-        image.originName = originName;
-        image.savedName = savedName;
-
-        return image;
+    @Builder
+    private Image(String originName, String savedName) {
+        this.originName = originName;
+        this.savedName = savedName;
     }
 }

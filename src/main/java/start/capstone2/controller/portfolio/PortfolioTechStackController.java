@@ -5,8 +5,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import start.capstone2.domain.portfolio.Portfolio;
-import start.capstone2.domain.portfolio.PortfolioTechStack;
 import start.capstone2.dto.ResponseResult;
 import start.capstone2.dto.portfolio.PortfolioTechStackRequest;
 import start.capstone2.dto.portfolio.PortfolioTechStackResponse;

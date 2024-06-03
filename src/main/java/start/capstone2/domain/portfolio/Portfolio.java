@@ -1,8 +1,6 @@
 package start.capstone2.domain.portfolio;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import start.capstone2.domain.BaseEntity;
 import start.capstone2.domain.Image.Image;
@@ -14,8 +12,6 @@ import java.util.List;
 
 @Entity
 @Getter
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Portfolio extends BaseEntity{
 
@@ -40,48 +36,50 @@ public class Portfolio extends BaseEntity{
     @JoinColumn(name = "image_id")
     private Image cardImage;
 
-    @Builder.Default
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PortfolioDesign> designs = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PortfolioApi> apis = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PortfolioCode> codes = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PortfolioFeedback> feedbacks = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PortfolioComment> comments = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PortfolioFunction> functions = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PortfolioUrl> urls = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PortfolioTechStack> techStacks = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PortfolioInterview> interviews = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PortfolioDatabase> databases = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private ShareStatus status;
+
+    @Builder
+    private Portfolio(User user, String title, LocalDate startDate, LocalDate endDate, Integer teamNum, String description, Integer contribution, Image cardImage) {
+        this.user = user;
+        this.title = title;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.teamNum = teamNum;
+        this.description = description;
+        this.contribution = contribution;
+        this.cardImage = cardImage;
+    }
 
     public void updatePortfolio(String title, LocalDate startDate, LocalDate endDate, Integer teamNum, String description, Integer contribution, Image cardImage, ShareStatus status) {
         this.title = title;

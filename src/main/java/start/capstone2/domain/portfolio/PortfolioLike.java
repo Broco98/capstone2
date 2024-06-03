@@ -11,8 +11,6 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 public class PortfolioLike {
@@ -22,12 +20,10 @@ public class PortfolioLike {
     @Column(name = "portfolio_like_id")
     private Long id;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
@@ -35,10 +31,14 @@ public class PortfolioLike {
     @CreatedDate
     private LocalDateTime createdDate;
 
-
     @PrePersist
     public void prePersist() {
         createdDate = LocalDateTime.now();;
     }
 
+    @Builder
+    private PortfolioLike(User user, Portfolio portfolio) {
+        this.user = user;
+        this.portfolio = portfolio;
+    }
 }
