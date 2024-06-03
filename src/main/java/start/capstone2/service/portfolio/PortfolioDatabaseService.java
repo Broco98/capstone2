@@ -39,19 +39,20 @@ public class PortfolioDatabaseService {
 
 
     @Transactional
-    public void updatePortfolioDatabase(Long userId, Long databaseId, PortfolioDatabaseRequest request) {
-        PortfolioDatabase database = databaseRepository.findById(databaseId).orElseThrow();
+    public void updatePortfolioDatabase(Long userId, Long portfolioId, Long databaseId, PortfolioDatabaseRequest request) {
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+        PortfolioDatabase database = portfolio.getDatabases().stream().filter(d->d.getId().equals(databaseId)).findFirst().orElseThrow();
         database.updateDatabase(request.getName());
     }
 
     @Transactional
     public void deletePortfolioDatabase(Long userId, Long portfolioId, Long databaseId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
-        PortfolioDatabase database = databaseRepository.findById(databaseId).orElseThrow();
+        PortfolioDatabase database = portfolio.getDatabases().stream().filter(d->d.getId().equals(databaseId)).findFirst().orElseThrow();
         portfolio.removeDatabase(database);
     }
 
-    // TODO
+
     // 해당 포트폴리오의 모든 database 조회
     public List<PortfolioDatabaseResponse> findPortfolioDatabase(Long userId, Long portfolioId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();

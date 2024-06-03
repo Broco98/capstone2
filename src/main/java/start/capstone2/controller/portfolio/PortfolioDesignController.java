@@ -12,7 +12,7 @@ import start.capstone2.service.portfolio.PortfolioDesignService;
 
 import java.util.List;
 
-@Tag(name="PortfolioDesign api", description = "portfolio 설계 관리")
+@Tag(name="Portfolio Design Api", description = "portfolio 설계 api")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/portfolio")
@@ -29,7 +29,7 @@ public class PortfolioDesignController {
     @Operation(summary = "update portfolio design", description = "포트폴리오 설계 수정")
     @PutMapping("/{portfolioId}/design/{designId}")
     public void updatePortfolioDesign(Long userId, @PathVariable Long portfolioId, @PathVariable Long designId, PortfolioDesignRequest request) {
-        designService.updatePortfolioDesign(userId, designId, request);
+        designService.updatePortfolioDesign(userId, portfolioId, designId, request);
     }
 
     @Operation(summary = "delete portfolio design", description = "포트폴리오 설계 단일 삭제")

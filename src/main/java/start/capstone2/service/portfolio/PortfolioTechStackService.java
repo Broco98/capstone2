@@ -27,7 +27,6 @@ public class PortfolioTechStackService {
     private final TechStackRepository techStackRepository;
     private final PortfolioTechStackRepository portfolioTechStackRepository;
 
-    // TODO user 정보 필요
     // List로 받은 모든 techstack 생성
     @Transactional
     public void createPortfolioTechStack(Long userId, Long portfolioId, PortfolioTechStackRequest request) {
@@ -46,9 +45,7 @@ public class PortfolioTechStackService {
             }
         }
     }
-    
-    // TODO user 정보 필요
-    // 단일 삭제
+
     @Transactional
     public void deletePortfolioTechStack(Long userId, Long portfolioId, Long techStackId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();

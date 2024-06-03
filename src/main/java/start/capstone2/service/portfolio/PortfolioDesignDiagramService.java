@@ -31,7 +31,9 @@ public class PortfolioDesignDiagramService {
     private final S3Store store;
 
     @Transactional
-    public Long createPortfolioDesignDiagram(Long userId, PortfolioDesign design, PortfolioDesignDiagramRequest request) {
+    public Long createPortfolioDesignDiagram(Long userId, Long designId, PortfolioDesignDiagramRequest request) {
+
+        PortfolioDesign design = designRepository.findById(designId).orElseThrow();
 
         Image image = null;
         if (request.getImage() != null) {
@@ -60,6 +62,10 @@ public class PortfolioDesignDiagramService {
             image = store.saveImage(request.getImage());
         }
 
+        if (diagram.getImage() != null) {
+            store.removeImage(diagram.getImage().getSavedName());
+        }
+
         diagram.updatePortfolioDesignDiagram(request.getDiagram(), image, request.getDescription());
     }
     
@@ -67,6 +73,9 @@ public class PortfolioDesignDiagramService {
     public void deletePortfolioDesignDiagram(Long userId, Long designId, Long diagramId) {
         PortfolioDesign design = designRepository.findById(designId).orElseThrow();
         PortfolioDesignDiagram diagram = design.getDiagrams().stream().filter(d->d.getId().equals(diagramId)).findFirst().orElseThrow();
+        if (diagram.getImage() != null) {
+            store.removeImage(diagram.getImage().getSavedName());
+        }
         design.removeDiagram(diagram);
     }
 

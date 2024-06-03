@@ -45,27 +45,20 @@ public class PortfolioFeedbackService {
         return portfolioFeedback.getId();
     }
 
-    // TODO user 확인 필요
     @Transactional
-    public void updatePortfolioFeedback(Long userId, Long feedbackId, PortfolioFeedbackRequest request) {
-
-        PortfolioFeedback feedback = feedbackRepository.findById(feedbackId).orElseThrow();
-
-        feedback.updateFeedback(
-                request.getContent(),
-                request.getLocation()
-        );
+    public void updatePortfolioFeedback(Long userId, Long portfolioId, Long feedbackId, PortfolioFeedbackRequest request) {
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+        PortfolioFeedback feedback = portfolio.getFeedbacks().stream().filter(f -> f.getId().equals(feedbackId)).findFirst().orElseThrow();
+        feedback.updateFeedback(request.getContent(), request.getLocation());
     }
     
-    // TODO user 확인 필요
     @Transactional
     public void deletePortfolioFeedback(Long userId, Long portfolioId, Long feedbackId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
-        PortfolioFeedback feedback = feedbackRepository.findById(feedbackId).orElseThrow();
+        PortfolioFeedback feedback = portfolio.getFeedbacks().stream().filter(f -> f.getId().equals(feedbackId)).findFirst().orElseThrow();
         portfolio.removeFeedback(feedback);
     }
     
-    // TODO user 확인 필요
     // portfolio의 모든 feedback 조회
     public List<PortfolioFeedbackResponse> findPortfolioFeedbacks(Long userId, Long portfolioId) {
         List<PortfolioFeedback> feedbacks = feedbackRepository.findAllByPortfolioId(portfolioId);

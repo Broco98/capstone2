@@ -24,7 +24,6 @@ public class PortfolioLikeService {
     private final UserRepository userRepository;
 
 
-    // TODO user 확인 필요
     @Transactional
     public Long createPortfolioLike(Long userId, Long portfolioId) {
 
@@ -37,17 +36,14 @@ public class PortfolioLikeService {
                 .build();
 
         likeRepository.save(like);
-
         return like.getId();
     }
 
-    // TODO user 확인 필요
     @Transactional
     public void deletePortfolioLike(Long userId, Long clippingId) {
         likeRepository.deleteById(clippingId);
     }
 
-    // TODO user 확인 필요
     // user가 스크랩한 portfolio 모두 조회
     public List<Portfolio> findPortfolioLike(Long userId) {
         List<PortfolioLike> likes = likeRepository.findAllByUserId(userId);

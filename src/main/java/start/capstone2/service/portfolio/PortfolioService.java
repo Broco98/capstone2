@@ -24,7 +24,6 @@ public class PortfolioService {
     private final PortfolioRepository portfolioRepository;
     private final S3Store store;
     
-    // TODO user 정보 필요
     @Transactional
     public Long createPortfolio(Long userId, PortfolioRequest request) {
 
@@ -33,19 +32,16 @@ public class PortfolioService {
             image = store.saveImage(request.getImage());
         }
 
-        // portfolio 와 portfolioDetail로 나누는게 맞았네... -> 지금이라도 나눌까 ㅇㅅ
-        Portfolio portfolio = Portfolio.builder().build(); // 그냥 빈 포트폴리오 생성
-//        Portfolio portfolio = Portfolio.builder()
+        Portfolio portfolio = Portfolio.builder()
 //                .user(user)
-//                .cardImage(image)
-//                .description(request.getDescription())
-//                .startDate(request.getStartDate())
-//                .endDate(request.getEndDate())
-//                .contribution(request.getContribution())
-//                .title(request.getTitle())
-//                .status(request.getStatus())
-//                .teamNum(request.getTeamNum())
-//                .build();
+                .cardImage(image)
+                .description(request.getDescription())
+                .startDate(request.getStartDate())
+                .endDate(request.getEndDate())
+                .contribution(request.getContribution())
+                .title(request.getTitle())
+                .teamNum(request.getTeamNum())
+                .build();
 
         portfolioRepository.save(portfolio);
         return portfolio.getId();
@@ -88,7 +84,7 @@ public class PortfolioService {
         List<PortfolioResponse> results = new ArrayList<>();
         for (Portfolio portfolio : portfolios) {
 
-            String imageUrl = "default";
+            String imageUrl = null;
             if (portfolio.getCardImage() != null) {
                 imageUrl = portfolio.getCardImage().getSavedName();
             }
@@ -122,8 +118,24 @@ public class PortfolioService {
     }
     
     // 단일 조회
-//    public PortfolioResponse findById(Long portfolioId) {
-//        return portfolioRepository.findById(portfolioId).orElseThrow();
-//    }
+    public PortfolioResponse findById(Long portfolioId) {
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+
+        String imageUrl = null;
+        if (portfolio.getCardImage() != null) {
+            imageUrl = portfolio.getCardImage().getSavedName();
+        }
+
+        return new PortfolioResponse(
+                portfolio.getId(),
+                imageUrl,
+                portfolio.getTitle(),
+                portfolio.getStartDate(),
+                portfolio.getEndDate(),
+                portfolio.getTeamNum(),
+                portfolio.getDescription(),
+                portfolio.getContribution(),
+                portfolio.getStatus());
+    }
 
 }

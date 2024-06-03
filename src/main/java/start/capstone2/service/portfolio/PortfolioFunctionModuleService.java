@@ -27,20 +27,6 @@ public class PortfolioFunctionModuleService {
     private final PortfolioFunctionRepository functionRepository;
     private final PortfolioFunctionModuleRepository moduleRepository;
 
-    public Long createPortfolioFunctionModule(Long userId, PortfolioFunction function, PortfolioFunctionModuleRequest request) {
-        User user = userRepository.findById(userId).orElseThrow();
-        PortfolioFunctionModule functionModule = PortfolioFunctionModule.builder()
-                .function(function)
-                .name(request.getName())
-                .description(request.getDescription())
-                .build();
-
-        function.addModule(functionModule);
-        return functionModule.getId();
-    }
-
-
-    // TODO user 확인 필요
     @Transactional
     public Long createPortfolioFunctionModule(Long userId, Long functionId, PortfolioFunctionModuleRequest request) {
         User user = userRepository.findById(userId).orElseThrow();
@@ -56,22 +42,21 @@ public class PortfolioFunctionModuleService {
         return functionModule.getId();
     }
 
-    // TODO user 확인 필요
     @Transactional
-    public void updatePortfolioFunctionModule(Long userId, Long moduleId, PortfolioFunctionModuleRequest request) {
-        PortfolioFunctionModule module = moduleRepository.findById(moduleId).orElseThrow();
+    public void updatePortfolioFunctionModule(Long userId, Long functionId, Long moduleId, PortfolioFunctionModuleRequest request) {
+        PortfolioFunction function = functionRepository.findById(functionId).orElseThrow();
+        PortfolioFunctionModule module = function.getModules().stream().filter(m->m.getId().equals(moduleId)).findFirst().orElseThrow();
         module.updateFunctionModule(request.getName(), request.getDescription());
     }
 
     // TODO user 확인 필요
     @Transactional
-    public void deletePortfolioFunction(Long userId, Long functionId, Long moduleId) {
+    public void deletePortfolioFunctionModule(Long userId, Long functionId, Long moduleId) {
         PortfolioFunction function = functionRepository.findById(functionId).orElseThrow();
-        PortfolioFunctionModule module = moduleRepository.findById(moduleId).orElseThrow();
+        PortfolioFunctionModule module = function.getModules().stream().filter(m->m.getId().equals(moduleId)).findFirst().orElseThrow();
         function.removeModule(module);
     }
 
-    // TODO user 확인 필요
     // function 모든 module 조회
     public List<PortfolioFunctionModuleResponse> findPortfolioFunctionModule(Long userId, Long functionId) {
         List<PortfolioFunctionModule> modules = moduleRepository.findAllByFunction_Id(functionId);

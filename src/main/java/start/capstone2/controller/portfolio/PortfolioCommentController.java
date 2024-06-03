@@ -12,8 +12,7 @@ import start.capstone2.service.portfolio.PortfolioCommentService;
 
 import java.util.List;
 
-@Tag(name="PortfolioComment api", description = "portfolio 댓글 관리")
-@Slf4j
+@Tag(name="Portfolio Comment Api", description = "portfolio 댓글 api")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/portfolio")
@@ -21,25 +20,25 @@ public class PortfolioCommentController {
 
     private final PortfolioCommentService commentService;
 
-    @Operation(summary = "create portfolio_comment", description = "해당 포트폴리오에 댓글 하나를 생성합니다.")
+    @Operation(summary = "create portfolio comment")
     @PostMapping("/{portfolioId}/comment")
     public Long createPortfolioComment(Long userId, @PathVariable Long portfolioId, PortfolioCommentRequest request) {
         return commentService.createPortfolioComment(userId, portfolioId, request);
     }
     
-    @Operation(summary = "update portfolio_comment", description = "포트폴리오 댓글 하나를 수정합니다")
+    @Operation(summary = "update portfolio comment")
     @PutMapping("/{portfolioId}/comment/{commentId}")
     public void updatePortfolioComment(Long userId, @PathVariable Long portfolioId, @PathVariable Long commentId, PortfolioCommentRequest request) {
-        commentService.updatePortfolioComment(userId, portfolioId, request);
+        commentService.updatePortfolioComment(userId, portfolioId, commentId, request);
     }
 
-    @Operation(summary = "delete portfolio_comment", description = "포트폴리오 댓글 하나를 삭제합니다.")
+    @Operation(summary = "delete portfolio comment")
     @DeleteMapping("/{portfolioId}/comment/{commentId}")
     public void deletePortfolioComment(Long userId, @PathVariable Long portfolioId, @PathVariable Long commentId) {
         commentService.deletePortfolioComment(userId, portfolioId, commentId);
     }
 
-    @Operation(summary = "find all portfolio_comment", description = "포트폴리오에 있는 모든 댓글을 조회합니다.")
+    @Operation(summary = "find all portfolio comment")
     @GetMapping("/{portfolioId}/comment")
     public ResponseResult<List<PortfolioCommentResponse>> findAllPortfolioComment(Long userId, @PathVariable Long portfolioId) {
         List<PortfolioCommentResponse> result = commentService.findPortfolioComments(userId, portfolioId);

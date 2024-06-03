@@ -39,15 +39,16 @@ public class PortfolioApiService {
     }
     
     @Transactional
-    public void updatePortfolioApi(Long userId, Long apiId, PortfolioApiRequest request) {
-        PortfolioApi api = apiRepository.findById(apiId).orElseThrow();
+    public void updatePortfolioApi(Long userId, Long portfolioId, Long apiId, PortfolioApiRequest request) {
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+        PortfolioApi api = portfolio.getApis().stream().filter(a->a.getId().equals(apiId)).findFirst().orElseThrow();
         api.updatePortfolioApi(request.getName());
     }
 
     @Transactional
     public void deletePortfolioApi(Long userId, Long portfolioId, Long apiId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
-        PortfolioApi api = apiRepository.findById(apiId).orElseThrow();
+        PortfolioApi api = portfolio.getApis().stream().filter(a->a.getId().equals(apiId)).findFirst().orElseThrow();
         portfolio.removeApi(api);
     }
 

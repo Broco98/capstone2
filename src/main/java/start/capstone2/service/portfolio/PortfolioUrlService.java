@@ -30,10 +30,8 @@ public class PortfolioUrlService {
     private final PortfolioUrlRepository portfolioUrlRepository;
     private final UrlRepository urlRepository;
 
-    // TODO user 확인 필요
     @Transactional
     public Long createPortfolioUrl(Long userId, Long portfolioId, Long urlId) {
-        User user = userRepository.findById(userId).orElseThrow();
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
         Url url = urlRepository.findById(urlId).orElseThrow();
 
@@ -47,7 +45,6 @@ public class PortfolioUrlService {
         return portfolioUrl.getId();
     }
 
-    // TODO user 확인 필요
     @Transactional
     public void deletePortfolioUrl(Long userId, Long portfolioId, Long portfolioUrlId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
@@ -58,15 +55,15 @@ public class PortfolioUrlService {
         url.removePortfolioUrl(portfolioUrl);
     }
     
-    // TODO 미완
-    public List<PortfolioUrlResponse> findAllByPortfolioId(Long userId, Long portfolioId) {
-        List<PortfolioUrl> urls = portfolioUrlRepository.findAllByPortfolioIdWithUrl(portfolioId);
-        List<PortfolioUrlResponse> results = new ArrayList<>();
-        for (PortfolioUrl portfolioUrl : urls) {
-            Url url = portfolioUrl.getUrl();
-            results.add(new PortfolioUrlResponse(url.getId(), url.getUrl()));
-        }
-        return results;
-    }
+//    // TODO 미완
+//    public List<PortfolioUrlResponse> findAllByPortfolioId(Long userId, Long portfolioId) {
+//        List<PortfolioUrl> urls = portfolioUrlRepository.findAllByPortfolioIdWithUrl(portfolioId);
+//        List<PortfolioUrlResponse> results = new ArrayList<>();
+//        for (PortfolioUrl portfolioUrl : urls) {
+//            Url url = portfolioUrl.getUrl();
+//            results.add(new PortfolioUrlResponse(url.getId(), url.getUrl()));
+//        }
+//        return results;
+//    }
 
 }

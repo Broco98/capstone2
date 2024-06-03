@@ -40,15 +40,16 @@ public class PortfolioCommentService {
     }
 
     @Transactional
-    public void updatePortfolioComment(Long userId, Long commentId, PortfolioCommentRequest request) {
-        PortfolioComment comment = commentRepository.findById(commentId).orElseThrow();
+    public void updatePortfolioComment(Long userId, Long portfolioId, Long commentId, PortfolioCommentRequest request) {
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+        PortfolioComment comment = portfolio.getComments().stream().filter(c->c.getId().equals(commentId)).findFirst().orElseThrow();
         comment.updateContent(request.getContent());
     }
 
     @Transactional
     public void deletePortfolioComment(Long userId, Long portfolioId, Long commentId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
-        PortfolioComment comment = commentRepository.findById(commentId).orElseThrow();
+        PortfolioComment comment = portfolio.getComments().stream().filter(c->c.getId().equals(commentId)).findFirst().orElseThrow();
         portfolio.removeComment(comment);
     }
 

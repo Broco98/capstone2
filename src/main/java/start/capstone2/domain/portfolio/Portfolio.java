@@ -64,7 +64,7 @@ public class Portfolio extends BaseEntity{
     private List<PortfolioDatabase> databases = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
-    private ShareStatus status;
+    private ShareStatus status = ShareStatus.NOT_SHARED;
 
     @Builder
     private Portfolio(User user, String title, LocalDate startDate, LocalDate endDate, Integer teamNum, String description, Integer contribution, Image cardImage) {

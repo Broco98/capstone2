@@ -11,7 +11,7 @@ import start.capstone2.service.portfolio.PortfolioFunctionService;
 
 import java.util.List;
 
-@Tag(name = "PortfolioFunction api", description = "포트폴리오 기능 관리")
+@Tag(name = "Portfolio Function Api", description = "portfolio 기능 api")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/portfolio")
@@ -19,25 +19,25 @@ public class PortfolioFunctionController {
 
     private final PortfolioFunctionService functionService;
     
-    @Operation(summary = "create portfolio function", description = "포트폴리오 기능 명세 생성")
+    @Operation(summary = "create portfolio function")
     @PostMapping("/{portfolioId}/function")
     public Long createPortfolioFunction(Long userId, @PathVariable Long portfolioId, PortfolioFunctionRequest request) {
         return functionService.createPortfolioFunction(userId, portfolioId, request);
     }
     
-    @Operation(summary = "update portfolio function", description = "포트폴리오 기능 명세 수정")
+    @Operation(summary = "update portfolio function")
     @PutMapping("/{portfolioId}/function/{functionId}")
     public void updatePortfolioFunction(Long userId, @PathVariable Long portfolioId, @PathVariable Long functionId, PortfolioFunctionRequest request) {
         functionService.updatePortfolioFunction(userId, portfolioId, functionId, request);
     }
 
-    @Operation(summary = "delete portfolio function", description = "포트폴리오 기능 명세 삭제")
+    @Operation(summary = "delete portfolio function")
     @DeleteMapping("/{portfolioId}/function/{functionId}")
     public void deletePortfolioFunction(Long userId, @PathVariable Long portfolioId, @PathVariable Long functionId) {
         functionService.deletePortfolioFunction(userId, portfolioId, functionId);
     }
 
-    @Operation(summary = "find all portfolio function", description = "포트폴리오의 모든 기능 명세 조회")
+    @Operation(summary = "find all portfolio function")
     @GetMapping("/{portfolioId}/function")
     public ResponseResult<List<PortfolioFunctionResponse>> findAllPortfolioFunction(Long userId, @PathVariable Long portfolioId) {
         List<PortfolioFunctionResponse> result = functionService.findPortfolioFunctions(userId, portfolioId);

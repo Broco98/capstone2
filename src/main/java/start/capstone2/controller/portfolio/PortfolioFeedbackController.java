@@ -11,7 +11,7 @@ import start.capstone2.service.portfolio.PortfolioFeedbackService;
 
 import java.util.List;
 
-@Tag(name = "PortfolioFeedback api", description = "portfolio 피드백 관리")
+@Tag(name = "Portfolio Feedback Api", description = "portfolio 피드백 api")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/portfolio")
@@ -19,25 +19,25 @@ public class PortfolioFeedbackController {
 
     private final PortfolioFeedbackService feedbackService;
 
-    @Operation(summary = "create portfolio feedback", description = "portfolio 피드백 단일 생성")
+    @Operation(summary = "create portfolio feedback")
     @PostMapping("/{portfolioId}/feedback")
     public Long createPortfolioFeedback(Long userId, @PathVariable Long portfolioId, PortfolioFeedbackRequest request) {
         return feedbackService.createPortfolioFeedback(userId, portfolioId, request);
     }
 
-    @Operation(summary = "update portfolio feedback", description = "portfolio 피드백 단일 수정")
+    @Operation(summary = "update portfolio feedback")
     @PutMapping("/{portfolioId}/feedback/{feedbackId}")
     public void updatePortfolioFeedback(Long userId, @PathVariable Long portfolioId, @PathVariable Long feedbackId, PortfolioFeedbackRequest request) {
-        feedbackService.updatePortfolioFeedback(userId, feedbackId, request);
+        feedbackService.updatePortfolioFeedback(userId, portfolioId, feedbackId, request);
     }
     
-    @Operation(summary = "delete portfolio feedback", description = "portfolio 피드백 삭제")
+    @Operation(summary = "delete portfolio feedback")
     @DeleteMapping("/{portfolioId}/feedback/{feedbackId}")
     public void deletePortfolioFeedback(Long userId, @PathVariable Long portfolioId, @PathVariable Long feedbackId) {
         feedbackService.deletePortfolioFeedback(userId, portfolioId, feedbackId);
     }
 
-    @Operation(summary = "find all portfolio feedback", description = "선택한 portfolio의 모든 feedback 조회")
+    @Operation(summary = "find all portfolio feedback")
     @GetMapping("/{portfolioId}/feedback")
     public ResponseResult<List<PortfolioFeedbackResponse>> findAllPortfolioFeedback(Long userId, @PathVariable Long portfolioId) {
         List<PortfolioFeedbackResponse> result = feedbackService.findPortfolioFeedbacks(userId, portfolioId);

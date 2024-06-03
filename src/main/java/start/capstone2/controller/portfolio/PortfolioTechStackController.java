@@ -12,7 +12,8 @@ import start.capstone2.service.portfolio.PortfolioTechStackService;
 
 import java.util.List;
 
-@Tag(name = "PortfolioTechStack api", description = "포트폴리오의 techstack 관리")
+// TODO Main 기능은 아니니까 일단 보류
+@Tag(name = "Portfolio Tech Stack api", description = "포트폴리오의 tech stack 관리")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/portfolio")
