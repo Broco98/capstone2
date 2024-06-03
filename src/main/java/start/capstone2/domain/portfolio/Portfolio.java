@@ -29,7 +29,7 @@ public class Portfolio extends BaseEntity{
     private LocalDate endDate;
     private Integer teamNum;
     private String description;
-    private Integer contribution;
+    private String contribution;
 
     @Setter
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -67,7 +67,7 @@ public class Portfolio extends BaseEntity{
     private ShareStatus status = ShareStatus.NOT_SHARED;
 
     @Builder
-    private Portfolio(User user, String title, LocalDate startDate, LocalDate endDate, Integer teamNum, String description, Integer contribution, Image cardImage) {
+    private Portfolio(User user, String title, LocalDate startDate, LocalDate endDate, Integer teamNum, String description, String contribution, Image cardImage) {
         this.user = user;
         this.title = title;
         this.startDate = startDate;
@@ -78,7 +78,7 @@ public class Portfolio extends BaseEntity{
         this.cardImage = cardImage;
     }
 
-    public void updatePortfolio(String title, LocalDate startDate, LocalDate endDate, Integer teamNum, String description, Integer contribution, Image cardImage, ShareStatus status) {
+    public void updatePortfolio(String title, LocalDate startDate, LocalDate endDate, Integer teamNum, String description, String contribution, Image cardImage, ShareStatus status) {
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;

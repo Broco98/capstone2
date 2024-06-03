@@ -10,7 +10,4 @@ public interface PortfolioApiRepository extends JpaRepository<PortfolioApi, Long
 
     List<PortfolioApi> findAllByPortfolioId(Long portfolioId);
 
-    @EntityGraph(attributePaths = {"module"})
-    PortfolioApi findByIdWithModule(Long id);
-
 }

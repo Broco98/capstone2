@@ -21,7 +21,7 @@ public class PortfolioResponse {
     private LocalDate endDate;
     private Integer teamNum;
     private String description;
-    private Integer contribution;
+    private String contribution;
     private ShareStatus status;
 
 }
