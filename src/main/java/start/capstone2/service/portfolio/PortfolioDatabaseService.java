@@ -5,11 +5,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import start.capstone2.domain.portfolio.Portfolio;
 import start.capstone2.domain.portfolio.PortfolioDatabase;
+import start.capstone2.domain.portfolio.PortfolioDatabaseSchema;
 import start.capstone2.domain.portfolio.repository.PortfolioDatabaseRepository;
 import start.capstone2.domain.portfolio.repository.PortfolioRepository;
 import start.capstone2.domain.user.repository.UserRepository;
 import start.capstone2.dto.portfolio.PortfolioDatabaseRequest;
 import start.capstone2.dto.portfolio.PortfolioDatabaseResponse;
+import start.capstone2.dto.portfolio.PortfolioDatabaseSchemaResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,29 +25,25 @@ public class PortfolioDatabaseService {
     private final PortfolioRepository portfolioRepository;
     private final PortfolioDatabaseRepository databaseRepository;
 
-    // TODO user 정보 필요
     @Transactional
     public Long createPortfolioDatabase(Long userId, Long portfolioId, PortfolioDatabaseRequest request) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
 
         PortfolioDatabase database = PortfolioDatabase.builder()
                 .portfolio(portfolio)
-                .schema(request.getSchema())
-                .description(request.getDescription())
+                .name(request.getName())
                 .build();
         portfolio.addDatabase(database);
         return database.getId();
     }
 
 
-    // TODO user 정보 필요
     @Transactional
     public void updatePortfolioDatabase(Long userId, Long databaseId, PortfolioDatabaseRequest request) {
         PortfolioDatabase database = databaseRepository.findById(databaseId).orElseThrow();
-        database.updateDatabase(request.getSchema(), request.getDescription());
+        database.updateDatabase(request.getName());
     }
 
-    // TODO user 정보 필요
     @Transactional
     public void deletePortfolioDatabase(Long userId, Long portfolioId, Long databaseId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
@@ -53,13 +51,20 @@ public class PortfolioDatabaseService {
         portfolio.removeDatabase(database);
     }
 
-    // TODO user 정보 필요
+    // TODO
     // 해당 포트폴리오의 모든 database 조회
     public List<PortfolioDatabaseResponse> findPortfolioDatabase(Long userId, Long portfolioId) {
-        List<PortfolioDatabase> databases = databaseRepository.findAllByPortfolioId(portfolioId);
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+        List<PortfolioDatabase> databases = portfolio.getDatabases();
+
         List<PortfolioDatabaseResponse> results = new ArrayList<>();
         for (PortfolioDatabase database : databases) {
-            results.add(new PortfolioDatabaseResponse(database.getId(), database.getSchema(), database.getDescription()));
+            List<PortfolioDatabaseSchemaResponse> schemaResponses = new ArrayList<>();
+            List<PortfolioDatabaseSchema> schemas = database.getSchemas();
+            for (PortfolioDatabaseSchema s : schemas) {
+                schemaResponses.add(new PortfolioDatabaseSchemaResponse(s.getId(), s.getSchema(), s.getDescription()));
+            }
+            results.add(new PortfolioDatabaseResponse(database.getId(), database.getName(), schemaResponses));
         }
         return results;
     }

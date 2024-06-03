@@ -5,10 +5,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import start.capstone2.domain.portfolio.Portfolio;
 import start.capstone2.domain.portfolio.PortfolioApi;
+import start.capstone2.domain.portfolio.PortfolioApiModule;
 import start.capstone2.domain.portfolio.repository.PortfolioApiRepository;
 import start.capstone2.domain.portfolio.repository.PortfolioRepository;
 import start.capstone2.domain.user.repository.UserRepository;
-import start.capstone2.dto.portfolio.PortfolioApiModuleRequest;
+import start.capstone2.dto.portfolio.PortfolioApiModuleResponse;
+import start.capstone2.dto.portfolio.PortfolioApiRequest;
 import start.capstone2.dto.portfolio.PortfolioApiResponse;
 
 import java.util.ArrayList;
@@ -23,53 +25,55 @@ public class PortfolioApiService {
     private final PortfolioRepository portfolioRepository;
     private final PortfolioApiRepository apiRepository;
 
-    // TODO user 확인 필요
     @Transactional
     public Long createPortfolioApi(Long userId, Long portfolioId, PortfolioApiRequest request) {
-
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
 
         PortfolioApi api = PortfolioApi.builder()
+                .name(request.getName())
                 .portfolio(portfolio)
-                .method(request.getMethod())
-                .url(request.getUrl())
-                .description(request.getDescription())
-                .response(request.getResponse())
                 .build();
 
         portfolio.addApi(api);
         return api.getId();
     }
     
-    // TODO user 확인 필요
     @Transactional
-    public void updatePortfolioApi(Long userId, Long apiId, PortfolioApiModuleRequest request) {
+    public void updatePortfolioApi(Long userId, Long apiId, PortfolioApiRequest request) {
         PortfolioApi api = apiRepository.findById(apiId).orElseThrow();
-        api.updatePortfolioApi(
-                request.getMethod(),
-                request.getUrl(),
-                request.getDescription(),
-                request.getResponse()
-        );
+        api.updatePortfolioApi(request.getName());
     }
 
-    // TODO user 확인 필요
     @Transactional
     public void deletePortfolioApi(Long userId, Long portfolioId, Long apiId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
         PortfolioApi api = apiRepository.findById(apiId).orElseThrow();
         portfolio.removeApi(api);
     }
-    
-    // TODO user 확인 필요
-    // portfolio 에 있는 모든 api 조회
+
+    // portfolio의 모든 api 조회
     public List<PortfolioApiResponse> findPortfolioApis(Long userId, Long portfolioId) {
-        List<PortfolioApi> apis = apiRepository.findAllByPortfolioId(portfolioId);
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+        List<PortfolioApi> apis = portfolio.getApis();
         List<PortfolioApiResponse> results = new ArrayList<>();
         for (PortfolioApi api : apis) {
-            results.add(new PortfolioApiResponse(api.getId(), api.getMethod(), api.getUrl(), api.getDescription(), api.getResponse()));
+            List<PortfolioApiModule> modules = api.getModules();
+            List<PortfolioApiModuleResponse> moduleResponses = new ArrayList<>();
+            for (PortfolioApiModule module : modules) {
+                PortfolioApiModuleResponse moduleResponse = PortfolioApiModuleResponse.builder()
+                        .response(module.getResponse())
+                        .url(module.getUrl())
+                        .id(module.getId())
+                        .method(module.getMethod())
+                        .description(module.getDescription())
+                        .build();
+                moduleResponses.add(moduleResponse);
+            }
+            results.add(new PortfolioApiResponse(api.getId(), api.getName(), moduleResponses));
         }
         return results;
     }
+
+
 
 }

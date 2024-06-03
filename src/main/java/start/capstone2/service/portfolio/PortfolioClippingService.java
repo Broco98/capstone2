@@ -22,7 +22,6 @@ public class PortfolioClippingService {
     private final PortfolioRepository portfolioRepository;
     private final PortfolioClippingRepository clippingRepository;
 
-    // TODO user 확인 필요
     @Transactional
     public Long createPortfolioClipping(Long userId, Long portfolioId) {
 
@@ -39,13 +38,12 @@ public class PortfolioClippingService {
         return clipping.getId();
     }
 
-    // TODO user 확인 필요
     @Transactional
     public void deletePortfolioClipping(Long userId, Long clippingId) {
         clippingRepository.deleteById(clippingId);
     }
 
-    // TODO user 확인 필요
+    // TODO user 기능으로 이동
     // user가 스크랩한 portfolio 모두 조회
     public List<Portfolio> findPortfolioClippings(Long userId) {
         List<PortfolioClipping> clippings = clippingRepository.findAllByUserId(userId);

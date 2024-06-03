@@ -28,12 +28,12 @@ public class PortfolioService {
     @Transactional
     public Long createPortfolio(Long userId, PortfolioRequest request) {
 
-        User user = userRepository.findById(userId).orElseThrow();
         Image image = null;
         if (request.getImage() != null) {
             image = store.saveImage(request.getImage());
         }
 
+        // portfolio 와 portfolioDetail로 나누는게 맞았네... -> 지금이라도 나눌까 ㅇㅅ
         Portfolio portfolio = Portfolio.builder().build(); // 그냥 빈 포트폴리오 생성
 //        Portfolio portfolio = Portfolio.builder()
 //                .user(user)
@@ -122,8 +122,8 @@ public class PortfolioService {
     }
     
     // 단일 조회
-    public PortfolioResponse findById(Long portfolioId) {
-        return portfolioRepository.findById(portfolioId).orElseThrow();
-    }
+//    public PortfolioResponse findById(Long portfolioId) {
+//        return portfolioRepository.findById(portfolioId).orElseThrow();
+//    }
 
 }

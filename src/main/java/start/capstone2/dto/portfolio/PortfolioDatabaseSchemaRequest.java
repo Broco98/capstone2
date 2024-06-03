@@ -5,8 +5,9 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class PortfolioDatabaseRequest {
+public class PortfolioDatabaseSchemaRequest {
 
-    private String name;
+    private String schema;
+    private String description;
 
 }

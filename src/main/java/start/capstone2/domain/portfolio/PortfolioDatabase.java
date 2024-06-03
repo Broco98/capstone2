@@ -27,6 +27,13 @@ public class PortfolioDatabase extends BaseEntity {
     @OneToMany(mappedBy = "database", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PortfolioDatabaseSchema> schemas = new ArrayList<>();
 
+    @Builder
+    private PortfolioDatabase(Portfolio portfolio, String name, List<PortfolioDatabaseSchema> schemas) {
+        this.portfolio = portfolio;
+        this.name = name;
+        this.schemas = schemas;
+    }
+
     public void updateDatabase(String name) {
         this.name = name;
     }

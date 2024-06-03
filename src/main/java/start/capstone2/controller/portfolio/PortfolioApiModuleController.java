@@ -1,15 +1,13 @@
 package start.capstone2.controller.portfolio;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import start.capstone2.dto.ResponseResult;
-import start.capstone2.dto.portfolio.PortfolioApiModuleRequest;
 import start.capstone2.dto.portfolio.PortfolioApiRequest;
 import start.capstone2.dto.portfolio.PortfolioApiResponse;
 import start.capstone2.service.portfolio.PortfolioApiService;
-
 
 import java.util.List;
 
@@ -17,7 +15,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/portfolio")
-public class PortfolioApiController {
+public class PortfolioApiModuleController {
 
     private final PortfolioApiService apiService;
 
@@ -45,4 +43,5 @@ public class PortfolioApiController {
         List<PortfolioApiResponse> result = apiService.findPortfolioApis(userId, portfolioId);
         return new ResponseResult<>(result);
     }
+
 }

@@ -61,9 +61,6 @@ public class Portfolio extends BaseEntity{
     private List<PortfolioTechStack> techStacks = new ArrayList<>();
 
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PortfolioInterview> interviews = new ArrayList<>();
-
-    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PortfolioDatabase> databases = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
@@ -162,14 +159,6 @@ public class Portfolio extends BaseEntity{
 
     public void removeDatabase(PortfolioDatabase database) {
         databases.remove(database);
-    }
-
-    public void addInterview(PortfolioInterview interview) {
-        interviews.add(interview);
-    }
-
-    public void removeInterview(PortfolioInterview interview) {
-        interviews.remove(interview);
     }
 
 }
