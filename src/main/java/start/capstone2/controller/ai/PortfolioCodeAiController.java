@@ -44,9 +44,9 @@ public class PortfolioCodeAiController {
     private final PortfolioDatabaseAiService databaseAiService;
 
     @Operation(summary = "generate portfolio code", description = "function 하나를 선택해서 포트폴리오 code를 자동으로 생성합니다.")
-    @PostMapping("/{portfolioId}/function/{functionId}/code-generation")
-    public ResponseEntity<String> generatePortfolioCode(Long userId, @PathVariable Long portfolioId, @PathVariable Long functionId, @PathVariable Long databaseId) {
-        databaseAiService.generatePortfolioDatabase(userId, portfolioId, functionId);
+    @PostMapping("/{portfolioId}//code-generation")
+    public ResponseEntity<String> generatePortfolioCode(Long userId, @PathVariable Long portfolioId) {
+        databaseAiService.generatePortfolioDatabase(userId, portfolioId);
         return ResponseEntity.ok("생성 중 ... ");
     }
 }

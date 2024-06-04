@@ -35,6 +35,9 @@ public class Portfolio extends BaseEntity{
     @Lob
     private String contribution;
 
+    @Lob
+    private String techStacks;
+
     @Setter
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "image_id")
@@ -61,8 +64,8 @@ public class Portfolio extends BaseEntity{
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PortfolioUrl> urls = new ArrayList<>();
 
-    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PortfolioTechStack> techStacks = new ArrayList<>();
+//    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<PortfolioTechStack> techStacks = new ArrayList<>();
 
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PortfolioDatabase> databases = new ArrayList<>();
@@ -71,7 +74,7 @@ public class Portfolio extends BaseEntity{
     private ShareStatus status = ShareStatus.NOT_SHARED;
 
     @Builder
-    private Portfolio(User user, String title, LocalDate startDate, LocalDate endDate, Integer teamNum, String description, String contribution, Image cardImage) {
+    private Portfolio(User user, String title, LocalDate startDate, LocalDate endDate, Integer teamNum, String description, String contribution, Image cardImage, String techStacks) {
         this.user = user;
         this.title = title;
         this.startDate = startDate;
@@ -80,6 +83,7 @@ public class Portfolio extends BaseEntity{
         this.description = description;
         this.contribution = contribution;
         this.cardImage = cardImage;
+        this.techStacks = techStacks;
     }
 
     public void updatePortfolio(String title, LocalDate startDate, LocalDate endDate, Integer teamNum, String description, String contribution, Image cardImage, ShareStatus status) {
@@ -141,13 +145,13 @@ public class Portfolio extends BaseEntity{
         codes.remove(code);
     }
 
-    public void addTechStack(PortfolioTechStack stack) {
-        techStacks.add(stack);
-    }
-
-    public void removeTechStack(PortfolioTechStack stack) {
-        techStacks.remove(stack);
-    }
+//    public void addTechStack(PortfolioTechStack stack) {
+//        techStacks.add(stack);
+//    }
+//
+//    public void removeTechStack(PortfolioTechStack stack) {
+//        techStacks.remove(stack);
+//    }
 
     public void addUrl(PortfolioUrl url) {
         urls.add(url);
