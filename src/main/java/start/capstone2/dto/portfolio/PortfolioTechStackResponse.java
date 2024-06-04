@@ -3,10 +3,10 @@ package start.capstone2.dto.portfolio;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 public class PortfolioTechStackResponse {
-    private Long id;
-    private String name;
-    private String imageUrl;
+    private List<String> techStacks;
 }

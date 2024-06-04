@@ -6,16 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import start.capstone2.domain.portfolio.Portfolio;
 import start.capstone2.domain.portfolio.PortfolioTechStack;
 import start.capstone2.domain.portfolio.repository.PortfolioRepository;
-import start.capstone2.domain.portfolio.repository.PortfolioTechStackRepository;
-import start.capstone2.domain.techstack.TechStack;
-import start.capstone2.domain.techstack.repository.TechStackRepository;
 import start.capstone2.domain.user.repository.UserRepository;
-import start.capstone2.dto.portfolio.PortfolioRequest;
 import start.capstone2.dto.portfolio.PortfolioTechStackRequest;
-import start.capstone2.dto.portfolio.PortfolioTechStackResponse;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -24,44 +16,39 @@ public class PortfolioTechStackService {
 
     private final UserRepository userRepository;
     private final PortfolioRepository portfolioRepository;
-    private final TechStackRepository techStackRepository;
-    private final PortfolioTechStackRepository portfolioTechStackRepository;
 
-    // List로 받은 모든 techstack 생성
     @Transactional
     public void createPortfolioTechStack(Long userId, Long portfolioId, PortfolioTechStackRequest request) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
 
-        if (!request.getTechStackId().isEmpty()) {
-            List<TechStack> techStacks = techStackRepository.findAllByIdIn(request.getTechStackId());
+        if (request.getTechStacks().isEmpty()) {
+            return;
+        }
 
-            for (TechStack techStack : techStacks) {
-                PortfolioTechStack portfolioTechStack = PortfolioTechStack.builder()
-                        .techStack(techStack)
-                        .portfolio(portfolio)
-                        .build();
-
-                portfolio.addTechStack(portfolioTechStack);
-            }
+        for (String str : request.getTechStacks()) {
+            PortfolioTechStack techStack = PortfolioTechStack.builder()
+                    .portfolio(portfolio)
+                    .techStack(str)
+                    .build();
+            portfolio.addTechStack(techStack);
         }
     }
 
     @Transactional
     public void deletePortfolioTechStack(Long userId, Long portfolioId, Long techStackId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
-        PortfolioTechStack techStack = portfolioTechStackRepository.findById(techStackId).orElseThrow();
-
+        PortfolioTechStack techStack = portfolio.getTechStacks().stream().filter(t->t.getId().equals(techStackId)).findFirst().orElseThrow();
         portfolio.removeTechStack(techStack);
     }
 
     // 포트폴리오의 모든 techstack 조회
-    public List<PortfolioTechStackResponse> findAllPortfolioTechStack(Long userId, Long portfolioId) {
-        List<PortfolioTechStack> techStacks = portfolioTechStackRepository.findAllByPortfolioId(portfolioId);
-        List<PortfolioTechStackResponse> results = new ArrayList<>();
-        for (PortfolioTechStack techStack : techStacks) {
-            TechStack stack = techStack.getTechStack();
-            results.add(new PortfolioTechStackResponse(stack.getId(), stack.getName(), stack.getImage().getSavedName()));
-        }
-        return results;
-    }
+//    public List<PortfolioTechStackResponse> findAllPortfolioTechStack(Long userId, Long portfolioId) {
+//        List<PortfolioTechStack> techStacks = portfolioTechStackRepository.findAllByPortfolioId(portfolioId);
+//        List<PortfolioTechStackResponse> results = new ArrayList<>();
+//        for (PortfolioTechStack techStack : techStacks) {
+//            TechStack stack = techStack.getTechStack();
+//            results.add(new PortfolioTechStackResponse(stack.getId(), stack.getName(), stack.getImage().getSavedName()));
+//        }
+//        return results;
+//    }
 }

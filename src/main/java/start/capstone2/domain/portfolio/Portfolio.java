@@ -28,7 +28,11 @@ public class Portfolio extends BaseEntity{
     private LocalDate startDate;
     private LocalDate endDate;
     private Integer teamNum;
+
+    @Lob
     private String description;
+
+    @Lob
     private String contribution;
 
     @Setter

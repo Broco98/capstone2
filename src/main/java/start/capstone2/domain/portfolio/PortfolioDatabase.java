@@ -28,10 +28,9 @@ public class PortfolioDatabase extends BaseEntity {
     private List<PortfolioDatabaseSchema> schemas = new ArrayList<>();
 
     @Builder
-    private PortfolioDatabase(Portfolio portfolio, String name, List<PortfolioDatabaseSchema> schemas) {
+    private PortfolioDatabase(Portfolio portfolio, String name) {
         this.portfolio = portfolio;
         this.name = name;
-        this.schemas = schemas;
     }
 
     public void updateDatabase(String name) {

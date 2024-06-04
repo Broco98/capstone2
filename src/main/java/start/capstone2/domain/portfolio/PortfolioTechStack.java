@@ -1,10 +1,11 @@
 package start.capstone2.domain.portfolio;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import start.capstone2.domain.BaseEntity;
-import start.capstone2.domain.techstack.TechStack;
 
 @Entity
 @Getter
@@ -20,12 +21,10 @@ public class PortfolioTechStack extends BaseEntity {
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "techstack_id")
-    private TechStack techStack;
+    private String techStack;
 
     @Builder
-    private PortfolioTechStack(Portfolio portfolio, TechStack techStack) {
+    private PortfolioTechStack(Portfolio portfolio, String techStack) {
         this.portfolio = portfolio;
         this.techStack = techStack;
     }

@@ -54,6 +54,7 @@ public class PortfolioFunctionAiService {
                     String moduleName = (String) data.get("module");
 
                     PortfolioFunction function = PortfolioFunction.builder()
+                            .portfolio(portfolio)
                             .name(moduleName)
                             .build();
 
