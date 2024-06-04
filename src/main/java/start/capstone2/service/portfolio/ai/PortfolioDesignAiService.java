@@ -3,6 +3,7 @@ package start.capstone2.service.portfolio.ai;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import net.sourceforge.plantuml.SourceStringReader;
 import org.springframework.ai.chat.ChatClient;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.SystemMessage;
@@ -10,9 +11,13 @@ import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import start.capstone2.domain.Image.Image;
+import start.capstone2.domain.Image.S3Store;
 import start.capstone2.domain.portfolio.*;
 import start.capstone2.domain.portfolio.repository.PortfolioRepository;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,14 +26,15 @@ import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
-public class PortfolioDatabaseAiService {
+public class PortfolioDesignAiService {
 
     private final PortfolioRepository portfolioRepository;
     private final ChatClient chatClient;
+    private final S3Store store;
 
     @Async
     @Transactional
-    public void generatePortfolioDatabase(Long userId, Long portfolioId, Long functionId) {
+    public void generatePortfolioDesign(Long userId, Long portfolioId, Long functionId) {
 
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
         PortfolioFunction function = portfolio.getFunctions().stream()
@@ -48,23 +54,38 @@ public class PortfolioDatabaseAiService {
             // "data" 키를 통해 데이터 목록에 접근
             List<Map<String, Object>> dataList = map.get("data");
             if (dataList != null) {
-                PortfolioDatabase database = PortfolioDatabase.builder()
+                PortfolioDesign design = PortfolioDesign.builder()
                         .portfolio(portfolio)
                         .name(function.getName())
                         .build();
 
                 for (Map<String, Object> data : dataList) {
-                        PortfolioDatabaseSchema schema = PortfolioDatabaseSchema.builder()
-                                .database(database)
-                                .schema((String) data.get("schema"))
-                                .description((String) data.get("description"))
-                                .build();
-                        database.addSchema(schema);
-                    }
-                portfolio.addDatabase(database);
+
+
+
+                    PortfolioDesignDiagram diagram = PortfolioDesignDiagram.builder()
+                            .design(design)
+                            .diagram((String) data.get("diagram"))
+                            .description((String) data.get("description"))
+                            .build();
+                    design.addDiagram(diagram);
+                }
+                portfolio.addDesign(design);
                 }
         } catch (IOException e) {
             throw new IllegalStateException("jsonResult error", e);
+        }
+    }
+
+    // TODO
+    private MultipartFile createDiagramImage(String diagram) {
+
+        SourceStringReader reader = new SourceStringReader(diagram);
+        try {
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            reader.outputImage(os);
+        } catch (IOException e) {
+          throw new RuntimeException("diagram image 생성 실패");
         }
     }
 
@@ -88,7 +109,7 @@ public class PortfolioDatabaseAiService {
         List<Message> prompts = new ArrayList<>();
         Message prompt = new SystemMessage("""
 
-        너는 프로젝트 기능을 입력으로 받으면 그 프로젝트 기능에 해당하는 DB 테이블을 생성해 쥐야 돼.
+        너는 프로젝트 기능을 입력으로 받으면 그 프로젝트의 diagram을 만들어 줘야돼.
         예를 들어서 입력으로
         ---
         유저기능
@@ -100,27 +121,37 @@ public class PortfolioDatabaseAiService {
         {
             "data" : [
                 {
-                    "schema" : (Table 생성 SQL문, 필요한 속성을 포함해야 하고, 그 속성이 어떤 속성인지 주석으로 설명해야함)
-                    "description" : (어떤 Table인지 설명, 한글로 설명)
+                    "diagram" : (sequence diagram, PlantUML 사용, String 타입)
+                    "description" : (다이어그램 설명, 한글로 설명)
                 },
+                (... 너가 필요한 만큼 반복, 중복 X)
                 {
-                    "schema" : (Table 생성 SQL문, 필요한 속성을 포함해야 하고, 그 속성이 어떤 속성인지 주석으로 설명해야함)
-                    "description" : (어떤 Table인지 설명, 한글로 설명)
+                    "diagram" : (use-case diagram, PlantUML 사용, String 타입)
+                    "description" : (다이어그램 설명, 한글로 설명)
                 },
-                ... (너가 필요한 Table 만큼 반복, 1개도 상관 없음)
+                (... 너가 필요한 만큼 반복, 중복 X)
+                {
+                    "diagram" : (class diagram, PlantUML 사용, 변수와 메서드 포함, String 타입)
+                    "description" : (다이어그램 설명, 한글로 설명)
+                },
+                (... 너가 필요한 만큼 반복, 중복 X)
+                {
+                    "diagram" : (ER diagram, PlantUML 사용, String 타입)
+                    "description" : (다이어그램 설명, 한글로 설명)
+                },
+                (... 너가 필요한 만큼 반복, 중복 X)
             ]
-
         }
 
         이런 json 형식의 답변을 기대하고 있어.
         json 응답은 다음과 같은 조건을 만족해야 돼
 
         1. 모든 데이터가 data안에 있고,
-        2. 그 안에 여러개의 db 정보(schema, description)이 있는 형식이야
-        3. data[0].schema, data[0].description, data[1].schema 이런 식으로 접근 가능하도록 하게 보내줘야 돼
-        4. data[0].schema 로 접근하면 Create Table 문이 나와야 하는 거지.
-        5. db 정보의 갯수 (schema, description)의 쌍은 너가 필요하다고 생각되는 만큼만 작성해줘
-        6. Create Table SQL문만 있으면 돼. INDEX나 function은 생성해줄 필요 없어
+        2. 그 안에 여러개의 diagram 정보(diagram, description)이 있는 형식이야
+        3. data[0].diagram, data[0].description, data[1].diagram 이런 식으로 접근 가능하도록 하게 보내줘야 돼
+        4. data[0].diagram 로 접근하면 다이어그램 정보(PlantUML)를 가져올 수 있어야 돼
+        5. diagram의 갯수 (diagram, description)의 쌍은 너가 필요하다고 생각되는 만큼만 작성해줘
+        6. objectMapper로 parsing할 수 있도록 완전한 json 형식으로 보내줘야 해
 
         이 결과를 바탕으로 실제로 설계와 코딩을 진행할 수 있도록 최대한 자세하고 세밀하게 알려줘
         """);

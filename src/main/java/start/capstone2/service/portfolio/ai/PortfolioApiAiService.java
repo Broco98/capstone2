@@ -21,14 +21,14 @@ import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
-public class PortfolioDatabaseAiService {
+public class PortfolioApiAiService {
 
     private final PortfolioRepository portfolioRepository;
     private final ChatClient chatClient;
 
     @Async
     @Transactional
-    public void generatePortfolioDatabase(Long userId, Long portfolioId, Long functionId) {
+    public void generatePortfolioApi(Long userId, Long portfolioId, Long functionId) {
 
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
         PortfolioFunction function = portfolio.getFunctions().stream()
@@ -48,21 +48,30 @@ public class PortfolioDatabaseAiService {
             // "data" 키를 통해 데이터 목록에 접근
             List<Map<String, Object>> dataList = map.get("data");
             if (dataList != null) {
-                PortfolioDatabase database = PortfolioDatabase.builder()
+                PortfolioApi api = PortfolioApi.builder()
                         .portfolio(portfolio)
                         .name(function.getName())
                         .build();
 
                 for (Map<String, Object> data : dataList) {
-                        PortfolioDatabaseSchema schema = PortfolioDatabaseSchema.builder()
-                                .database(database)
-                                .schema((String) data.get("schema"))
+                    Method method = switch ((String) data.get("method")) {
+                        case "POST" -> Method.POST;
+                        case "GET" -> Method.GET;
+                        case "DELETE" -> Method.DELETE;
+                        case "PUT" -> Method.PUT;
+                        default -> null;
+                    };
+                    PortfolioApiModule module = PortfolioApiModule.builder()
+                                .api(api)
+                                .method(method)
+                                .url((String) data.get("url"))
+                                .response((String) data.get("response"))
                                 .description((String) data.get("description"))
                                 .build();
-                        database.addSchema(schema);
+                        api.addModule(module);
                     }
-                portfolio.addDatabase(database);
-                }
+                portfolio.addApi(api);
+            }
         } catch (IOException e) {
             throw new IllegalStateException("jsonResult error", e);
         }
@@ -88,7 +97,7 @@ public class PortfolioDatabaseAiService {
         List<Message> prompts = new ArrayList<>();
         Message prompt = new SystemMessage("""
 
-        너는 프로젝트 기능을 입력으로 받으면 그 프로젝트 기능에 해당하는 DB 테이블을 생성해 쥐야 돼.
+        너는 프로젝트 기능을 입력으로 받으면 그 프로젝트 기능에 해당하는 RESTFUL API 명세를 생성해 쥐야 돼.
         예를 들어서 입력으로
         ---
         유저기능
@@ -100,27 +109,23 @@ public class PortfolioDatabaseAiService {
         {
             "data" : [
                 {
-                    "schema" : (Table 생성 SQL문, 필요한 속성을 포함해야 하고, 그 속성이 어떤 속성인지 주석으로 설명해야함)
-                    "description" : (어떤 Table인지 설명, 한글로 설명)
+                    "method" : (POST, GET, DELETE, PUT 중 하나)
+                    "url": (RESTFUL url)
+                    "response": (어떤 반환값을 반환해야 하는지, JSON 형식 String 타입으로)
+                    "description" : (어떤 RESTFUL API 명세인지 설명, 한글로 설명)
                 },
-                {
-                    "schema" : (Table 생성 SQL문, 필요한 속성을 포함해야 하고, 그 속성이 어떤 속성인지 주석으로 설명해야함)
-                    "description" : (어떤 Table인지 설명, 한글로 설명)
-                },
-                ... (너가 필요한 Table 만큼 반복, 1개도 상관 없음)
+                ... (너가 필요하다고 생각되는 명세만틈 반복)
             ]
 
         }
-
+        
         이런 json 형식의 답변을 기대하고 있어.
         json 응답은 다음과 같은 조건을 만족해야 돼
 
         1. 모든 데이터가 data안에 있고,
-        2. 그 안에 여러개의 db 정보(schema, description)이 있는 형식이야
-        3. data[0].schema, data[0].description, data[1].schema 이런 식으로 접근 가능하도록 하게 보내줘야 돼
-        4. data[0].schema 로 접근하면 Create Table 문이 나와야 하는 거지.
-        5. db 정보의 갯수 (schema, description)의 쌍은 너가 필요하다고 생각되는 만큼만 작성해줘
-        6. Create Table SQL문만 있으면 돼. INDEX나 function은 생성해줄 필요 없어
+        2. 그 안에 여러개의 RESTFUL API 명세(method, url, response, description)가 있는 형식이야
+        3. data[0].method, data[0].description, data[1].method 이런 식으로 접근 가능하도록 하게 보내줘야 돼
+        4. RESTFUL API 명세의 갯수 (method, url, response, description)의 쌍은 너가 필요하다고 생각되는 만큼만 작성해줘
 
         이 결과를 바탕으로 실제로 설계와 코딩을 진행할 수 있도록 최대한 자세하고 세밀하게 알려줘
         """);
