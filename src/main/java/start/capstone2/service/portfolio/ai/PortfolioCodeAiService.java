@@ -35,6 +35,10 @@ public class PortfolioCodeAiService {
 
         log.info("start code generation");
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+        if (!portfolio.getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가");
+        }
+
         String message = createCodeStructureMessage(portfolio);
         Prompt prompt = createCodeStructurePrompt(message);
         String json = chatClient.call(prompt).getResult().getOutput().getContent();

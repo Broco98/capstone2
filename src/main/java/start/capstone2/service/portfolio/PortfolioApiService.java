@@ -28,7 +28,9 @@ public class PortfolioApiService {
     @Transactional
     public Long createPortfolioApi(Long userId, Long portfolioId, PortfolioApiRequest request) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
-
+        if (!portfolio.getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가");
+        }
         PortfolioApi api = PortfolioApi.builder()
                 .name(request.getName())
                 .portfolio(portfolio)
@@ -41,6 +43,9 @@ public class PortfolioApiService {
     @Transactional
     public void updatePortfolioApi(Long userId, Long portfolioId, Long apiId, PortfolioApiRequest request) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+        if (!portfolio.getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가");
+        }
         PortfolioApi api = portfolio.getApis().stream().filter(a->a.getId().equals(apiId)).findFirst().orElseThrow();
         api.updatePortfolioApi(request.getName());
     }
@@ -48,6 +53,9 @@ public class PortfolioApiService {
     @Transactional
     public void deletePortfolioApi(Long userId, Long portfolioId, Long apiId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+        if (!portfolio.getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가");
+        }
         PortfolioApi api = portfolio.getApis().stream().filter(a->a.getId().equals(apiId)).findFirst().orElseThrow();
         portfolio.removeApi(api);
     }
@@ -55,6 +63,9 @@ public class PortfolioApiService {
     // portfolio의 모든 api 조회
     public List<PortfolioApiResponse> findPortfolioApis(Long userId, Long portfolioId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+        if (!portfolio.getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가");
+        }
         List<PortfolioApi> apis = portfolio.getApis();
         List<PortfolioApiResponse> results = new ArrayList<>();
         for (PortfolioApi api : apis) {

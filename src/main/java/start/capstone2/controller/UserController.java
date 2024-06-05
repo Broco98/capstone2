@@ -21,10 +21,7 @@ public class UserController {
     private final UserService userService;
     private final PortfolioService portfolioService;
 
-    @PostMapping("")
-    public Long createUser(UserRequest request) {
-        return userService.createUser(request);
-    }
+
 
 
 //    @GetMapping("/portfolios")

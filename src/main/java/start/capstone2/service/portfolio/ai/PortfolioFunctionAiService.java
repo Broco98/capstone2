@@ -37,6 +37,9 @@ public class PortfolioFunctionAiService {
     public void generatePortfolioFunction(Long userId, Long portfolioId) {
 
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+        if (!portfolio.getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가");
+        }
 
         Prompt prompt = createPrompt(portfolio.getDescription());
         String json = chatClient.call(prompt).getResult().getOutput().getContent();

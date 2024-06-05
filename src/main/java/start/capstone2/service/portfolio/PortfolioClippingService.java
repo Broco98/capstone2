@@ -40,7 +40,11 @@ public class PortfolioClippingService {
 
     @Transactional
     public void deletePortfolioClipping(Long userId, Long clippingId) {
-        clippingRepository.deleteById(clippingId);
+        PortfolioClipping clipping = clippingRepository.findById(clippingId).orElseThrow();
+        if (!clipping.getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가");
+        }
+        clippingRepository.delete(clipping);
     }
 
     // TODO user 기능으로 이동

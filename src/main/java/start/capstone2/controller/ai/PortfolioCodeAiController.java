@@ -2,6 +2,7 @@ package start.capstone2.controller.ai;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,8 @@ public class PortfolioCodeAiController {
 
     @Operation(summary = "generate portfolio code", description = "function 하나를 선택해서 포트폴리오 code를 자동으로 생성합니다.")
     @PostMapping("/{portfolioId}/code-generation")
-    public ResponseEntity<String> generatePortfolioCode(Long userId, @PathVariable Long portfolioId) {
+    public ResponseEntity<String> generatePortfolioCode(@PathVariable Long portfolioId, HttpServletRequest servletRequest) {
+        Long userId = (Long) servletRequest.getAttribute("userId");
         codeAiService.generatePortfolioCode(userId, portfolioId);
         return ResponseEntity.ok("생성 중 ... ");
     }

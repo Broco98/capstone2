@@ -1,6 +1,7 @@
 package start.capstone2.controller.ai;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +19,8 @@ public class PortfolioFunctionAiController {
     private final PortfolioFunctionAiService functionAiService;
 
     @PostMapping("/{portfolioId}/function-generation")
-    public ResponseEntity<String> generatePortfolioFunction(Long userId, @PathVariable Long portfolioId) {
+    public ResponseEntity<String> generatePortfolioFunction(@PathVariable Long portfolioId, HttpServletRequest servletRequest) {
+        Long userId = (Long) servletRequest.getAttribute("userId");
         functionAiService.generatePortfolioFunction(userId, portfolioId);
         return ResponseEntity.ok("생성 중 ... ");
     }

@@ -41,8 +41,8 @@ public class SecurityConfig {
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint) // 인증 실패 처리
                         .accessDeniedHandler(jwtAccessDeniedHandler)) // 접근 거부 처리
                 .authorizeHttpRequests(auth -> auth
-                        //.requestMatchers("/auth/join", "/auth/login", "/auth/logout", "/auth/reissue").permitAll() // 인증 없이 접근 허용
-                        .requestMatchers("/portfolio/**").authenticated()
+                        .requestMatchers("/auth/join", "/auth/login", "/auth/logout", "/auth/reissue").permitAll() // 인증 없이 접근 허용
+                        .requestMatchers("/portfolio/**", "/user/**").authenticated()
                         .anyRequest().permitAll()) // 나머지 요청은 인증 필요
                 .addFilterBefore(new JwtAuthenticationFilter(jwtProvider, authService, userRepository), UsernamePasswordAuthenticationFilter.class) // JWT 필터 추가
                 .addFilter(corsConfig.corsFilter()); // 사용자 정의 CORS 필터 추가

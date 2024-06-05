@@ -2,6 +2,7 @@ package start.capstone2.controller.portfolio;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import start.capstone2.dto.ResponseResult;
@@ -21,25 +22,29 @@ public class PortfolioFunctionController {
     
     @Operation(summary = "create portfolio function")
     @PostMapping("/{portfolioId}/function")
-    public Long createPortfolioFunction(Long userId, @PathVariable Long portfolioId, PortfolioFunctionRequest request) {
+    public Long createPortfolioFunction(HttpServletRequest servletRequest, @PathVariable Long portfolioId, PortfolioFunctionRequest request) {
+        Long userId = (Long) servletRequest.getAttribute("userId");
         return functionService.createPortfolioFunction(userId, portfolioId, request);
     }
     
     @Operation(summary = "update portfolio function")
     @PutMapping("/{portfolioId}/function/{functionId}")
-    public void updatePortfolioFunction(Long userId, @PathVariable Long portfolioId, @PathVariable Long functionId, PortfolioFunctionRequest request) {
+    public void updatePortfolioFunction(HttpServletRequest servletRequest, @PathVariable Long portfolioId, @PathVariable Long functionId, PortfolioFunctionRequest request) {
+        Long userId = (Long) servletRequest.getAttribute("userId");
         functionService.updatePortfolioFunction(userId, portfolioId, functionId, request);
     }
 
     @Operation(summary = "delete portfolio function")
     @DeleteMapping("/{portfolioId}/function/{functionId}")
-    public void deletePortfolioFunction(Long userId, @PathVariable Long portfolioId, @PathVariable Long functionId) {
+    public void deletePortfolioFunction(HttpServletRequest servletRequest, @PathVariable Long portfolioId, @PathVariable Long functionId) {
+        Long userId = (Long) servletRequest.getAttribute("userId");
         functionService.deletePortfolioFunction(userId, portfolioId, functionId);
     }
 
     @Operation(summary = "find all portfolio function")
     @GetMapping("/{portfolioId}/function")
-    public ResponseResult<List<PortfolioFunctionResponse>> findAllPortfolioFunction(Long userId, @PathVariable Long portfolioId) {
+    public ResponseResult<List<PortfolioFunctionResponse>> findAllPortfolioFunction(HttpServletRequest servletRequest, @PathVariable Long portfolioId) {
+        Long userId = (Long) servletRequest.getAttribute("userId");
         List<PortfolioFunctionResponse> result = functionService.findPortfolioFunctions(userId, portfolioId);
         return new ResponseResult<>(result);
     }

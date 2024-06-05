@@ -4,12 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import start.capstone2.domain.BaseEntity;
 
-// TODO
 @Table(name = "users")
 @Entity
 @Getter
-//@Builder
-//@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseEntity {
 
@@ -32,13 +29,6 @@ public class User extends BaseEntity {
         this.email = email;
         this.password = password;
         this.role = Role.USER;
-    }
-
-    public static User of(String username, String email) {
-        return User.builder()
-                .username(username)
-                .email(email)
-                .build();
     }
 
     public String getRoleValue() {

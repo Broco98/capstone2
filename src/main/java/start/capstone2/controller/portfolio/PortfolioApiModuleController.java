@@ -2,6 +2,7 @@ package start.capstone2.controller.portfolio;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import start.capstone2.dto.ResponseResult;
@@ -23,19 +24,22 @@ public class PortfolioApiModuleController {
 
     @Operation(summary = "create portfolio api module")
     @PostMapping("/{apiId}/module")
-    public Long createPortfolioApiModule(Long userId, @PathVariable Long apiId, PortfolioApiModuleRequest request) {
+    public Long createPortfolioApiModule(@PathVariable Long apiId, PortfolioApiModuleRequest request, HttpServletRequest servletRequest) {
+        Long userId = (Long) servletRequest.getAttribute("userId");
         return apiModuleService.createPortfolioApiModule(userId, apiId, request);
     }
 
     @Operation(summary = "update portfolio api module")
     @PutMapping("/{apiId}/module/{moduleId}")
-    public void updatePortfolioApi(Long userId, @PathVariable Long apiId, @PathVariable Long moduleId, PortfolioApiModuleRequest request) {
+    public void updatePortfolioApi(@PathVariable Long apiId, @PathVariable Long moduleId, PortfolioApiModuleRequest request, HttpServletRequest servletRequest) {
+        Long userId = (Long) servletRequest.getAttribute("userId");
         apiModuleService.updatePortfolioApiModule(userId, apiId, moduleId, request);
     }
 
     @Operation(summary = "delete portfolio api module")
     @DeleteMapping("/{apiId}/module/{moduleId}")
-    public void deletePortfolioApi(Long userId, @PathVariable Long apiId, @PathVariable Long moduleId) {
+    public void deletePortfolioApi(@PathVariable Long apiId, @PathVariable Long moduleId, HttpServletRequest servletRequest) {
+        Long userId = (Long) servletRequest.getAttribute("userId");
         apiModuleService.deletePortfolioApiModule(userId, apiId, moduleId);
     }
 
