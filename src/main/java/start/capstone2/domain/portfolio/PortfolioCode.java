@@ -2,9 +2,9 @@ package start.capstone2.domain.portfolio;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import start.capstone2.domain.BaseEntity;
 
 @Getter
@@ -21,23 +21,24 @@ public class PortfolioCode extends BaseEntity {
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
 
+    private String name;
+
     @Lob
     private String code;
 
     @Lob
     private String description;
 
-
-    public static PortfolioCode createPortfolioCode(Portfolio portfolio, String code, String description) {
-        PortfolioCode portfolioCode = new PortfolioCode();
-        portfolioCode.portfolio = portfolio;
-        portfolioCode.code = code;
-        portfolioCode.description = description;
-
-        return portfolioCode;
+    @Builder
+    private PortfolioCode(Portfolio portfolio, String name, String code, String description) {
+        this.portfolio = portfolio;
+        this.name = name;
+        this.code = code;
+        this.description = description;
     }
 
-    public void updatePortfolioCode(String code, String description) {
+    public void updatePortfolioCode(String name, String code, String description) {
+        this.name = name;
         this.code = code;
         this.description = description;
     }

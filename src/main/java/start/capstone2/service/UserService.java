@@ -7,7 +7,7 @@ import start.capstone2.domain.user.User;
 import start.capstone2.dto.user.UserRequest;
 import start.capstone2.domain.user.repository.UserRepository;
 
-// TODO
+// TODO 통합 예정
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor

@@ -2,14 +2,13 @@ package start.capstone2.domain.portfolio;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import start.capstone2.domain.BaseEntity;
 import start.capstone2.domain.user.User;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -34,16 +33,14 @@ public class PortfolioClipping {
     @CreatedDate
     private LocalDateTime createdDate;
 
-
-    public PortfolioClipping createPortfolioClipping(User user, Portfolio portfolio) {
-        PortfolioClipping clipping = new PortfolioClipping();
-        clipping.user = user;
-        clipping.portfolio = portfolio;
-        return clipping;
-    }
-
     @PrePersist
     public void prePersist() {
         createdDate = LocalDateTime.now();;
+    }
+
+    @Builder
+    private PortfolioClipping(User user, Portfolio portfolio) {
+        this.user = user;
+        this.portfolio = portfolio;
     }
 }

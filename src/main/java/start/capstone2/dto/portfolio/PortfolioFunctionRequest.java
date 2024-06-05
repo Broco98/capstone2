@@ -7,5 +7,5 @@ import org.springframework.web.multipart.MultipartFile;
 @Data
 @AllArgsConstructor
 public class PortfolioFunctionRequest {
-    private String description;
+    private String name;
 }

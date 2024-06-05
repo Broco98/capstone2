@@ -9,6 +9,5 @@ import start.capstone2.domain.Image.Image;
 @Data
 @AllArgsConstructor
 public class PortfolioDesignRequest {
-    private String design;
-    private String description;
+    private String name;
 }

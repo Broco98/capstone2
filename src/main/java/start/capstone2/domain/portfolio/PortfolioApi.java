@@ -1,11 +1,12 @@
 package start.capstone2.domain.portfolio;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 import start.capstone2.domain.BaseEntity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -21,27 +22,26 @@ public class PortfolioApi extends BaseEntity {
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
 
-    @Enumerated(EnumType.STRING)
-    private Method method;
-    private String url;
-    private String description;
-    private String response;
+    private String name;
 
-    public static PortfolioApi createPortfolioApi(Portfolio portfolio, Method method, String url, String description, String response) {
-        PortfolioApi portfolioApi = new PortfolioApi();
-        portfolioApi.portfolio = portfolio;
-        portfolioApi.method = method;
-        portfolioApi.url = url;
-        portfolioApi.description = description;
-        portfolioApi.response = response;
+    @OneToMany(mappedBy = "api", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PortfolioApiModule> modules = new ArrayList<>();
 
-        return portfolioApi;
+    @Builder
+    public PortfolioApi(Portfolio portfolio, String name) {
+        this.portfolio = portfolio;
+        this.name = name;
     }
 
-    public void updatePortfolioApi(Method method, String url, String description, String response) {
-        this.method = method;
-        this.url = url;
-        this.description = description;
-        this.response = response;
+    public void updatePortfolioApi(String name) {
+        this.name = name;
+    }
+
+    public void addModule(PortfolioApiModule module) {
+        modules.add(module);
+    }
+
+    public void removeModule(PortfolioApiModule module) {
+        modules.remove(module);
     }
 }

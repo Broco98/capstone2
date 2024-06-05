@@ -1,12 +1,12 @@
 package start.capstone2.domain.portfolio;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 import start.capstone2.domain.BaseEntity;
-import start.capstone2.domain.Image.Image;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -22,19 +22,27 @@ public class PortfolioFunction extends BaseEntity {
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
 
-    @Lob
-    private String description;
+    private String name;
 
+    @OneToMany(mappedBy = "function", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<PortfolioFunctionModule> modules = new ArrayList<>();
 
-    public static PortfolioFunction createPortfolioFunction(Portfolio portfolio, String description) {
-        PortfolioFunction function = new PortfolioFunction();
-        function.portfolio = portfolio;
-        function.description = description;
-        return function;
+    @Builder
+    private PortfolioFunction(Portfolio portfolio, String name) {
+        this.portfolio = portfolio;
+        this.name = name;
     }
 
-    public void updatePortfolioFunction(String description) {
-        this.description = description;
+    public void updatePortfolioFunction(String name) {
+        this.name = name;
+    }
+
+    public void addModule(PortfolioFunctionModule module) {
+        modules.add(module);
+    }
+
+    public void removeModule(PortfolioFunctionModule module) {
+        modules.remove(module);
     }
 
 }

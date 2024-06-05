@@ -25,46 +25,40 @@ public class PortfolioCodeService {
     private final PortfolioRepository portfolioRepository;
     private final PortfolioCodeRepository codeRepository;
 
-    // TODO user 정보 필요
     @Transactional
     public Long createPortfolioCode(Long userId, Long portfolioId, PortfolioCodeRequest request) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
 
-        PortfolioCode code = PortfolioCode.createPortfolioCode(
-                portfolio,
-                request.getCode(),
-                request.getDescription()
-        );
+        PortfolioCode code = PortfolioCode.builder()
+                .portfolio(portfolio)
+                .code(request.getCode())
+                .description(request.getDescription())
+                .build();
 
         portfolio.addCode(code);
         return code.getId();
     }
 
-    // TODO user 정보 필요
     @Transactional
     public void updatePortfolioCode(Long userId, Long portfolioId, Long codeId, PortfolioCodeRequest request) {
-        PortfolioCode code = codeRepository.findById(codeId).orElseThrow();
-        code.updatePortfolioCode(
-                request.getCode(),
-                request.getDescription()
-        );
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+        PortfolioCode code = portfolio.getCodes().stream().filter(c->c.getId().equals(codeId)).findFirst().orElseThrow();
+        code.updatePortfolioCode(request.getName(), request.getCode(), request.getDescription());
     }
 
-    // TODO user 정보 필요
     @Transactional
     public void deletePortfolioCode(Long userId, Long portfolioId, Long codeId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
-        PortfolioCode code = codeRepository.findById(codeId).orElseThrow();
+        PortfolioCode code = portfolio.getCodes().stream().filter(c->c.getId().equals(codeId)).findFirst().orElseThrow();
         portfolio.removeCode(code);
     }
 
-    // TODO user 정보 필요
-    // 포트폴리오 정보 조회
+    // 해당 포트폴리오의 모든 코드 조회
     public List<PortfolioCodeResponse> findPortfolioCodes(Long userId, Long portfolioId) {
         List<PortfolioCode> codes = codeRepository.findAllByPortfolioId(portfolioId);
         List<PortfolioCodeResponse> results = new ArrayList<>();
         for (PortfolioCode code : codes) {
-            results.add(new PortfolioCodeResponse(code.getId(), code.getCode(), code.getDescription()));
+            results.add(new PortfolioCodeResponse(code.getId(), code.getName(), code.getCode(), code.getDescription()));
         }
         return results;
     }

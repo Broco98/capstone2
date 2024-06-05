@@ -2,6 +2,7 @@ package start.capstone2.domain.portfolio;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import start.capstone2.domain.user.User;
@@ -27,13 +28,11 @@ public class PortfolioComment {
     @Lob
     private String content;
 
-    public static PortfolioComment createPortfolioComment(User user, Portfolio portfolio, String content) {
-        PortfolioComment comment = new PortfolioComment();
-        comment.user = user;
-        comment.portfolio = portfolio;
-        comment.content = content;
-
-        return comment;
+    @Builder
+    private PortfolioComment(User user, Portfolio portfolio, String content) {
+        this.user = user;
+        this.portfolio = portfolio;
+        this.content = content;
     }
 
     public void updateContent(String content) {

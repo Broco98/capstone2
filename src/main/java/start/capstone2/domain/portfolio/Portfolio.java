@@ -6,6 +6,7 @@ import start.capstone2.domain.BaseEntity;
 import start.capstone2.domain.Image.Image;
 import start.capstone2.domain.user.User;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,14 +24,24 @@ public class Portfolio extends BaseEntity{
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "image_id")
-    private Image cardImage;
+    private String title;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private Integer teamNum;
+
+    @Lob
+    private String description;
+
+    @Lob
+    private String contribution;
+
+    @Lob
+    private String techStacks;
 
     @Setter
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "portfolio_detail_id")
-    private PortfolioDetail detail;
+    @JoinColumn(name = "image_id")
+    private Image cardImage;
 
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PortfolioDesign> designs = new ArrayList<>();
@@ -50,26 +61,37 @@ public class Portfolio extends BaseEntity{
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PortfolioFunction> functions = new ArrayList<>();
 
-    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PortfolioUrl> urls = new ArrayList<>();
+//    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<PortfolioUrl> urls = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<PortfolioTechStack> techStacks = new ArrayList<>();
 
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PortfolioTechStack> techStacks = new ArrayList<>();
+    private List<PortfolioDatabase> databases = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
-    private ShareStatus status;
+    private ShareStatus status = ShareStatus.NOT_SHARED;
 
-    public static Portfolio createPortfolio(User user, Image cardImage, PortfolioDetail detail) {
-        Portfolio portfolio = new Portfolio();
-        portfolio.user = user;
-        portfolio.cardImage = cardImage;
-        portfolio.detail = detail;
-        detail.setPortfolio(portfolio);
-        portfolio.status = ShareStatus.NONE;
-        return portfolio;
+    @Builder
+    private Portfolio(User user, String title, LocalDate startDate, LocalDate endDate, Integer teamNum, String description, String contribution, Image cardImage, String techStacks) {
+        this.user = user;
+        this.title = title;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.teamNum = teamNum;
+        this.description = description;
+        this.contribution = contribution;
+        this.cardImage = cardImage;
     }
 
-    public void updatePortfolio(Image cardImage, ShareStatus status) {
+    public void updatePortfolio(String title, LocalDate startDate, LocalDate endDate, Integer teamNum, String description, String contribution, Image cardImage, ShareStatus status, String techStacks) {
+        this.title = title;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.teamNum = teamNum;
+        this.description = description;
+        this.contribution = contribution;
         this.cardImage = cardImage;
         this.status = status;
     }
@@ -122,19 +144,28 @@ public class Portfolio extends BaseEntity{
         codes.remove(code);
     }
 
-    public void addTechStack(PortfolioTechStack stack) {
-        techStacks.add(stack);
+//    public void addTechStack(PortfolioTechStack stack) {
+//        techStacks.add(stack);
+//    }
+//
+//    public void removeTechStack(PortfolioTechStack stack) {
+//        techStacks.remove(stack);
+//    }
+//
+//    public void addUrl(PortfolioUrl url) {
+//        urls.add(url);
+//    }
+//
+//    public void removeUrl(PortfolioUrl url) {
+//        urls.remove(url);
+//    }
+
+    public void addDatabase(PortfolioDatabase database) {
+        databases.add(database);
     }
 
-    public void removeTechStack(PortfolioTechStack stack) {
-        techStacks.remove(stack);
+    public void removeDatabase(PortfolioDatabase database) {
+        databases.remove(database);
     }
 
-    public void addUrl(PortfolioUrl url) {
-        urls.add(url);
-    }
-
-    public void removeUrl(PortfolioUrl url) {
-        urls.remove(url);
-    }
 }

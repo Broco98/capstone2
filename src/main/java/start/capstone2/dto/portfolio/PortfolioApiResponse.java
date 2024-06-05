@@ -4,12 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import start.capstone2.domain.portfolio.Method;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 public class PortfolioApiResponse {
     private Long id;
-    private Method method;
-    private String url;
-    private String description;
-    private String response;
+    private String name;
+    List<PortfolioApiModuleResponse> modules;
 }

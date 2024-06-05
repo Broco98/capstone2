@@ -24,40 +24,36 @@ public class PortfolioCommentService {
     private final PortfolioRepository portfolioRepository;
     private final PortfolioCommentRepository commentRepository;
     
-    // TODO user 정보 필요
     @Transactional
     public Long createPortfolioComment(Long userId, Long portfolioId, PortfolioCommentRequest request) {
         User user = userRepository.findById(userId).orElseThrow();
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
 
-        PortfolioComment comment = PortfolioComment.createPortfolioComment(
-                user,
-                portfolio,
-                request.getContent()
-        );
+        PortfolioComment comment = PortfolioComment.builder()
+                .user(user)
+                .portfolio(portfolio)
+                .content(request.getContent())
+                .build();
 
         portfolio.addComment(comment);
         return comment.getId();
     }
 
-    // TODO user 정보 필요
     @Transactional
     public void updatePortfolioComment(Long userId, Long portfolioId, Long commentId, PortfolioCommentRequest request) {
-        PortfolioComment comment = commentRepository.findById(commentId).orElseThrow();
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+        PortfolioComment comment = portfolio.getComments().stream().filter(c->c.getId().equals(commentId)).findFirst().orElseThrow();
         comment.updateContent(request.getContent());
     }
 
-
-    // TODO user 정보 필요
     @Transactional
     public void deletePortfolioComment(Long userId, Long portfolioId, Long commentId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
-        PortfolioComment comment = commentRepository.findById(commentId).orElseThrow();
+        PortfolioComment comment = portfolio.getComments().stream().filter(c->c.getId().equals(commentId)).findFirst().orElseThrow();
         portfolio.removeComment(comment);
     }
 
-    // TODO user 정보 필요
-    // 유저의 comments 조회
+    // 해당 포트폴리오의 모든 comment 조회
     public List<PortfolioCommentResponse> findPortfolioComments(Long userId, Long portfolioId) {
         List<PortfolioComment> comments = commentRepository.findAllByPortfolioId(portfolioId);
         List<PortfolioCommentResponse> responses = new ArrayList<>();

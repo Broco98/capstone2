@@ -1,9 +1,8 @@
 package start.capstone2.domain.portfolio;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import start.capstone2.domain.user.User;
@@ -32,17 +31,14 @@ public class PortfolioLike {
     @CreatedDate
     private LocalDateTime createdDate;
 
-
-    public PortfolioLike createPortfolioLike(User user, Portfolio portfolio) {
-        PortfolioLike like = new PortfolioLike();
-        like.user = user;
-        like.portfolio = portfolio;
-        return like;
-    }
-
     @PrePersist
     public void prePersist() {
         createdDate = LocalDateTime.now();;
     }
 
+    @Builder
+    private PortfolioLike(User user, Portfolio portfolio) {
+        this.user = user;
+        this.portfolio = portfolio;
+    }
 }

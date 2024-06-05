@@ -3,18 +3,14 @@ package start.capstone2.service.portfolio;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import start.capstone2.domain.Image.Image;
-import start.capstone2.domain.Image.ImageStore;
-import start.capstone2.domain.Image.S3Store;
 import start.capstone2.domain.portfolio.Portfolio;
-import start.capstone2.domain.portfolio.PortfolioApi;
 import start.capstone2.domain.portfolio.PortfolioDesign;
+import start.capstone2.domain.portfolio.PortfolioDesignDiagram;
 import start.capstone2.domain.portfolio.repository.PortfolioDesignRepository;
 import start.capstone2.domain.portfolio.repository.PortfolioRepository;
 import start.capstone2.domain.user.User;
 import start.capstone2.domain.user.repository.UserRepository;
-import start.capstone2.dto.portfolio.PortfolioApiResponse;
-import start.capstone2.dto.portfolio.PortfolioCommentResponse;
+import start.capstone2.dto.portfolio.PortfolioDesignDiagramResponse;
 import start.capstone2.dto.portfolio.PortfolioDesignRequest;
 import start.capstone2.dto.portfolio.PortfolioDesignResponse;
 
@@ -30,43 +26,53 @@ public class PortfolioDesignService {
     private final PortfolioRepository portfolioRepository;
     private final PortfolioDesignRepository designRepository;
     
-    // TODO user 정보 필요
     @Transactional
     public Long createPortfolioDesign(Long userId, Long portfolioId, PortfolioDesignRequest request) {
-        User user = userRepository.findById(userId).orElseThrow();
+
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
 
-        PortfolioDesign design = PortfolioDesign.createPortfolioDesign(
-                portfolio,
-                request.getDesign(),
-                request.getDescription()
-        );
+        PortfolioDesign design = PortfolioDesign.builder()
+                .portfolio(portfolio)
+                .name(request.getName())
+                .build();
 
         portfolio.addDesign(design);
         return design.getId();
     }
     
-    // TODO user 정보 필요
     @Transactional
     public void updatePortfolioDesign(Long userId, Long portfolioId, Long designId, PortfolioDesignRequest request) {
-        PortfolioDesign design = designRepository.findByIdWithImage(portfolioId);
-        design.updatePortfolioDesign(request.getDesign(), request.getDescription());
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+        PortfolioDesign design = portfolio.getDesigns().stream().filter(d->d.getId().equals(designId)).findFirst().orElseThrow();
+        design.updatePortfolioDesign(request.getName());
     }
     
-    // TODO user 정보 필요
     @Transactional
     public void deletePortfolioDesign(Long userId, Long portfolioId, Long designId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
-        PortfolioDesign design = designRepository.findById(designId).orElseThrow(); // 삭제하기 위해 2번 조회 -> 1번 조회하기 위해선 또 다른 식별자가 필요함
+        PortfolioDesign design = portfolio.getDesigns().stream().filter(d->d.getId().equals(designId)).findFirst().orElseThrow();
         portfolio.removeDesign(design);
     }
 
-    // TODO user 정보 필요
+    // 해당 포트폴리오의 모든 디자인 조회
     public List<PortfolioDesignResponse> findPortfolioDesigns(Long userId, Long portfolioId) {
-        List<PortfolioDesign> designs = designRepository.findAllByPortfolioId(portfolioId);
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+        List<PortfolioDesign> designs = portfolio.getDesigns();
         List<PortfolioDesignResponse> results = new ArrayList<>();
+
         for (PortfolioDesign design : designs) {
-            results.add(new PortfolioDesignResponse(design.getId(), design.getDesign(), design.getDescription()));
+            List<PortfolioDesignDiagram> diagrams = design.getDiagrams();
+            List<PortfolioDesignDiagramResponse> diagramResponses = new ArrayList<>();
+
+            for (PortfolioDesignDiagram d : diagrams) {
+                String imageName = "default.png";
+                if (d.getImage() != null) {
+                    imageName = d.getImage().getSavedName();
+                }
+                diagramResponses.add(new PortfolioDesignDiagramResponse(d.getId(), d.getDiagram(), d.getDiagram(), imageName));
+            }
+
+            results.add(new PortfolioDesignResponse(design.getId(), design.getName(), diagramResponses));
         }
         return results;
     }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import start.capstone2.domain.BaseEntity;
 
+// TODO
 @Table(name = "users")
 @Entity
 @Getter
