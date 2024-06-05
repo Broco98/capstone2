@@ -48,11 +48,10 @@ public class PortfolioController {
         return portfolioService.findById(portfolioId);
     }
 
-    // TODO -> user 쪽으로 가야함
-    @Operation(summary = "find all portfolio")
+    @Operation(summary = "find all portfolio", description = "공유된 모든 포트폴리오를 조회합니다.")
     @GetMapping("")
-    public ResponseResult<List<PortfolioResponse>> findAllPortfolio(Long userId) {
-        List<PortfolioResponse> results = portfolioService.findAllByUserId(userId);
+    public ResponseResult<List<PortfolioResponse>> findAllSharedPortfolio() {
+        List<PortfolioResponse> results = portfolioService.findAllBySharedStatus();
         return new ResponseResult<>(results);
     }
 }

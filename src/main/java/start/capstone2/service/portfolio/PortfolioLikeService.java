@@ -52,8 +52,8 @@ public class PortfolioLikeService {
         likeRepository.delete(like);
     }
 
-    // user가 스크랩한 portfolio 모두 조회
-    public List<Portfolio> findPortfolioLike(Long userId) {
+    // 유저가 좋아요한 포트폴리오 모두 조회
+    public List<PortfolioResponse> findAllLikePortfolio(Long userId) {
         List<PortfolioLike> likes = likeRepository.findAllByUserId(userId);
         List<Portfolio> results = new ArrayList<>();
         for (PortfolioLike like : likes) {
@@ -61,6 +61,30 @@ public class PortfolioLikeService {
             results.add(portfolio);
         }
 
+        return getPortfolioResponses(results);
+    }
+
+    private List<PortfolioResponse> getPortfolioResponses(List<Portfolio> portfolios) {
+        List<PortfolioResponse> results = new ArrayList<>();
+        for (Portfolio portfolio : portfolios) {
+
+            String imageUrl = null;
+            if (portfolio.getCardImage() != null) {
+                imageUrl = portfolio.getCardImage().getSavedName();
+            }
+
+            results.add(new PortfolioResponse(
+                    portfolio.getId(),
+                    imageUrl,
+                    portfolio.getTitle(),
+                    portfolio.getStartDate(),
+                    portfolio.getEndDate(),
+                    portfolio.getTeamNum(),
+                    portfolio.getDescription(),
+                    portfolio.getContribution(),
+                    portfolio.getTechStacks(),
+                    portfolio.getStatus()));
+        }
         return results;
     }
 

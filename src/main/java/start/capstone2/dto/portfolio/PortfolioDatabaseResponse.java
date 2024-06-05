@@ -10,6 +10,6 @@ import java.util.List;
 public class PortfolioDatabaseResponse {
     private Long id;
     private String name;
-    List<PortfolioDatabaseSchemaResponse> schemas;
+    private List<PortfolioDatabaseSchemaResponse> schemas;
     
 }

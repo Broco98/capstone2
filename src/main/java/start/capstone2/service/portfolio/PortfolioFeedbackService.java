@@ -74,7 +74,7 @@ public class PortfolioFeedbackService {
         portfolio.removeFeedback(feedback);
     }
     
-    // portfolio의 모든 feedback 조회
+    // 포트폴리오의 모든 feedback 조회
     public List<PortfolioFeedbackResponse> findPortfolioFeedbacks(Long userId, Long portfolioId) {
         List<PortfolioFeedback> feedbacks = feedbackRepository.findAllByPortfolioId(portfolioId);
         List<PortfolioFeedbackResponse> results = new ArrayList<>();

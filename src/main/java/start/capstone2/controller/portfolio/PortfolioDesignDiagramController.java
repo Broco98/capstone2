@@ -44,12 +44,5 @@ public class PortfolioDesignDiagramController {
         Long userId = (Long) servletRequest.getAttribute("userId");
         diagramService.deletePortfolioDesignDiagram(userId, designId, designId);
     }
-    
-//    @Operation(summary = "find all portfolio design", description = "포트폴리오의 모든 설계 조회")
-//    @GetMapping("/{portfolioId}/design")
-//    public ResponseResult<List<PortfolioDesignResponse>> findAllPortfolioDesign(Long userId, @PathVariable Long portfolioId) {
-//        List<PortfolioDesignResponse> result = designService.findPortfolioDesigns(userId, portfolioId);
-//        return new ResponseResult<>(result);
-//    }
 
 }

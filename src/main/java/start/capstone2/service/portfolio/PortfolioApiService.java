@@ -60,7 +60,7 @@ public class PortfolioApiService {
         portfolio.removeApi(api);
     }
 
-    // portfolio의 모든 api 조회
+    // 포트폴리오의 모든 api 명세 조회
     public List<PortfolioApiResponse> findPortfolioApis(Long userId, Long portfolioId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
         if (!portfolio.getUser().getId().equals(userId)) {

@@ -125,10 +125,6 @@ public class PortfolioService {
         return getPortfolioResponses(portfolios);
     }
 
-    public Portfolio findPortfolioById(Long portfolioId) {
-        return portfolioRepository.findById(portfolioId).orElseThrow();
-    }
-
     // 단일 조회
     public PortfolioResponse findById(Long portfolioId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();

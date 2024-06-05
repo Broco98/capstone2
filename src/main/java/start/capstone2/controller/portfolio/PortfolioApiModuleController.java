@@ -43,11 +43,4 @@ public class PortfolioApiModuleController {
         apiModuleService.deletePortfolioApiModule(userId, apiId, moduleId);
     }
 
-//    @Operation(summary = "find all portfolio_api_module", description = "portfolio에 있는 모든 portfolio_api를 조회합니다.")
-//    @GetMapping("/{portfolioId}/api")
-//    public ResponseResult<List<PortfolioApiResponse>> findAllPortfolioApi(Long userId, @PathVariable Long portfolioId) {
-//        List<PortfolioApiResponse> result = apiService.findPortfolioApis(userId, portfolioId);
-//        return new ResponseResult<>(result);
-//    }
-
 }

@@ -41,7 +41,7 @@ public class PortfolioApiController {
         apiService.deletePortfolioApi(userId, portfolioId, apiId);
     }
 
-    @Operation(summary = "find all portfolio api", description = "portfolio에 있는 모든 portfolio api를 조회합니다.")
+    @Operation(summary = "find all portfolio api", description = "해당 포트폴리오에 있는 모든 api 명세(모듈 포함)를 조회합니다.")
     @GetMapping("/{portfolioId}/api")
     public ResponseResult<List<PortfolioApiResponse>> findAllPortfolioApi(@PathVariable Long portfolioId, HttpServletRequest servletRequest) {
         Long userId = (Long) servletRequest.getAttribute("userId");

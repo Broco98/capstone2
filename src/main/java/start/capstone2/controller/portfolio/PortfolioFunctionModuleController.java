@@ -42,11 +42,5 @@ public class PortfolioFunctionModuleController {
         moduleService.deletePortfolioFunctionModule(userId, functionId, moduleId);
     }
 
-//    @Operation(summary = "find all portfolio function module", description = "포트폴리오 기능의 모든 명세 모듈 조회")
-//    @GetMapping("{functionId}/module")
-//    public ResponseResult<List<PortfolioFunctionModuleResponse>> findAllPortfolioFunctionModule(Long userId, @PathVariable Long functionId) {
-//        List<PortfolioFunctionModuleResponse> result = moduleService.findPortfolioFunctionModule(userId, functionId);
-//        return new ResponseResult<>(result);
-//    }
-    
+
 }

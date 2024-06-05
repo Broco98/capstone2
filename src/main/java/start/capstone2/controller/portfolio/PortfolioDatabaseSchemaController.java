@@ -43,11 +43,4 @@ public class PortfolioDatabaseSchemaController {
         schemaService.deletePortfolioDatabaseSchema(userId, databaseId, schemaId);
     }
 
-//    @Operation(summary = "find all portfolio database", description = "포트폴리오의 모든 database 조회")
-//    @GetMapping("/{portfolioId}/database")
-//    public ResponseResult<List<PortfolioDatabaseResponse>> findAllPortfolioDatabase(Long userId, @PathVariable Long portfolioId) {
-//        List<PortfolioDatabaseResponse> result = databaseService.findPortfolioDatabase(userId, portfolioId);
-//        return new ResponseResult<>(result);
-//    }
-
 }

@@ -21,9 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PortfolioDatabaseService {
 
-    private final UserRepository userRepository;
     private final PortfolioRepository portfolioRepository;
-    private final PortfolioDatabaseRepository databaseRepository;
 
     @Transactional
     public Long createPortfolioDatabase(Long userId, Long portfolioId, PortfolioDatabaseRequest request) {

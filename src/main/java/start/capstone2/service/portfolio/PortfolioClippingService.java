@@ -10,6 +10,7 @@ import start.capstone2.domain.portfolio.repository.PortfolioClippingRepository;
 import start.capstone2.domain.portfolio.repository.PortfolioRepository;
 import start.capstone2.domain.user.User;
 import start.capstone2.domain.user.repository.UserRepository;
+import start.capstone2.dto.portfolio.PortfolioResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,16 +51,40 @@ public class PortfolioClippingService {
         clippingRepository.delete(clipping);
     }
 
-    // TODO user 기능으로 이동
-    // user가 스크랩한 portfolio 모두 조회
-    public List<Portfolio> findPortfolioClippings(Long userId) {
+    // 유저가 스크랩한 모든 포트폴리오 조회
+    public List<PortfolioResponse> findAllClippingPortfolio(Long userId) {
         List<PortfolioClipping> clippings = clippingRepository.findAllByUserId(userId);
-        List<Portfolio> results = new ArrayList<>();
+        List<Portfolio> portfolios = new ArrayList<>();
+        List<PortfolioResponse> results = new ArrayList<>();
         for (PortfolioClipping clipping : clippings) {
             Portfolio portfolio = clipping.getPortfolio();
-            results.add(portfolio);
+            portfolios.add(portfolio);
         }
 
+        return getPortfolioResponses(portfolios);
+    }
+
+    private List<PortfolioResponse> getPortfolioResponses(List<Portfolio> portfolios) {
+        List<PortfolioResponse> results = new ArrayList<>();
+        for (Portfolio portfolio : portfolios) {
+
+            String imageUrl = null;
+            if (portfolio.getCardImage() != null) {
+                imageUrl = portfolio.getCardImage().getSavedName();
+            }
+
+            results.add(new PortfolioResponse(
+                    portfolio.getId(),
+                    imageUrl,
+                    portfolio.getTitle(),
+                    portfolio.getStartDate(),
+                    portfolio.getEndDate(),
+                    portfolio.getTeamNum(),
+                    portfolio.getDescription(),
+                    portfolio.getContribution(),
+                    portfolio.getTechStacks(),
+                    portfolio.getStatus()));
+        }
         return results;
     }
 

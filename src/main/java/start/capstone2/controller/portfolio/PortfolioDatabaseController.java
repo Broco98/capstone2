@@ -41,7 +41,7 @@ public class PortfolioDatabaseController {
         databaseService.deletePortfolioDatabase(userId, portfolioId, databaseId);
     }
 
-    @Operation(summary = "find all portfolio database")
+    @Operation(summary = "find all portfolio database", description = "해당 포트폴리오의 모든 Database 정보(스키마 포함)를 조회합니다.")
     @GetMapping("/{portfolioId}/database")
     public ResponseResult<List<PortfolioDatabaseResponse>> findAllPortfolioDatabase(HttpServletRequest servletRequest, @PathVariable Long portfolioId) {
         Long userId = (Long) servletRequest.getAttribute("userId");
