@@ -34,6 +34,10 @@ public class PortfolioDesignDiagramService {
     public Long createPortfolioDesignDiagram(Long userId, Long designId, PortfolioDesignDiagramRequest request) {
 
         PortfolioDesign design = designRepository.findById(designId).orElseThrow();
+        if (!design.getPortfolio().getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가!");
+        }
+
 
         Image image = null;
         if (request.getImage() != null) {
@@ -53,6 +57,9 @@ public class PortfolioDesignDiagramService {
     @Transactional
     public void updatePortfolioDesignSchema(Long userId, Long designId, Long diagramId, PortfolioDesignDiagramRequest request) {
         PortfolioDesign design = designRepository.findById(designId).orElseThrow();
+        if (!design.getPortfolio().getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가!");
+        }
         PortfolioDesignDiagram diagram = design.getDiagrams().stream()
                 .filter(d -> d.getId().equals(diagramId))
                 .findFirst().orElseThrow();
@@ -72,6 +79,9 @@ public class PortfolioDesignDiagramService {
     @Transactional
     public void deletePortfolioDesignDiagram(Long userId, Long designId, Long diagramId) {
         PortfolioDesign design = designRepository.findById(designId).orElseThrow();
+        if (!design.getPortfolio().getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가!");
+        }
         PortfolioDesignDiagram diagram = design.getDiagrams().stream().filter(d->d.getId().equals(diagramId)).findFirst().orElseThrow();
         if (diagram.getImage() != null) {
             store.removeImage(diagram.getImage().getSavedName());

@@ -29,6 +29,10 @@ public class PortfolioDatabaseSchemaService {
     public Long createPortfolioDatabaseSchema(Long userId, Long databaseId, PortfolioDatabaseSchemaRequest request) {
         PortfolioDatabase database = databaseRepository.findById(databaseId).orElseThrow();
 
+        if (!database.getPortfolio().getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가");
+        }
+
         PortfolioDatabaseSchema schema = PortfolioDatabaseSchema.builder()
                 .database(database)
                 .schema(request.getSchema())
@@ -41,6 +45,9 @@ public class PortfolioDatabaseSchemaService {
     @Transactional
     public void updatePortfolioDatabaseSchema(Long userId, Long databaseId, Long schemaId, PortfolioDatabaseSchemaRequest request) {
         PortfolioDatabase database = databaseRepository.findById(databaseId).orElseThrow();
+        if (!database.getPortfolio().getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가");
+        }
         PortfolioDatabaseSchema schema = database.getSchemas().stream()
                 .filter(d->d.getId().equals(schemaId))
                 .findFirst().orElseThrow();
@@ -50,6 +57,9 @@ public class PortfolioDatabaseSchemaService {
     @Transactional
     public void deletePortfolioDatabaseSchema(Long userId, Long databaseId, Long schemaId) {
         PortfolioDatabase database = databaseRepository.findById(databaseId).orElseThrow();
+        if (!database.getPortfolio().getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가");
+        }
         PortfolioDatabaseSchema schema = database.getSchemas().stream()
                 .filter(d->d.getId().equals(schemaId))
                 .findFirst().orElseThrow();

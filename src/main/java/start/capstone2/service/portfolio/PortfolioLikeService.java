@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import start.capstone2.domain.portfolio.Portfolio;
 import start.capstone2.domain.portfolio.PortfolioLike;
+import start.capstone2.domain.portfolio.ShareStatus;
 import start.capstone2.domain.portfolio.repository.PortfolioLikeRepository;
 import start.capstone2.domain.portfolio.repository.PortfolioRepository;
 import start.capstone2.domain.user.User;
@@ -29,6 +30,9 @@ public class PortfolioLikeService {
 
         User user = userRepository.findById(userId).orElseThrow();
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+        if (!portfolio.getStatus().equals(ShareStatus.SHARED)) {
+            throw new IllegalStateException("공유된 포트폴리오가 아닙니다.");
+        }
 
         PortfolioLike like = PortfolioLike.builder()
                 .portfolio(portfolio)
@@ -40,8 +44,12 @@ public class PortfolioLikeService {
     }
 
     @Transactional
-    public void deletePortfolioLike(Long userId, Long clippingId) {
-        likeRepository.deleteById(clippingId);
+    public void deletePortfolioLike(Long userId, Long likeId) {
+        PortfolioLike like = likeRepository.findById(likeId).orElseThrow();
+        if (!like.getPortfolio().getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가!");
+        }
+        likeRepository.delete(like);
     }
 
     // user가 스크랩한 portfolio 모두 조회

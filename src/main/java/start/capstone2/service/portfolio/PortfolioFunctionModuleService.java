@@ -23,14 +23,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PortfolioFunctionModuleService {
 
-    private final UserRepository userRepository;
     private final PortfolioFunctionRepository functionRepository;
     private final PortfolioFunctionModuleRepository moduleRepository;
 
     @Transactional
     public Long createPortfolioFunctionModule(Long userId, Long functionId, PortfolioFunctionModuleRequest request) {
-        User user = userRepository.findById(userId).orElseThrow();
         PortfolioFunction function = functionRepository.findById(functionId).orElseThrow();
+
+        if (!function.getPortfolio().getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가!");
+        }
 
         PortfolioFunctionModule functionModule = PortfolioFunctionModule.builder()
                 .function(function)
@@ -45,14 +47,19 @@ public class PortfolioFunctionModuleService {
     @Transactional
     public void updatePortfolioFunctionModule(Long userId, Long functionId, Long moduleId, PortfolioFunctionModuleRequest request) {
         PortfolioFunction function = functionRepository.findById(functionId).orElseThrow();
+        if (!function.getPortfolio().getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가!");
+        }
         PortfolioFunctionModule module = function.getModules().stream().filter(m->m.getId().equals(moduleId)).findFirst().orElseThrow();
         module.updateFunctionModule(request.getName(), request.getDescription());
     }
 
-    // TODO user 확인 필요
     @Transactional
     public void deletePortfolioFunctionModule(Long userId, Long functionId, Long moduleId) {
         PortfolioFunction function = functionRepository.findById(functionId).orElseThrow();
+        if (!function.getPortfolio().getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가!");
+        }
         PortfolioFunctionModule module = function.getModules().stream().filter(m->m.getId().equals(moduleId)).findFirst().orElseThrow();
         function.removeModule(module);
     }

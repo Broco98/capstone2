@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import start.capstone2.domain.portfolio.Portfolio;
 import start.capstone2.domain.portfolio.PortfolioClipping;
+import start.capstone2.domain.portfolio.ShareStatus;
 import start.capstone2.domain.portfolio.repository.PortfolioClippingRepository;
 import start.capstone2.domain.portfolio.repository.PortfolioRepository;
 import start.capstone2.domain.user.User;
@@ -27,7 +28,9 @@ public class PortfolioClippingService {
 
         User user = userRepository.findById(userId).orElseThrow();
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
-
+        if (!portfolio.getStatus().equals(ShareStatus.SHARED)) {
+            throw new IllegalStateException("공유된 포트폴리오가 아닙니다.");
+        }
         PortfolioClipping clipping = PortfolioClipping.builder()
                 .portfolio(portfolio)
                 .user(user)
