@@ -2,6 +2,7 @@ package start.capstone2.controller.portfolio;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import start.capstone2.domain.portfolio.Portfolio;
@@ -22,19 +23,22 @@ public class PortfolioController {
 
     @Operation(summary = "create portfolio")
     @PostMapping("")
-    public Long createPortfolio(Long userId, PortfolioRequest request) {
+    public Long createPortfolio(PortfolioRequest request, HttpServletRequest servletRequest) {
+        Long userId = (Long) servletRequest.getAttribute("userId");
         return portfolioService.createPortfolio(userId, request);
     }
 
     @Operation(summary = "update portfolio")
     @PutMapping("/{portfolioId}")
-    public void updatePortfolio(Long userId, @PathVariable Long portfolioId, PortfolioRequest portfolioRequest) {
+    public void updatePortfolio(@PathVariable Long portfolioId, PortfolioRequest portfolioRequest, HttpServletRequest servletRequest) {
+        Long userId = (Long) servletRequest.getAttribute("userId");
         portfolioService.updatePortfolio(userId, portfolioId, portfolioRequest);
     }
 
     @Operation(summary = "delete portfolio")
     @DeleteMapping("/{portfolioId}")
-    public void deletePortfolio(Long userId, @PathVariable Long portfolioId) {
+    public void deletePortfolio(@PathVariable Long portfolioId, HttpServletRequest servletRequest) {
+        Long userId = (Long) servletRequest.getAttribute("userId");
         portfolioService.deletePortfolio(userId, portfolioId);
     }
 
