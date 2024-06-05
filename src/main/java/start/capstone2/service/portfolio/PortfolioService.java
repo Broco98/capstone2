@@ -41,6 +41,7 @@ public class PortfolioService {
                 .contribution(request.getContribution())
                 .title(request.getTitle())
                 .teamNum(request.getTeamNum())
+                .techStacks(request.getTechStacks())
                 .build();
 
         portfolioRepository.save(portfolio);
@@ -68,7 +69,8 @@ public class PortfolioService {
                 request.getDescription(),
                 request.getContribution(),
                 image,
-                request.getStatus());
+                request.getStatus(),
+                request.getTechStacks());
     }
 
     @Transactional
@@ -96,6 +98,7 @@ public class PortfolioService {
                     portfolio.getTeamNum(),
                     portfolio.getDescription(),
                     portfolio.getContribution(),
+                    portfolio.getTechStacks(),
                     portfolio.getStatus()));
         }
         return results;
@@ -135,6 +138,7 @@ public class PortfolioService {
                 portfolio.getTeamNum(),
                 portfolio.getDescription(),
                 portfolio.getContribution(),
+                portfolio.getTechStacks(),
                 portfolio.getStatus());
     }
 

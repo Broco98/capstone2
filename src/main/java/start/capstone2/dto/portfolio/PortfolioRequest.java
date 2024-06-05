@@ -18,6 +18,7 @@ public class PortfolioRequest {
     private Integer teamNum;
     private String description;
     private String contribution;
+    private String techStacks;
     private ShareStatus status;
 
 }

@@ -3,15 +3,20 @@ package start.capstone2.service.portfolio.ai;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import net.sourceforge.plantuml.FileFormat;
+import net.sourceforge.plantuml.FileFormatOption;
 import net.sourceforge.plantuml.SourceStringReader;
+import org.mockito.Mock;
 import org.springframework.ai.chat.ChatClient;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.SystemMessage;
 import org.springframework.ai.chat.prompt.Prompt;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
 import start.capstone2.domain.Image.Image;
 import start.capstone2.domain.Image.S3Store;
 import start.capstone2.domain.portfolio.*;
@@ -60,11 +65,10 @@ public class PortfolioDesignAiService {
                         .build();
 
                 for (Map<String, Object> data : dataList) {
-
-
-
+                    Image image = store.saveImage(createDiagramImage((String) data.get("diagram")));
                     PortfolioDesignDiagram diagram = PortfolioDesignDiagram.builder()
                             .design(design)
+                            .image(image)
                             .diagram((String) data.get("diagram"))
                             .description((String) data.get("description"))
                             .build();
@@ -77,13 +81,13 @@ public class PortfolioDesignAiService {
         }
     }
 
-    // TODO
     private MultipartFile createDiagramImage(String diagram) {
 
         SourceStringReader reader = new SourceStringReader(diagram);
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
         try {
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
-            reader.outputImage(os);
+            reader.outputImage(os, new FileFormatOption(FileFormat.PNG));
+            return new MockMultipartFile("file", "diagram_generated.png", "image/png", os.toByteArray());
         } catch (IOException e) {
           throw new RuntimeException("diagram image 생성 실패");
         }
@@ -121,22 +125,22 @@ public class PortfolioDesignAiService {
         {
             "data" : [
                 {
-                    "diagram" : (sequence diagram, PlantUML 사용, String 타입)
+                    "diagram" : (sequence diagram, PlantUML 사용, String 타입, 영어로 생성)
                     "description" : (다이어그램 설명, 한글로 설명)
                 },
                 (... 너가 필요한 만큼 반복, 중복 X)
                 {
-                    "diagram" : (use-case diagram, PlantUML 사용, String 타입)
+                    "diagram" : (use-case diagram, PlantUML 사용, String 타입, 영어로 생성)
                     "description" : (다이어그램 설명, 한글로 설명)
                 },
                 (... 너가 필요한 만큼 반복, 중복 X)
                 {
-                    "diagram" : (class diagram, PlantUML 사용, 변수와 메서드 포함, String 타입)
+                    "diagram" : (class diagram, PlantUML 사용, 변수와 메서드 포함, String 타입, 영어로 생성)
                     "description" : (다이어그램 설명, 한글로 설명)
                 },
                 (... 너가 필요한 만큼 반복, 중복 X)
                 {
-                    "diagram" : (ER diagram, PlantUML 사용, String 타입)
+                    "diagram" : (ER diagram, PlantUML 사용, String 타입, 영어로 생성)
                     "description" : (다이어그램 설명, 한글로 설명)
                 },
                 (... 너가 필요한 만큼 반복, 중복 X)

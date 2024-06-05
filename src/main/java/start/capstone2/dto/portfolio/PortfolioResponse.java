@@ -22,6 +22,7 @@ public class PortfolioResponse {
     private Integer teamNum;
     private String description;
     private String contribution;
+    private String techStacks;
     private ShareStatus status;
 
 }

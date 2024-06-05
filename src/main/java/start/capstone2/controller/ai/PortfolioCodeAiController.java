@@ -41,12 +41,12 @@ import java.util.Map;
 @RequestMapping("/portfolio")
 public class PortfolioCodeAiController {
 
-    private final PortfolioDatabaseAiService databaseAiService;
+    private final PortfolioCodeAiService codeAiService;
 
     @Operation(summary = "generate portfolio code", description = "function 하나를 선택해서 포트폴리오 code를 자동으로 생성합니다.")
-    @PostMapping("/{portfolioId}//code-generation")
+    @PostMapping("/{portfolioId}/code-generation")
     public ResponseEntity<String> generatePortfolioCode(Long userId, @PathVariable Long portfolioId) {
-        databaseAiService.generatePortfolioDatabase(userId, portfolioId);
+        codeAiService.generatePortfolioCode(userId, portfolioId);
         return ResponseEntity.ok("생성 중 ... ");
     }
 }

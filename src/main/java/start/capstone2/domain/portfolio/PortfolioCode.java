@@ -1,15 +1,14 @@
 package start.capstone2.domain.portfolio;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import start.capstone2.domain.BaseEntity;
 
-// TODO
 @Getter
 @Entity
-@Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PortfolioCode extends BaseEntity {
 
@@ -18,10 +17,11 @@ public class PortfolioCode extends BaseEntity {
     @Column(name = "portfolio_code_id")
     private Long id;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
+
+    private String name;
 
     @Lob
     private String code;
@@ -29,8 +29,16 @@ public class PortfolioCode extends BaseEntity {
     @Lob
     private String description;
 
+    @Builder
+    private PortfolioCode(Portfolio portfolio, String name, String code, String description) {
+        this.portfolio = portfolio;
+        this.name = name;
+        this.code = code;
+        this.description = description;
+    }
 
-    public void updatePortfolioCode(String code, String description) {
+    public void updatePortfolioCode(String name, String code, String description) {
+        this.name = name;
         this.code = code;
         this.description = description;
     }

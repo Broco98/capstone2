@@ -43,7 +43,7 @@ public class PortfolioCodeService {
     public void updatePortfolioCode(Long userId, Long portfolioId, Long codeId, PortfolioCodeRequest request) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
         PortfolioCode code = portfolio.getCodes().stream().filter(c->c.getId().equals(codeId)).findFirst().orElseThrow();
-        code.updatePortfolioCode(request.getCode(), request.getDescription());
+        code.updatePortfolioCode(request.getName(), request.getCode(), request.getDescription());
     }
 
     @Transactional
@@ -58,7 +58,7 @@ public class PortfolioCodeService {
         List<PortfolioCode> codes = codeRepository.findAllByPortfolioId(portfolioId);
         List<PortfolioCodeResponse> results = new ArrayList<>();
         for (PortfolioCode code : codes) {
-            results.add(new PortfolioCodeResponse(code.getId(), code.getCode(), code.getDescription()));
+            results.add(new PortfolioCodeResponse(code.getId(), code.getName(), code.getCode(), code.getDescription()));
         }
         return results;
     }

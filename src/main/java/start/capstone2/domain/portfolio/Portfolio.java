@@ -61,9 +61,9 @@ public class Portfolio extends BaseEntity{
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PortfolioFunction> functions = new ArrayList<>();
 
-    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PortfolioUrl> urls = new ArrayList<>();
-
+//    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<PortfolioUrl> urls = new ArrayList<>();
+//
 //    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private List<PortfolioTechStack> techStacks = new ArrayList<>();
 
@@ -83,10 +83,9 @@ public class Portfolio extends BaseEntity{
         this.description = description;
         this.contribution = contribution;
         this.cardImage = cardImage;
-        this.techStacks = techStacks;
     }
 
-    public void updatePortfolio(String title, LocalDate startDate, LocalDate endDate, Integer teamNum, String description, String contribution, Image cardImage, ShareStatus status) {
+    public void updatePortfolio(String title, LocalDate startDate, LocalDate endDate, Integer teamNum, String description, String contribution, Image cardImage, ShareStatus status, String techStacks) {
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -152,14 +151,14 @@ public class Portfolio extends BaseEntity{
 //    public void removeTechStack(PortfolioTechStack stack) {
 //        techStacks.remove(stack);
 //    }
-
-    public void addUrl(PortfolioUrl url) {
-        urls.add(url);
-    }
-
-    public void removeUrl(PortfolioUrl url) {
-        urls.remove(url);
-    }
+//
+//    public void addUrl(PortfolioUrl url) {
+//        urls.add(url);
+//    }
+//
+//    public void removeUrl(PortfolioUrl url) {
+//        urls.remove(url);
+//    }
 
     public void addDatabase(PortfolioDatabase database) {
         databases.add(database);
