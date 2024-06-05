@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.ChatClient;
@@ -45,7 +46,8 @@ public class PortfolioDatabaseAiController {
 
     @Operation(summary = "generate portfolio database", description = "function 하나를 선택해서 포트폴리오 데이터베이스를 자동으로 생성합니다.")
     @PostMapping("/{portfolioId}/function/{functionId}/database-generation")
-    public ResponseEntity<String> generatePortfolioDatabase(Long userId, @PathVariable Long portfolioId, @PathVariable Long functionId) {
+    public ResponseEntity<String> generatePortfolioDatabase(@PathVariable Long portfolioId, @PathVariable Long functionId, HttpServletRequest servletRequest) {
+        Long userId = (Long) servletRequest.getAttribute("userId");
         databaseAiService.generatePortfolioDatabase(userId, portfolioId, functionId);
         return ResponseEntity.ok("생성 중 ... ");
     }

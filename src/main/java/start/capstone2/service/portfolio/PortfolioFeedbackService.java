@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import start.capstone2.domain.portfolio.Portfolio;
 import start.capstone2.domain.portfolio.PortfolioApi;
 import start.capstone2.domain.portfolio.PortfolioFeedback;
+import start.capstone2.domain.portfolio.ShareStatus;
 import start.capstone2.dto.portfolio.PortfolioApiResponse;
 import start.capstone2.dto.portfolio.PortfolioFeedbackRequest;
 import start.capstone2.domain.portfolio.repository.PortfolioFeedbackRepository;
@@ -26,12 +27,14 @@ public class PortfolioFeedbackService {
     private final PortfolioRepository portfolioRepository;
     private final PortfolioFeedbackRepository feedbackRepository;
 
-    // TODO user 확인 필요
     @Transactional
     public Long createPortfolioFeedback(Long userId, Long portfolioId, PortfolioFeedbackRequest request) {
 
         User user = userRepository.findById(userId).orElseThrow();
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+        if (!portfolio.getStatus().equals(ShareStatus.SHARED)) {
+            throw new IllegalStateException("공유된 포트폴리오가 아닙니다!");
+        }
 
         PortfolioFeedback portfolioFeedback = PortfolioFeedback.builder()
                 .user(user)
@@ -48,14 +51,26 @@ public class PortfolioFeedbackService {
     @Transactional
     public void updatePortfolioFeedback(Long userId, Long portfolioId, Long feedbackId, PortfolioFeedbackRequest request) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+        if (!portfolio.getStatus().equals(ShareStatus.SHARED)) {
+            throw new IllegalStateException("공유된 포트폴리오가 아닙니다!");
+        }
         PortfolioFeedback feedback = portfolio.getFeedbacks().stream().filter(f -> f.getId().equals(feedbackId)).findFirst().orElseThrow();
+        if (!feedback.getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가!");
+        }
         feedback.updateFeedback(request.getContent(), request.getLocation());
     }
     
     @Transactional
     public void deletePortfolioFeedback(Long userId, Long portfolioId, Long feedbackId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+        if (!portfolio.getStatus().equals(ShareStatus.SHARED)) {
+            throw new IllegalStateException("공유된 포트폴리오가 아닙니다!");
+        }
         PortfolioFeedback feedback = portfolio.getFeedbacks().stream().filter(f -> f.getId().equals(feedbackId)).findFirst().orElseThrow();
+        if (!feedback.getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가!");
+        }
         portfolio.removeFeedback(feedback);
     }
     

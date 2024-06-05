@@ -3,6 +3,7 @@ package start.capstone2.controller.portfolio;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import start.capstone2.domain.portfolio.PortfolioDesignDiagram;
@@ -25,19 +26,22 @@ public class PortfolioDesignDiagramController {
 
     @Operation(summary = "create portfolio design diagram")
     @PostMapping("/{designId}/diagram")
-    public Long createPortfolioDesign(Long userId, @PathVariable Long designId, PortfolioDesignDiagramRequest request) {
+    public Long createPortfolioDesign(HttpServletRequest servletRequest, @PathVariable Long designId, PortfolioDesignDiagramRequest request) {
+        Long userId = (Long) servletRequest.getAttribute("userId");
         return diagramService.createPortfolioDesignDiagram(userId, designId, request);
     }
     
     @Operation(summary = "update portfolio design diagram")
     @PutMapping("/{designId}/diagram/{diagramId}")
-    public void updatePortfolioDesign(Long userId, @PathVariable Long designId, @PathVariable Long diagramId, PortfolioDesignDiagramRequest request) {
+    public void updatePortfolioDesign(HttpServletRequest servletRequest, @PathVariable Long designId, @PathVariable Long diagramId, PortfolioDesignDiagramRequest request) {
+        Long userId = (Long) servletRequest.getAttribute("userId");
         diagramService.updatePortfolioDesignSchema(userId, designId, diagramId, request);
     }
 
     @Operation(summary = "delete portfolio design diagram")
     @DeleteMapping("/{designId}/diagram/{diagramId}")
-    public void deletePortfolioPortfolioDesign(Long userId, @PathVariable Long designId, @PathVariable Long c) {
+    public void deletePortfolioPortfolioDesign(HttpServletRequest servletRequest, @PathVariable Long designId, @PathVariable Long c) {
+        Long userId = (Long) servletRequest.getAttribute("userId");
         diagramService.deletePortfolioDesignDiagram(userId, designId, designId);
     }
     

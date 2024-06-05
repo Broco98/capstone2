@@ -28,7 +28,9 @@ public class PortfolioCodeService {
     @Transactional
     public Long createPortfolioCode(Long userId, Long portfolioId, PortfolioCodeRequest request) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
-
+        if (!portfolio.getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가");
+        }
         PortfolioCode code = PortfolioCode.builder()
                 .portfolio(portfolio)
                 .code(request.getCode())
@@ -42,6 +44,9 @@ public class PortfolioCodeService {
     @Transactional
     public void updatePortfolioCode(Long userId, Long portfolioId, Long codeId, PortfolioCodeRequest request) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+        if (!portfolio.getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가");
+        }
         PortfolioCode code = portfolio.getCodes().stream().filter(c->c.getId().equals(codeId)).findFirst().orElseThrow();
         code.updatePortfolioCode(request.getName(), request.getCode(), request.getDescription());
     }
@@ -49,10 +54,14 @@ public class PortfolioCodeService {
     @Transactional
     public void deletePortfolioCode(Long userId, Long portfolioId, Long codeId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+        if (!portfolio.getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가");
+        }
         PortfolioCode code = portfolio.getCodes().stream().filter(c->c.getId().equals(codeId)).findFirst().orElseThrow();
         portfolio.removeCode(code);
     }
 
+    // TODO
     // 해당 포트폴리오의 모든 코드 조회
     public List<PortfolioCodeResponse> findPortfolioCodes(Long userId, Long portfolioId) {
         List<PortfolioCode> codes = codeRepository.findAllByPortfolioId(portfolioId);

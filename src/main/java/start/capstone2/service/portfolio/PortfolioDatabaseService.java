@@ -28,7 +28,9 @@ public class PortfolioDatabaseService {
     @Transactional
     public Long createPortfolioDatabase(Long userId, Long portfolioId, PortfolioDatabaseRequest request) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
-
+        if (!portfolio.getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가");
+        }
         PortfolioDatabase database = PortfolioDatabase.builder()
                 .portfolio(portfolio)
                 .name(request.getName())
@@ -41,6 +43,9 @@ public class PortfolioDatabaseService {
     @Transactional
     public void updatePortfolioDatabase(Long userId, Long portfolioId, Long databaseId, PortfolioDatabaseRequest request) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+        if (!portfolio.getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가");
+        }
         PortfolioDatabase database = portfolio.getDatabases().stream().filter(d->d.getId().equals(databaseId)).findFirst().orElseThrow();
         database.updateDatabase(request.getName());
     }
@@ -48,6 +53,9 @@ public class PortfolioDatabaseService {
     @Transactional
     public void deletePortfolioDatabase(Long userId, Long portfolioId, Long databaseId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+        if (!portfolio.getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가");
+        }
         PortfolioDatabase database = portfolio.getDatabases().stream().filter(d->d.getId().equals(databaseId)).findFirst().orElseThrow();
         portfolio.removeDatabase(database);
     }
@@ -56,6 +64,9 @@ public class PortfolioDatabaseService {
     // 해당 포트폴리오의 모든 database 조회
     public List<PortfolioDatabaseResponse> findPortfolioDatabase(Long userId, Long portfolioId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+        if (!portfolio.getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가");
+        }
         List<PortfolioDatabase> databases = portfolio.getDatabases();
 
         List<PortfolioDatabaseResponse> results = new ArrayList<>();

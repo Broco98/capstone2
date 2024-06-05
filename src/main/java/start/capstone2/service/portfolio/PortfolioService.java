@@ -27,13 +27,15 @@ public class PortfolioService {
     @Transactional
     public Long createPortfolio(Long userId, PortfolioRequest request) {
 
+        User user = userRepository.findById(userId).orElseThrow();
+
         Image image = null;
         if (request.getImage() != null) {
             image = store.saveImage(request.getImage());
         }
 
         Portfolio portfolio = Portfolio.builder()
-//                .user(user)
+                .user(user)
                 .cardImage(image)
                 .description(request.getDescription())
                 .startDate(request.getStartDate())
@@ -50,7 +52,11 @@ public class PortfolioService {
 
     @Transactional
     public void updatePortfolio(Long userId, Long portfolioId, PortfolioRequest request) {
+
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+        if (!portfolio.getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가");
+        }
 
         Image image = null;
         if (request.getImage() != null) {
@@ -76,6 +82,9 @@ public class PortfolioService {
     @Transactional
     public void deletePortfolio(Long userId, Long portfolioId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+        if (!portfolio.getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가");
+        }
         store.removeImage(portfolio.getCardImage().getSavedName());
         portfolioRepository.delete(portfolio);
     }

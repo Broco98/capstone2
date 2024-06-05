@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import start.capstone2.domain.portfolio.*;
 import start.capstone2.domain.portfolio.repository.PortfolioRepository;
+import start.capstone2.domain.user.repository.UserRepository;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class PortfolioApiAiService {
 
+    private final UserRepository userRepository;
     private final PortfolioRepository portfolioRepository;
     private final ChatClient chatClient;
 
@@ -31,6 +33,10 @@ public class PortfolioApiAiService {
     public void generatePortfolioApi(Long userId, Long portfolioId, Long functionId) {
 
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+        if (!portfolio.getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가");
+        }
+
         PortfolioFunction function = portfolio.getFunctions().stream()
                 .filter(f -> f.getId().equals(functionId))
                 .findAny().orElseThrow(() -> new NoSuchElementException("function이 존재하지 않습니다."));

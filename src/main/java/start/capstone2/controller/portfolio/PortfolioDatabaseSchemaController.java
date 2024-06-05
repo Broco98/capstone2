@@ -2,6 +2,7 @@ package start.capstone2.controller.portfolio;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import start.capstone2.dto.ResponseResult;
@@ -23,19 +24,22 @@ public class PortfolioDatabaseSchemaController {
 
     @Operation(summary = "create portfolio database schema")
     @PostMapping("/{databaseId}/schema")
-    public Long createPortfolioDatabase(Long userId, @PathVariable Long databaseId, PortfolioDatabaseSchemaRequest request) {
+    public Long createPortfolioDatabase(HttpServletRequest servletRequest, @PathVariable Long databaseId, PortfolioDatabaseSchemaRequest request) {
+        Long userId = (Long) servletRequest.getAttribute("userId");
         return schemaService.createPortfolioDatabaseSchema(userId, databaseId, request);
     }
 
     @Operation(summary = "update portfolio database schema")
     @PutMapping("/{databaseId}/schema/{schemaId}")
-    public void updatePortfolioDesign(Long userId, @PathVariable Long databaseId, @PathVariable Long schemaId, PortfolioDatabaseSchemaRequest request) {
+    public void updatePortfolioDesign(HttpServletRequest servletRequest, @PathVariable Long databaseId, @PathVariable Long schemaId, PortfolioDatabaseSchemaRequest request) {
+        Long userId = (Long) servletRequest.getAttribute("userId");
         schemaService.updatePortfolioDatabaseSchema(userId, databaseId, schemaId, request);
     }
 
     @Operation(summary = "delete portfolio database schema")
     @DeleteMapping("/{databaseId}/schema/{schemaId}")
-    public void deletePortfolioPortfolioDesign(Long userId, @PathVariable Long databaseId, @PathVariable Long schemaId) {
+    public void deletePortfolioPortfolioDesign(HttpServletRequest servletRequest, @PathVariable Long databaseId, @PathVariable Long schemaId) {
+        Long userId = (Long) servletRequest.getAttribute("userId");
         schemaService.deletePortfolioDatabaseSchema(userId, databaseId, schemaId);
     }
 

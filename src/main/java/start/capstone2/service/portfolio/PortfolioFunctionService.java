@@ -26,8 +26,11 @@ public class PortfolioFunctionService {
 
     @Transactional
     public Long createPortfolioFunction(Long userId, Long portfolioId, PortfolioFunctionRequest request) {
-        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
 
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+        if (!portfolio.getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가");
+        }
         PortfolioFunction function = PortfolioFunction.builder()
                 .portfolio(portfolio)
                 .name(request.getName())
@@ -39,18 +42,24 @@ public class PortfolioFunctionService {
 
     @Transactional
     public void updatePortfolioFunction(Long userId, Long portfolioId, Long functionId, PortfolioFunctionRequest request) {
-        PortfolioFunction function = functionRepository.findById(functionId).orElseThrow();
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+        if (!portfolio.getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가");
+        }
+        PortfolioFunction function = portfolio.getFunctions().stream().filter(f->f.getId().equals(functionId)).findFirst().orElseThrow();
         function.updatePortfolioFunction(request.getName());
     }
 
     @Transactional
     public void deletePortfolioFunction(Long userId, Long portfolioId, Long functionId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
-        PortfolioFunction function = functionRepository.findById(functionId).orElseThrow();
+        if (!portfolio.getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가");
+        }
+        PortfolioFunction function = portfolio.getFunctions().stream().filter(f->f.getId().equals(functionId)).findFirst().orElseThrow();
         portfolio.removeFunction(function);
     }
 
-    // TODO user 확인 필요
     // 포트폴리오의 모든 function 조회
     public List<PortfolioFunctionResponse> findPortfolioFunctions(Long userId, Long portfolioId) {
         List<PortfolioFunction> functions = functionRepository.findAllByPortfolioId(portfolioId);

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import start.capstone2.domain.portfolio.Portfolio;
 import start.capstone2.domain.portfolio.PortfolioComment;
+import start.capstone2.domain.portfolio.ShareStatus;
 import start.capstone2.dto.portfolio.PortfolioCommentRequest;
 import start.capstone2.domain.portfolio.repository.PortfolioCommentRepository;
 import start.capstone2.domain.portfolio.repository.PortfolioRepository;
@@ -26,8 +27,12 @@ public class PortfolioCommentService {
     
     @Transactional
     public Long createPortfolioComment(Long userId, Long portfolioId, PortfolioCommentRequest request) {
-        User user = userRepository.findById(userId).orElseThrow();
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+        if (!portfolio.getStatus().equals(ShareStatus.SHARED)) {
+            throw new IllegalStateException("공유된 포트폴리오가 아닙니다!");
+        }
+
+        User user = userRepository.findById(userId).orElseThrow();
 
         PortfolioComment comment = PortfolioComment.builder()
                 .user(user)
@@ -42,14 +47,27 @@ public class PortfolioCommentService {
     @Transactional
     public void updatePortfolioComment(Long userId, Long portfolioId, Long commentId, PortfolioCommentRequest request) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+        if (!portfolio.getStatus().equals(ShareStatus.SHARED)) {
+            throw new IllegalStateException("공유된 포트폴리오가 아닙니다!");
+        }
         PortfolioComment comment = portfolio.getComments().stream().filter(c->c.getId().equals(commentId)).findFirst().orElseThrow();
+        if (!comment.getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가");
+        }
+
         comment.updateContent(request.getContent());
     }
 
     @Transactional
     public void deletePortfolioComment(Long userId, Long portfolioId, Long commentId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+        if (!portfolio.getStatus().equals(ShareStatus.SHARED)) {
+            throw new IllegalStateException("공유된 포트폴리오가 아닙니다!");
+        }
         PortfolioComment comment = portfolio.getComments().stream().filter(c->c.getId().equals(commentId)).findFirst().orElseThrow();
+        if (!comment.getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가");
+        }
         portfolio.removeComment(comment);
     }
 

@@ -27,11 +27,13 @@ public class PortfolioApiModuleService {
     private final PortfolioApiRepository apiRepository;
     private final PortfolioApiModuleRepository moduleRepository;
 
-    // TODO user 확인 필요
     @Transactional
     public Long createPortfolioApiModule(Long userId, Long apiId, PortfolioApiModuleRequest request) {
 
         PortfolioApi api = apiRepository.findById(apiId).orElseThrow();
+        if (!api.getPortfolio().getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가");
+        }
 
         PortfolioApiModule module = PortfolioApiModule.builder()
                 .method(request.getMethod())
@@ -45,10 +47,12 @@ public class PortfolioApiModuleService {
         return module.getId();
     }
     
-    // TODO user 확인 필요
     @Transactional
     public void updatePortfolioApiModule(Long userId, Long apiId, Long moduleId, PortfolioApiModuleRequest request) {
         PortfolioApi portfolioApi = apiRepository.findById(apiId).orElseThrow();
+        if (!portfolioApi.getPortfolio().getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가");
+        }
 
         PortfolioApiModule module = portfolioApi.getModules().stream()
                 .filter(m -> m.getId().equals(moduleId))
@@ -62,16 +66,21 @@ public class PortfolioApiModuleService {
                 request.getResponse());
     }
 
-    // TODO user 확인 필요
     @Transactional
     public void deletePortfolioApiModule(Long userId, Long apiId, Long moduleId) {
         PortfolioApi portfolioApi = apiRepository.findById(apiId).orElseThrow();
+        if (!portfolioApi.getPortfolio().getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가");
+        }
         PortfolioApiModule module = moduleRepository.findById(moduleId).orElseThrow();
         portfolioApi.removeModule(module);
     }
 
     public List<PortfolioApiModuleResponse> findAllPortfolioApiModule(Long userId, Long apiId) {
         PortfolioApi portfolioApi = apiRepository.findById(apiId).orElseThrow();
+        if (!portfolioApi.getPortfolio().getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가");
+        }
         return portfolioApi.getModules().stream()
                 .map(m -> PortfolioApiModuleResponse.builder()
                         .id(m.getId())

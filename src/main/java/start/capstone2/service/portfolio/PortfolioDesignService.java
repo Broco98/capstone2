@@ -30,7 +30,9 @@ public class PortfolioDesignService {
     public Long createPortfolioDesign(Long userId, Long portfolioId, PortfolioDesignRequest request) {
 
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
-
+        if (!portfolio.getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가");
+        }
         PortfolioDesign design = PortfolioDesign.builder()
                 .portfolio(portfolio)
                 .name(request.getName())
@@ -43,6 +45,9 @@ public class PortfolioDesignService {
     @Transactional
     public void updatePortfolioDesign(Long userId, Long portfolioId, Long designId, PortfolioDesignRequest request) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+        if (!portfolio.getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가");
+        }
         PortfolioDesign design = portfolio.getDesigns().stream().filter(d->d.getId().equals(designId)).findFirst().orElseThrow();
         design.updatePortfolioDesign(request.getName());
     }
@@ -50,6 +55,9 @@ public class PortfolioDesignService {
     @Transactional
     public void deletePortfolioDesign(Long userId, Long portfolioId, Long designId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+        if (!portfolio.getUser().getId().equals(userId)) {
+            throw new IllegalStateException("접근 불가");
+        }
         PortfolioDesign design = portfolio.getDesigns().stream().filter(d->d.getId().equals(designId)).findFirst().orElseThrow();
         portfolio.removeDesign(design);
     }
@@ -57,6 +65,7 @@ public class PortfolioDesignService {
     // 해당 포트폴리오의 모든 디자인 조회
     public List<PortfolioDesignResponse> findPortfolioDesigns(Long userId, Long portfolioId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+
         List<PortfolioDesign> designs = portfolio.getDesigns();
         List<PortfolioDesignResponse> results = new ArrayList<>();
 
