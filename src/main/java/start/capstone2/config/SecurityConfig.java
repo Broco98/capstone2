@@ -1,5 +1,6 @@
 package start.capstone2.config;
 
+import start.capstone2.domain.user.repository.UserRepository;
 import start.capstone2.jwt.JwtProvider;
 import start.capstone2.jwt.JwtAuthenticationFilter;
 import start.capstone2.jwt.JwtAuthenticationEntryPoint;
@@ -16,6 +17,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import start.capstone2.service.auth.AuthService;
 
 @Configuration
 @EnableWebSecurity
@@ -26,6 +28,8 @@ public class SecurityConfig {
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final CorsConfig corsConfig;
+    private final AuthService authService;
+    private final UserRepository userRepository;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -38,8 +42,9 @@ public class SecurityConfig {
                         .accessDeniedHandler(jwtAccessDeniedHandler)) // 접근 거부 처리
                 .authorizeHttpRequests(auth -> auth
                         //.requestMatchers("/auth/join", "/auth/login", "/auth/logout", "/auth/reissue").permitAll() // 인증 없이 접근 허용
+                        .requestMatchers("/portfolio/**").authenticated()
                         .anyRequest().permitAll()) // 나머지 요청은 인증 필요
-                .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class) // JWT 필터 추가
+                .addFilterBefore(new JwtAuthenticationFilter(jwtProvider, authService, userRepository), UsernamePasswordAuthenticationFilter.class) // JWT 필터 추가
                 .addFilter(corsConfig.corsFilter()); // 사용자 정의 CORS 필터 추가
 
         return http.build();

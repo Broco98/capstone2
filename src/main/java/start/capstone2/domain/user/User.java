@@ -21,7 +21,6 @@ public class User extends BaseEntity {
     private String username;
     private String email;
     private String password;
-    private String name;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -34,6 +33,7 @@ public class User extends BaseEntity {
         this.password = password;
         this.role = Role.USER;
     }
+
     public static User of(String username, String email) {
         return User.builder()
                 .username(username)
@@ -44,15 +44,4 @@ public class User extends BaseEntity {
     public String getRoleValue() {
         return this.getRole().getValue();
     }
-
-
-    public static User createUser(String username, String password, String name) {
-        User user = new User();
-        user.username = username;
-        user.password = password;
-        user.name = name;
-
-        return user;
-    }
-
 }

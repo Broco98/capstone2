@@ -16,8 +16,12 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Transactional
-    public Long createUser(UserRequest userRequest) {
-        User user = User.createUser(userRequest.getUsername(), userRequest.getPassword(), userRequest.getName());
+    public Long createUser(UserRequest request) {
+        User user = User.builder()
+                .email(request.getEmail())
+                .username(request.getUsername())
+                .password(request.getPassword())
+                .build();
         userRepository.save(user);
         return user.getId();
     }

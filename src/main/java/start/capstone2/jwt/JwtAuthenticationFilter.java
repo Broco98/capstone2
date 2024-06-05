@@ -12,6 +12,9 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import start.capstone2.domain.user.repository.UserRepository;
+import start.capstone2.service.auth.AuthService;
+
 import java.io.IOException;
 
 @Slf4j
@@ -19,6 +22,8 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtProvider jwtProvider;
+    private final AuthService authService;
+    private final UserRepository userRepository;
 
     @Override
     protected void doFilterInternal(
@@ -35,6 +40,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 Authentication authentication = jwtProvider.getAuthentication(accessToken);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 log.debug("Save authentication in SecurityContextHolder.");
+
+                // 토큰에서 사용자 정보 추출 및 설정
+                String email = authService.getPrincipal(accessToken);
+                Long userId = userRepository.findByEmail(email).get().getId();
+                log.info("filter userId={}", userId);
+                request.setAttribute("userId", userId);
             }
         } catch (IncorrectClaimException e) { // 잘못된 토큰일 경우
             SecurityContextHolder.clearContext();
