@@ -66,7 +66,6 @@ public class PortfolioDatabaseSchemaService {
         database.removeSchema(schema);
     }
 
-    // TODO user 정보 필요
 //    // database의 모든 schema 조회
 //    public List<PortfolioDatabaseResponse> findPortfolioDatabase(Long userId, Long portfolioId) {
 //        List<PortfolioDatabase> databases = databaseRepository.findAllByPortfolioId(portfolioId);

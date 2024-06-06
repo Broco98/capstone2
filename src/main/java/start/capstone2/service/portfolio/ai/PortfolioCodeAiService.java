@@ -66,10 +66,11 @@ public class PortfolioCodeAiService {
             throw new IllegalStateException("jsonResult error", e);
         }
 
-        message = createCodeGenerationMessage(portfolio, message);
         // file 하나씩 생성
         for (PortfolioCode code : portfolio.getCodes()) {
             StringBuilder builder = new StringBuilder();
+
+            message = createCodeGenerationMessage(portfolio, message);
 
             builder
                     .append("name: ").append(code.getName()).append(", ")
@@ -95,7 +96,9 @@ public class PortfolioCodeAiService {
                 throw new IllegalStateException("jsonResult error", e);
             }
         }
+
     }
+
 
     private Prompt createCodeGenerationPrompt(String message, String userInput) {
         List<Message> prompts = new ArrayList<>();
@@ -104,6 +107,13 @@ public class PortfolioCodeAiService {
         너는 프로젝트의 정보를 입력으로 받으면 그 프로젝트 코드를 생성(작성)해 줘야해
         사용자가 입력한 file 의 코드만 생성하면 돼
         === 프로젝트 코드 구조 === 에 있는 파일 이름과 설명을 참고해서 통합성과 일관성을 고려해서 코드를 작성해줘
+        참고로 너가 이미 생성해준 코드가 있다면, code 부분에 작성해 줄게 그것도 참고해 주면 좋을 것 같아.
+        
+        참고로, 프로젝트 다이어그램이나 프로젝트 DB스키마에서 클래스나 Table 들이 중복된 경우가 있을거야.
+        그 이유는 기능별로 다이어그램과 DB스키마(Table)을 생성해서 그래. 예를 들면, 유저기능에서 유저 테이블과 클래스가 나오고,
+        채팅 기능에서 유저 테이블과 클래스가 또 나와서 그런거야.
+        이 점을 고려해서 중복된 테이블이 입력돼도 그중 모든 기능명세를 만족할 수 있는 하나의 Table과 클래스를 사용해줘.
+        중복된 Table을 사용하면 안돼!.
         
         {
             "data" : [
@@ -145,9 +155,11 @@ public class PortfolioCodeAiService {
         if (!portfolio.getCodes().isEmpty()) {
             builder.append("===프로젝트 코드 구조===").append("\n");
             for (PortfolioCode code : portfolio.getCodes()) {
-                builder
-                        .append("file name: ").append(code.getName()).append(", ")
-                        .append("description: ").append(code.getDescription()).append("\n");
+                builder.append("file name: ").append(code.getName()).append(", ");
+                if (code.getCode() != null) {
+                    builder.append("생성된 code: ").append(code.getCode()).append(", ");
+                }
+                builder.append("description: ").append(code.getDescription()).append("\n");
             }
         }
 
@@ -188,7 +200,6 @@ public class PortfolioCodeAiService {
             }
         }
 
-        // TODO image 인식 .. -> 일단 보류
         if (!portfolio.getDesigns().isEmpty()) {
             builder.append("===프로젝트 다이어그램===").append("\n");
             for (PortfolioDesign design : portfolio.getDesigns()) {
@@ -225,6 +236,12 @@ public class PortfolioCodeAiService {
 
         너는 프로젝트의 정보를 입력으로 받으면 그 프로젝트 코드 구조(파일)를 생성해 줘야해
         프로젝트의 tech-stack을 참고해서 파일을 만들어줘 예를 들어서 java가 있으면 .java나 .class로 파일을 만들어야겠지?
+        
+        참고로, 프로젝트 다이어그램이나 프로젝트 DB스키마에서 클래스나 Table 들이 중복된 경우가 있을거야.
+        그 이유는 기능별로 다이어그램과 DB스키마(Table)을 생성해서 그래. 예를 들면, 유저기능에서 유저 테이블과 클래스가 나오고,
+        채팅 기능에서 유저 테이블과 클래스가 또 나와서 그런거야.
+        이 점을 고려해서 중복된 테이블이 입력돼도 그중 모든 기능명세를 만족할 수 있는 하나의 Table과 클래스를 사용해줘.
+        중복된 Table을 사용하면 안돼!.
         
         {
             "data" : [
