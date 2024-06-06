@@ -47,9 +47,9 @@ public class PortfolioCommentService {
     @Transactional
     public void updatePortfolioComment(Long userId, Long portfolioId, Long commentId, PortfolioCommentRequest request) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
-        if (!portfolio.getStatus().equals(ShareStatus.SHARED)) {
-            throw new IllegalStateException("공유된 포트폴리오가 아닙니다!");
-        }
+//        if (!portfolio.getStatus().equals(ShareStatus.SHARED)) {
+//            throw new IllegalStateException("공유된 포트폴리오가 아닙니다!");
+//        }
         PortfolioComment comment = portfolio.getComments().stream().filter(c->c.getId().equals(commentId)).findFirst().orElseThrow();
         if (!comment.getUser().getId().equals(userId)) {
             throw new IllegalStateException("접근 불가");
@@ -61,9 +61,9 @@ public class PortfolioCommentService {
     @Transactional
     public void deletePortfolioComment(Long userId, Long portfolioId, Long commentId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
-        if (!portfolio.getStatus().equals(ShareStatus.SHARED)) {
-            throw new IllegalStateException("공유된 포트폴리오가 아닙니다!");
-        }
+//        if (!portfolio.getStatus().equals(ShareStatus.SHARED)) {
+//            throw new IllegalStateException("공유된 포트폴리오가 아닙니다!");
+//        }
         PortfolioComment comment = portfolio.getComments().stream().filter(c->c.getId().equals(commentId)).findFirst().orElseThrow();
         if (!comment.getUser().getId().equals(userId)) {
             throw new IllegalStateException("접근 불가");
@@ -73,7 +73,11 @@ public class PortfolioCommentService {
 
     // 해당 포트폴리오의 모든 comment 조회
     public List<PortfolioCommentResponse> findPortfolioComments(Long userId, Long portfolioId) {
-        List<PortfolioComment> comments = commentRepository.findAllByPortfolioId(portfolioId);
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+        if (!portfolio.getUser().getId().equals(userId) && portfolio.getStatus().equals(ShareStatus.NOT_SHARED)) {
+            throw new IllegalStateException("접근 불가");
+        }
+        List<PortfolioComment> comments = portfolio.getComments();
         List<PortfolioCommentResponse> responses = new ArrayList<>();
         for (PortfolioComment comment : comments) {
             responses.add(new PortfolioCommentResponse(comment.getId(), comment.getContent()));

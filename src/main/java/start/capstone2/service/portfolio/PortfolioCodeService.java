@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import start.capstone2.domain.portfolio.Portfolio;
 import start.capstone2.domain.portfolio.PortfolioApi;
 import start.capstone2.domain.portfolio.PortfolioCode;
+import start.capstone2.domain.portfolio.ShareStatus;
 import start.capstone2.domain.portfolio.repository.PortfolioCodeRepository;
 import start.capstone2.domain.portfolio.repository.PortfolioRepository;
 import start.capstone2.domain.user.repository.UserRepository;
@@ -61,10 +62,12 @@ public class PortfolioCodeService {
         portfolio.removeCode(code);
     }
 
-    // TODO
-    // 해당 포트폴리오의 모든 코드 조회
     public List<PortfolioCodeResponse> findPortfolioCodes(Long userId, Long portfolioId) {
-        List<PortfolioCode> codes = codeRepository.findAllByPortfolioId(portfolioId);
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+        if (!portfolio.getUser().getId().equals(userId) && portfolio.getStatus().equals(ShareStatus.NOT_SHARED)) {
+            throw new IllegalStateException("접근 불가");
+        }
+        List<PortfolioCode> codes = portfolio.getCodes();
         List<PortfolioCodeResponse> results = new ArrayList<>();
         for (PortfolioCode code : codes) {
             results.add(new PortfolioCodeResponse(code.getId(), code.getName(), code.getCode(), code.getDescription()));

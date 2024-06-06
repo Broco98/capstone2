@@ -64,14 +64,4 @@ public class PortfolioFunctionModuleService {
         function.removeModule(module);
     }
 
-    // function 모든 module 조회
-    public List<PortfolioFunctionModuleResponse> findPortfolioFunctionModule(Long userId, Long functionId) {
-        List<PortfolioFunctionModule> modules = moduleRepository.findAllByFunction_Id(functionId);
-        List<PortfolioFunctionModuleResponse> results = new ArrayList<>();
-        for (PortfolioFunctionModule module : modules) {
-            results.add(new PortfolioFunctionModuleResponse(module.getId(), module.getName(), module.getDescription()));
-        }
-        return results;
-    }
-
 }

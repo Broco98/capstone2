@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import start.capstone2.domain.portfolio.Portfolio;
 import start.capstone2.domain.portfolio.PortfolioApi;
 import start.capstone2.domain.portfolio.PortfolioApiModule;
+import start.capstone2.domain.portfolio.ShareStatus;
 import start.capstone2.domain.portfolio.repository.PortfolioApiRepository;
 import start.capstone2.domain.portfolio.repository.PortfolioRepository;
 import start.capstone2.domain.user.repository.UserRepository;
@@ -63,7 +64,7 @@ public class PortfolioApiService {
     // 포트폴리오의 모든 api 명세 조회
     public List<PortfolioApiResponse> findPortfolioApis(Long userId, Long portfolioId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
-        if (!portfolio.getUser().getId().equals(userId)) {
+        if (!portfolio.getUser().getId().equals(userId) && portfolio.getStatus().equals(ShareStatus.NOT_SHARED)) {
             throw new IllegalStateException("접근 불가");
         }
         List<PortfolioApi> apis = portfolio.getApis();

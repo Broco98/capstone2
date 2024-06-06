@@ -21,8 +21,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PortfolioDatabaseSchemaService {
 
-    private final UserRepository userRepository;
-    private final PortfolioRepository portfolioRepository;
     private final PortfolioDatabaseRepository databaseRepository;
 
     @Transactional
@@ -65,15 +63,5 @@ public class PortfolioDatabaseSchemaService {
                 .findFirst().orElseThrow();
         database.removeSchema(schema);
     }
-
-//    // database의 모든 schema 조회
-//    public List<PortfolioDatabaseResponse> findPortfolioDatabase(Long userId, Long portfolioId) {
-//        List<PortfolioDatabase> databases = databaseRepository.findAllByPortfolioId(portfolioId);
-//        List<PortfolioDatabaseResponse> results = new ArrayList<>();
-//        for (PortfolioDatabase database : databases) {
-//            results.add(new PortfolioDatabaseResponse(database.getId(), database.getSchema(), database.getDescription()));
-//        }
-//        return results;
-//    }
 
 }

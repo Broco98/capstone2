@@ -157,14 +157,4 @@ public class PortfolioDesignDiagramService {
         }
     }
 
-    //    // 해당 포트폴리오의 모든 디자인 조회
-//    public List<PortfolioDesignResponse> findPortfolioDesigns(Long userId, Long portfolioId) {
-//        List<PortfolioDesign> designs = designRepository.findAllByPortfolioId(portfolioId);
-//        List<PortfolioDesignResponse> results = new ArrayList<>();
-//        for (PortfolioDesign design : designs) {
-//            results.add(new PortfolioDesignResponse(design.getId(), design.getDesign(), design.getDescription()));
-//        }
-//        return results;
-//    }
-
 }

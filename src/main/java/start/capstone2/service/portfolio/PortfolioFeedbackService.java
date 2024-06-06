@@ -51,9 +51,9 @@ public class PortfolioFeedbackService {
     @Transactional
     public void updatePortfolioFeedback(Long userId, Long portfolioId, Long feedbackId, PortfolioFeedbackRequest request) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
-        if (!portfolio.getStatus().equals(ShareStatus.SHARED)) {
-            throw new IllegalStateException("공유된 포트폴리오가 아닙니다!");
-        }
+//        if (!portfolio.getStatus().equals(ShareStatus.SHARED)) {
+//            throw new IllegalStateException("공유된 포트폴리오가 아닙니다!");
+//        }
         PortfolioFeedback feedback = portfolio.getFeedbacks().stream().filter(f -> f.getId().equals(feedbackId)).findFirst().orElseThrow();
         if (!feedback.getUser().getId().equals(userId)) {
             throw new IllegalStateException("접근 불가!");
@@ -64,9 +64,9 @@ public class PortfolioFeedbackService {
     @Transactional
     public void deletePortfolioFeedback(Long userId, Long portfolioId, Long feedbackId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
-        if (!portfolio.getStatus().equals(ShareStatus.SHARED)) {
-            throw new IllegalStateException("공유된 포트폴리오가 아닙니다!");
-        }
+//        if (!portfolio.getStatus().equals(ShareStatus.SHARED)) {
+//            throw new IllegalStateException("공유된 포트폴리오가 아닙니다!");
+//        }
         PortfolioFeedback feedback = portfolio.getFeedbacks().stream().filter(f -> f.getId().equals(feedbackId)).findFirst().orElseThrow();
         if (!feedback.getUser().getId().equals(userId)) {
             throw new IllegalStateException("접근 불가!");
@@ -76,7 +76,12 @@ public class PortfolioFeedbackService {
     
     // 포트폴리오의 모든 feedback 조회
     public List<PortfolioFeedbackResponse> findPortfolioFeedbacks(Long userId, Long portfolioId) {
-        List<PortfolioFeedback> feedbacks = feedbackRepository.findAllByPortfolioId(portfolioId);
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+        if (!portfolio.getUser().getId().equals(userId) && portfolio.getStatus().equals(ShareStatus.NOT_SHARED)) {
+            throw new IllegalStateException("접근 불가");
+        }
+
+        List<PortfolioFeedback> feedbacks = portfolio.getFeedbacks();
         List<PortfolioFeedbackResponse> results = new ArrayList<>();
         for (PortfolioFeedback feedback : feedbacks) {
             results.add(new PortfolioFeedbackResponse(feedback.getId(), feedback.getContent(), feedback.getPage(), feedback.getLocation()));

@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import start.capstone2.domain.portfolio.Portfolio;
 import start.capstone2.domain.portfolio.PortfolioDesign;
 import start.capstone2.domain.portfolio.PortfolioDesignDiagram;
+import start.capstone2.domain.portfolio.ShareStatus;
 import start.capstone2.domain.portfolio.repository.PortfolioDesignRepository;
 import start.capstone2.domain.portfolio.repository.PortfolioRepository;
 import start.capstone2.domain.user.User;
@@ -65,6 +66,10 @@ public class PortfolioDesignService {
     // 해당 포트폴리오의 모든 디자인 조회
     public List<PortfolioDesignResponse> findPortfolioDesigns(Long userId, Long portfolioId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+
+        if (!portfolio.getUser().getId().equals(userId) && portfolio.getStatus().equals(ShareStatus.NOT_SHARED)) {
+            throw new IllegalStateException("접근 불가");
+        }
 
         List<PortfolioDesign> designs = portfolio.getDesigns();
         List<PortfolioDesignResponse> results = new ArrayList<>();

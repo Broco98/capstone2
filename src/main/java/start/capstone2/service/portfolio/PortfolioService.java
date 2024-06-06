@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import start.capstone2.domain.Image.Image;
 import start.capstone2.domain.Image.S3Store;
 import start.capstone2.domain.portfolio.Portfolio;
+import start.capstone2.domain.portfolio.ShareStatus;
 import start.capstone2.domain.portfolio.repository.PortfolioRepository;
 import start.capstone2.domain.user.User;
 import start.capstone2.domain.user.repository.UserRepository;
@@ -128,8 +129,12 @@ public class PortfolioService {
     }
 
     // 단일 조회
-    public PortfolioResponse findById(Long portfolioId) {
+    public PortfolioResponse findById(Long userId, Long portfolioId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
+
+        if (!portfolio.getUser().getId().equals(userId) && portfolio.getStatus().equals(ShareStatus.NOT_SHARED)) {
+            throw new IllegalStateException("접근 불가");
+        }
 
         String imageUrl = null;
         if (portfolio.getCardImage() != null) {

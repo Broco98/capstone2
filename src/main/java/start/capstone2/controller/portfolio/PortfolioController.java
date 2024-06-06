@@ -44,8 +44,9 @@ public class PortfolioController {
 
     @Operation(summary = "find portfolio")
     @GetMapping("/{portfolioId}")
-    public PortfolioResponse findPortfolio(@PathVariable Long portfolioId) {
-        return portfolioService.findById(portfolioId);
+    public PortfolioResponse findPortfolio(@PathVariable Long portfolioId, HttpServletRequest servletRequest) {
+        Long userId = (Long) servletRequest.getAttribute("userId");
+        return portfolioService.findById(userId, portfolioId);
     }
 
     @Operation(summary = "find all portfolio", description = "공유된 모든 포트폴리오를 조회합니다.")

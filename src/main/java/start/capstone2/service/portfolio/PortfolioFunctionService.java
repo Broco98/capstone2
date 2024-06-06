@@ -18,7 +18,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PortfolioFunctionService {
 
-    private final UserRepository userRepository;
     private final PortfolioRepository portfolioRepository;
     private final PortfolioFunctionRepository functionRepository;
 
@@ -61,7 +60,7 @@ public class PortfolioFunctionService {
     // 포트폴리오의 모든 function 조회
     public List<PortfolioFunctionResponse> findPortfolioFunctions(Long userId, Long portfolioId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow();
-        if (!portfolio.getUser().getId().equals(userId)) {
+        if (!portfolio.getUser().getId().equals(userId) && portfolio.getStatus().equals(ShareStatus.NOT_SHARED)) {
             throw new IllegalStateException("접근 불가");
         }
         List<PortfolioFunction> functions = portfolio.getFunctions();
@@ -76,15 +75,6 @@ public class PortfolioFunctionService {
             results.add(new PortfolioFunctionResponse(function.getId(), function.getName(), moduleResponses));
         }
         return results;
-    }
-    
-    // 포트폴리오 function 단일 조회
-    public PortfolioFunction findById(Long portfolioFunctionId) {
-        return functionRepository.findByIdWithModules(portfolioFunctionId);
-    }
-
-    public List<PortfolioFunction> findAllByPortfolioIdWithModule(Long portfolioId) {
-        return functionRepository.findAllByPortfolioIdWithModule(portfolioId);
     }
 
 }

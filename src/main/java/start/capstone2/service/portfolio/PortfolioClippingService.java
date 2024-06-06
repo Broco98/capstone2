@@ -55,7 +55,6 @@ public class PortfolioClippingService {
     public List<PortfolioResponse> findAllClippingPortfolio(Long userId) {
         List<PortfolioClipping> clippings = clippingRepository.findAllByUserId(userId);
         List<Portfolio> portfolios = new ArrayList<>();
-        List<PortfolioResponse> results = new ArrayList<>();
         for (PortfolioClipping clipping : clippings) {
             Portfolio portfolio = clipping.getPortfolio();
             portfolios.add(portfolio);
