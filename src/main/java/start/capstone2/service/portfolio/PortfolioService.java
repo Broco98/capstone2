@@ -85,7 +85,9 @@ public class PortfolioService {
         if (!portfolio.getUser().getId().equals(userId)) {
             throw new IllegalStateException("접근 불가");
         }
-        store.removeImage(portfolio.getCardImage().getSavedName());
+        if (portfolio.getCardImage() != null) {
+            store.removeImage(portfolio.getCardImage().getSavedName());
+        }
         portfolioRepository.delete(portfolio);
     }
 

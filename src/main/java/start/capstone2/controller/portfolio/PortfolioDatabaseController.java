@@ -28,7 +28,7 @@ public class PortfolioDatabaseController {
     }
 
     @Operation(summary = "update portfolio database")
-    @PutMapping("/{portfolioId}/design/{databaseId}")
+    @PutMapping("/{portfolioId}/database/{databaseId}")
     public void updatePortfolioDesign(HttpServletRequest servletRequest, @PathVariable Long portfolioId, @PathVariable Long databaseId, PortfolioDatabaseRequest request) {
         Long userId = (Long) servletRequest.getAttribute("userId");
         databaseService.updatePortfolioDatabase(userId, portfolioId, databaseId, request);
