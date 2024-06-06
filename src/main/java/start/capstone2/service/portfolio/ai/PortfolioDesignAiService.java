@@ -37,7 +37,7 @@ public class PortfolioDesignAiService {
     private final ChatClient chatClient;
     private final S3Store store;
 
-    @Async
+//    @Async
     @Transactional
     public void generatePortfolioDesign(Long userId, Long portfolioId, Long functionId) {
 
@@ -116,51 +116,48 @@ public class PortfolioDesignAiService {
         List<Message> prompts = new ArrayList<>();
         Message prompt = new SystemMessage("""
 
-        너는 프로젝트 기능을 입력으로 받으면 그 프로젝트의 diagram을 만들어 줘야돼.
-        예를 들어서 입력으로
+        You need to generate a diagram for a project based on the project's features as input. For example, when you receive input like this:
         ---
         유저기능
         유저 생성: 새로운 유저를 생성합니다. 유저명, 이메일, 비밀번호 등의 정보를 입력받아 데이터베이스에 저장합니다.
         유저 삭제: 기존 유저를 삭제합니다. 유저의 고유 ID를 기준으로 데이터를 삭제합니다.
         ---
-        이런 입력을 받으면
+        You should provide a JSON response like this:
 
         {
-            "data" : [
-                {
-                    "diagram" : (sequence diagram, PlantUML 사용, String 타입, 영어로 생성)
-                    "description" : (다이어그램 설명, 한글로 설명)
-                },
-                (... 너가 필요한 만큼 반복, 중복 X)
-                {
-                    "diagram" : (use-case diagram, PlantUML 사용, String 타입, 영어로 생성)
-                    "description" : (다이어그램 설명, 한글로 설명)
-                },
-                (... 너가 필요한 만큼 반복, 중복 X)
-                {
-                    "diagram" : (class diagram, PlantUML 사용, 변수와 메서드 포함, String 타입, 영어로 생성)
-                    "description" : (다이어그램 설명, 한글로 설명)
-                },
-                (... 너가 필요한 만큼 반복, 중복 X)
-                {
-                    "diagram" : (ER diagram, PlantUML 사용, String 타입, 영어로 생성)
-                    "description" : (다이어그램 설명, 한글로 설명)
-                },
-                (... 너가 필요한 만큼 반복, 중복 X)
-            ]
-        }
+             "data" : [
+                 {
+                     "diagram" : "(sequence diagram using PlantUML, String type, in English)",
+                     "description" : "(Description of the diagram in Korean)"
+                 },
+                 (... Repeat as needed, without duplication)
+                 {
+                     "diagram" : "(use-case diagram using PlantUML, String type, in English)",
+                     "description" : "(Description of the diagram in Korean)"
+                 },
+                 (... Repeat as needed, without duplication)
+                 {
+                     "diagram" : "(class diagram using PlantUML, including variables and methods, String type, in English)",
+                     "description" : "(Description of the diagram in Korean)"
+                 },
+                 (... Repeat as needed, without duplication)
+                 {
+                     "diagram" : "(ER diagram using PlantUML, String type, in English)",
+                     "description" : "(Description of the diagram in Korean)"
+                 },
+                 (... Repeat as needed, without duplication)
+             ]
+         }
 
-        이런 json 형식의 답변을 기대하고 있어.
-        json 응답은 다음과 같은 조건을 만족해야 돼
+        The JSON response should meet the following conditions:
 
-        1. 모든 데이터가 data안에 있고,
-        2. 그 안에 여러개의 diagram 정보(diagram, description)이 있는 형식이야
-        3. data[0].diagram, data[0].description, data[1].diagram 이런 식으로 접근 가능하도록 하게 보내줘야 돼
-        4. data[0].diagram 로 접근하면 다이어그램 정보(PlantUML)를 가져올 수 있어야 돼
-        5. diagram의 갯수 (diagram, description)의 쌍은 너가 필요하다고 생각되는 만큼만 작성해줘
-        6. objectMapper로 parsing할 수 있도록 완전한 json 형식으로 보내줘야 해
-
-        이 결과를 바탕으로 실제로 설계와 코딩을 진행할 수 있도록 최대한 자세하고 세밀하게 알려줘
+        1. All data should be within the data field.
+        2. Inside data, there should be multiple sets of diagram information (diagram and description).
+        3. Access to the diagram and description should be possible as data[0].diagram, data[0].description, data[1].diagram, and so on.
+        4. Accessing data[0].diagram should provide the diagram information (PlantUML).
+        5. Include as many pairs of diagram information (diagram, description) as you deem necessary.
+        6. Provide a complete JSON format so that it can be parsed using objectMapper.
+        This information will guide the actual design and coding process, providing detailed and precise instructions.
         """);
         Message userMessage = new SystemMessage(message);
 

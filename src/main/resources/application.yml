@@ -1,4 +1,7 @@
 spring:
+  servlet:
+    multipart:
+      enabled: true
   # application-xxx 활성화
   profiles:
     active: dev, aws, ai

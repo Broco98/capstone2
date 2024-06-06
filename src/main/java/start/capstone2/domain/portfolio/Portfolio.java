@@ -71,7 +71,7 @@ public class Portfolio extends BaseEntity{
     private List<PortfolioDatabase> databases = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
-    private ShareStatus status = ShareStatus.NOT_SHARED;
+    private ShareStatus status;
 
     @Builder
     private Portfolio(User user, String title, LocalDate startDate, LocalDate endDate, Integer teamNum, String description, String contribution, Image cardImage, String techStacks) {
@@ -83,6 +83,8 @@ public class Portfolio extends BaseEntity{
         this.description = description;
         this.contribution = contribution;
         this.cardImage = cardImage;
+        this.techStacks = techStacks;
+        this.status = ShareStatus.NOT_SHARED;
     }
 
     public void updatePortfolio(String title, LocalDate startDate, LocalDate endDate, Integer teamNum, String description, String contribution, Image cardImage, ShareStatus status, String techStacks) {
@@ -94,6 +96,7 @@ public class Portfolio extends BaseEntity{
         this.contribution = contribution;
         this.cardImage = cardImage;
         this.status = status;
+        this.techStacks = techStacks;
     }
 
     public void addComment(PortfolioComment comment) {

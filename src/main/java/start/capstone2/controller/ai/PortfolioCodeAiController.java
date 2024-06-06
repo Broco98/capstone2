@@ -26,6 +26,6 @@ public class PortfolioCodeAiController {
     public ResponseEntity<String> generatePortfolioCode(@PathVariable Long portfolioId, HttpServletRequest servletRequest) {
         Long userId = (Long) servletRequest.getAttribute("userId");
         codeAiService.generatePortfolioCode(userId, portfolioId);
-        return ResponseEntity.ok("생성 중 ... ");
+        return ResponseEntity.ok("create success");
     }
 }

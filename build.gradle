@@ -46,6 +46,8 @@ dependencies {
 //	implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3'
 //	implementation 'io.awspring.cloud:spring-cloud-aws-starter'
 
+	implementation 'org.apache.poi:poi-ooxml:5.2.3' // ppt
+
 	// Spring Boot Starter for security
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.security:spring-security-test'

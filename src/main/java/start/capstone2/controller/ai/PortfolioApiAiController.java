@@ -27,6 +27,6 @@ public class PortfolioApiAiController {
     public ResponseEntity<String> generatePortfolioApi(@PathVariable Long portfolioId, @PathVariable Long functionId, HttpServletRequest servletRequest) {
         Long userId = (Long) servletRequest.getAttribute("userId");
         apiAiService.generatePortfolioApi(userId, portfolioId, functionId);
-        return ResponseEntity.ok("생성 중 ... ");
+        return ResponseEntity.ok("create success");
     }
 }

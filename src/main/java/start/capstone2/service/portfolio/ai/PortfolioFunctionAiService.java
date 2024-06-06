@@ -32,7 +32,7 @@ public class PortfolioFunctionAiService {
     private final PortfolioRepository portfolioRepository;
     private final ChatClient chatClient;
 
-    @Async
+//    @Async
     @Transactional
     public void generatePortfolioFunction(Long userId, Long portfolioId) {
 
@@ -82,16 +82,13 @@ public class PortfolioFunctionAiService {
         List<Message> prompts = new ArrayList<>();
         Message prompt = new SystemMessage("""
         
-        너는 간단한 프로젝트 설명을 입력받으면 그 프로젝트에 필요한 기능명세서를 작성해야 돼.
-        예를 들어서 입력으로 '간단한 게시판 프로젝트' 라고 입력받으면 게시판 프로젝트에 필요한 기능들을 기능별로 작성하는거야
+        When provided with a brief project description, you are required to generate a functional specification for the project. For example, if the input is 'Simple Bulletin Board Project', you should list the necessary functionalities for a bulletin board project, categorized by each feature, and provide detailed descriptions for each functionality.
         ---
         유저 기능 : 유저 생성, 유저 삭제, 유저 수정, 유저 조회
         게시판 기능 : 게시글 작성, 게시글 조회, 게시글 삭제, 게시글 스크랩, 게시글 좋아요, 게시글 수정
         ---
-        이건 예시고 너가 알려줄 땐 각 기능에 설명을 주가해서 더 자세하게 알려줘야 해
-        답변은 json 형식으로 해주고, 기능별로 파싱할 수 있도록 나눠서 답변해줘야해
-        
-        다음은 너가 보내줘야 할 json 양식의 예시야
+        This is just an example. When you provide the input, you should offer more detailed descriptions for each functionality.
+        The response should be in JSON format, divided into functionalities so that it can be parsed accordingly:
         {
             "data": [
                 {
@@ -116,15 +113,15 @@ public class PortfolioFunctionAiService {
                         }
                     ]
                 }
-                (필요한 만큼 반복 ... 중복 X)
+                (Repeat as needed, without duplication)
             ]
         }
         
-        결과는 반드시 json 형식을 따라아 햐고,
-        data 안에 여러개의 (name, content) 쌍이 있으며, content 안에는 여러개의 (name, description)쌍이 있는 형식이야
-        java objectMapper를 사용해서 parsing을 진행하는데 오류가 없도록 반드시 json 형식을 따라야 해
+        module, name, description in 'Korean' Please
         
-        이 결과를 바탕으로 실제로 설계를 진행할 수 있도록 최대한 자세하고 세밀하게 알려줘
+        The response must strictly follow the JSON format with multiple pairs of (name, content) within the data field.
+        Inside content, there should be multiple pairs of (name, description). Ensure that the JSON format is correct to prevent errors during parsing using Java's objectMapper.
+        This detailed specification will facilitate the actual design process, providing comprehensive guidance.
         """);
         Message userMessage = new SystemMessage(message);
 

@@ -42,7 +42,7 @@ public class SecurityConfig {
                         .accessDeniedHandler(jwtAccessDeniedHandler)) // 접근 거부 처리
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/join", "/auth/login", "/auth/logout", "/auth/reissue").permitAll() // 인증 없이 접근 허용
-                        .requestMatchers("/portfolio/**", "/user/**").authenticated()
+                        .requestMatchers("/portfolio/**", "/user/**", "/api/presentations/**").authenticated()
                         .anyRequest().permitAll()) // 나머지 요청은 인증 필요
                 .addFilterBefore(new JwtAuthenticationFilter(jwtProvider, authService, userRepository), UsernamePasswordAuthenticationFilter.class) // JWT 필터 추가
                 .addFilter(corsConfig.corsFilter()); // 사용자 정의 CORS 필터 추가

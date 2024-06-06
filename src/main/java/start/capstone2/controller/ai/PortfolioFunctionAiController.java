@@ -22,7 +22,7 @@ public class PortfolioFunctionAiController {
     public ResponseEntity<String> generatePortfolioFunction(@PathVariable Long portfolioId, HttpServletRequest servletRequest) {
         Long userId = (Long) servletRequest.getAttribute("userId");
         functionAiService.generatePortfolioFunction(userId, portfolioId);
-        return ResponseEntity.ok("생성 중 ... ");
+        return ResponseEntity.ok("create success");
     }
 
 }
