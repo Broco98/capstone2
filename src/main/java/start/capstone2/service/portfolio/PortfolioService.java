@@ -45,6 +45,7 @@ public class PortfolioService {
                 .title(request.getTitle())
                 .teamNum(request.getTeamNum())
                 .techStacks(request.getTechStacks())
+                .status(request.getStatus())
                 .build();
 
         portfolioRepository.save(portfolio);

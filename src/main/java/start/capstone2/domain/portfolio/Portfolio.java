@@ -61,12 +61,6 @@ public class Portfolio extends BaseEntity{
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PortfolioFunction> functions = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<PortfolioUrl> urls = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<PortfolioTechStack> techStacks = new ArrayList<>();
-
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PortfolioDatabase> databases = new ArrayList<>();
 
@@ -74,7 +68,7 @@ public class Portfolio extends BaseEntity{
     private ShareStatus status;
 
     @Builder
-    private Portfolio(User user, String title, LocalDate startDate, LocalDate endDate, Integer teamNum, String description, String contribution, Image cardImage, String techStacks) {
+    private Portfolio(User user, String title, LocalDate startDate, LocalDate endDate, Integer teamNum, String description, String contribution, Image cardImage, String techStacks, ShareStatus status) {
         this.user = user;
         this.title = title;
         this.startDate = startDate;
@@ -84,7 +78,7 @@ public class Portfolio extends BaseEntity{
         this.contribution = contribution;
         this.cardImage = cardImage;
         this.techStacks = techStacks;
-        this.status = ShareStatus.NOT_SHARED;
+        this.status = status;
     }
 
     public void updatePortfolio(String title, LocalDate startDate, LocalDate endDate, Integer teamNum, String description, String contribution, Image cardImage, ShareStatus status, String techStacks) {
