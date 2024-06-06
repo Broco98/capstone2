@@ -35,6 +35,7 @@ public class AuthService {
     private final PasswordEncoder encoder;
     private final UserRepository userRepository;
 
+    @Transactional
     public UserResponse join(UserRegisterRequest userRegisterDto) {
         userRepository.findByEmail(userRegisterDto.getEmail())
                 .ifPresent(user -> {
