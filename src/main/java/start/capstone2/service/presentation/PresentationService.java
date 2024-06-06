@@ -188,8 +188,6 @@ public class PresentationService {
             for (Slide slide : presentation.getSlides()) {
                 XSLFSlide pptSlide = ppt.createSlide();
                 pptSlide.getSlideShow().setPageSize(slideSize);
-                Color themeColor = getColorFromHex(slide.getTheme_color());
-                applySlideBackgroundColor(pptSlide, themeColor);
 
                 for (TextBox textBox : slide.getTextBoxes()) {
                     log.info("Creating TextBox: {}", textBox);
@@ -209,22 +207,6 @@ public class PresentationService {
             log.error("Error while creating the PowerPoint file in memory: {}", e.getMessage());
             throw new IllegalStateException("Failed to create PowerPoint file", e);
         }
-    }
-
-    private Color getColorFromHex(String hexColor) {
-        if (hexColor == null || hexColor.isEmpty() || "undefined".equals(hexColor)) {
-            return null;
-        }
-        return new Color(
-                Integer.valueOf(hexColor.substring(1, 3), 16),
-                Integer.valueOf(hexColor.substring(3, 5), 16),
-                Integer.valueOf(hexColor.substring(5, 7), 16)
-        );
-    }
-
-    private void applySlideBackgroundColor(XSLFSlide slide, Color color) {
-        XSLFBackground background = slide.getBackground();
-        background.setFillColor(color);
     }
 
     private void createTextBox(XSLFSlide slide, TextBox textBox) {
@@ -286,12 +268,17 @@ public class PresentationService {
             int originalHeight = bufferedImage.getHeight();
             double aspectRatio = (double) originalWidth / originalHeight;
 
-            double targetWidth = imageBox.getWidth();
-            double targetHeight = imageBox.getHeight();
-            if (targetWidth / aspectRatio > targetHeight) {
-                targetWidth = targetHeight * aspectRatio;
+            double width_1 = imageBox.getWidth();
+            double height_1 = imageBox.getHeight();
+
+            // width_1을 aspectRatio로 나눈 값과 height_1 중 더 작은 값을 선택
+            double targetWidth, targetHeight;
+            if (height_1 < (width_1 / aspectRatio)) {
+                targetHeight = height_1;
+                targetWidth = height_1 * aspectRatio;
             } else {
-                targetHeight = targetWidth / aspectRatio;
+                targetWidth = width_1;
+                targetHeight = width_1 / aspectRatio;
             }
 
             XSLFPictureData idx = ppt.addPicture(pictureData, PictureData.PictureType.PNG);
