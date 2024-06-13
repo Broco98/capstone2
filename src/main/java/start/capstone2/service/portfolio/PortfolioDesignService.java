@@ -83,7 +83,7 @@ public class PortfolioDesignService {
                 if (d.getImage() != null) {
                     imageName = d.getImage().getSavedName();
                 }
-                diagramResponses.add(new PortfolioDesignDiagramResponse(d.getId(), d.getDiagram(), d.getDiagram(), imageName));
+                diagramResponses.add(new PortfolioDesignDiagramResponse(d.getId(), d.getDiagram(), d.getDescription(), imageName));
             }
 
             results.add(new PortfolioDesignResponse(design.getId(), design.getName(), diagramResponses));

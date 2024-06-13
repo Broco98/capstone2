@@ -99,33 +99,31 @@ public class PortfolioCodeAiService {
         List<Message> prompts = new ArrayList<>();
 
         Message prompt = new SystemMessage("""
-        You need to generate (write) the project code when given the project information as input. You should only generate the code for the file provided by the user.
-        Consider the file names and descriptions in the === Project Code Structure === for creating consistent and integrated code.
-        
-        The input may contain duplicate Table information, but you need to consolidate this into a single Table and use it.
-        
-        The expected response should be in the following JSON format:
-        
+        너는 프로젝트의 정보를 입력으로 받으면 그 프로젝트 코드를 생성(작성)해 줘야해
+        사용자가 입력한 file 의 코드만 생성하면 돼
+        === 프로젝트 코드 구조 === 에 있는 파일 이름과 설명을 참고해서 통합성과 일관성을 고려해서 코드를 작성해줘
+       
         {
-         "data" : [
-             {
-                 "name" : (The name of the file in the project code structure provided by the user. Modify if necessary.),
-                 "code" : (The part you need to generate, including detailed explanations in 'Korean comments', in String format.),
-                 "description" : (The description of the file in the project code structure provided by the user, in String format. Modify if necessary.)
-             }
-         ]
+            "data" : [
+                {
+                    "name" : (사용자가 입력한 프로젝트 코드 구조의 파일이름, 필요한 경우 수정해도 됨.)
+                    "code" : (너가 생성해야할 부분, 코드 생성, 자세한 설명이 있는 한글 주석 포함, String 형식)
+                    "description" : (사용자가 입력한 프로젝트 코드 구조의 파일설명, String 형식, 필요한 경우 수정해도 됨.)
+                }
+            ]
         }
         
-        The JSON response must meet the following conditions:
+        이런 json 형식의 답변을 기대하고 있어.
+        json 응답은 다음과 같은 조건을 만족해야 돼
         
-        1. All data must be inside the "data" array,
-        2. The array must contain the file information provided by the user (name, code, description),
-        3. It must be accessible in the format data[0].name, data[0].description, and so on,
-        4. data[0].name should return the name of the file,
-        5. You should only generate code for the file provided by the user, meaning a single JSON response is expected,
-        6. Consider consistency and integration.
-     
-        The generated code will be used to create the actual project, so ensure good integration and consistency.
+        1. 모든 데이터가 data 안에 있고,
+        2. 그 안에 사용자가 입력한 파일 정보(name, code, description)가 있는 형식이야
+        3. data[0].name, data[0].description 이런식으로 접근 가능해야 돼.
+        4. data[0].name 로 접근하면 file 의 이름이 나와야 하는 거지.
+        5. 사용자가 입력한 파일에 대해서만 코드를 생성해면 돼. 즉 하나의 json 응답을 기대하고 있는거지.
+        6. 통합성과 일관성을 고려해줘.
+        
+        이 결과를 바탕으로 코드를 모아서 실제 프로젝트를 만들 예정이야. 그래서 통합성을 잘 고려해줘.
         """);
         Message info = new SystemMessage(message);
         Message userMessage = new UserMessage(userInput);
@@ -220,34 +218,31 @@ public class PortfolioCodeAiService {
     private Prompt createCodeStructurePrompt(String message) {
         List<Message> prompts = new ArrayList<>();
         Message prompt = new SystemMessage("""
-        When you receive the project information as input, you need to generate (create) the project code structure (files). The tech-stack of the project should guide the creation of the files. For example, if it's Java, you should create files with .java or .class extensions.
-        Note that there may be duplicates of classes or tables in the project diagram or project DB schema. This happens because diagrams and schemas are created for each feature. For example, the User feature may have User tables and classes, and the Chat feature may also have User tables and classes.
-       
-        Consider this and think of a unified table and class that can satisfy all feature specifications, even if duplicate tables are input. For example, if User1 and User2 tables and classes are input, you should use a User3 table, considering the functionalities. You should not use duplicate tables! For instance, you shouldn't use both User1 and User2; only one User table should be used.
-       
-        {
-               "data" : [
-               {
-                       "name" : (the required file name in English),
-                       "description" : (description of the file, explained in Korean, String format)
-               },
-               {
-                     "name" : (the required file name in English),
-                     "description" : (description of the file, explained in Korean, String format)
-               },
-               ... (repeat for as many files as you need, no duplicates)
-           ]
-        }
-       
-        Expect a response in this JSON format:
-       
-        1. All data should be within the "data" array,
-        2. Inside, there should be multiple sets of file information (name, description),
-        3. It should be accessible like data[0].name, data[0].description, data[1].name, and so on,
-        4. Accessing data[0].name should return the file's name,
-        5. Provide as many pairs of name and description as you deem necessary based on the structure information of the code (name, description).
+        너는 프로젝트의 정보를 입력으로 받으면 그 프로젝트 코드를 생성(작성)해 줘야해
+        사용자가 입력한 file 의 코드만 생성하면 돼
+        === 프로젝트 코드 구조 === 에 있는 파일 이름과 설명을 참고해서 통합성과 일관성을 고려해서 코드를 작성해줘
         
-        Provide as detailed and precise information as possible to proceed with actual coding based on this response. This response will be used to generate code.
+        {
+            "data" : [
+                {
+                    "name" : (사용자가 입력한 프로젝트 코드 구조의 파일이름, 필요한 경우 수정해도 됨.)
+                    "code" : (너가 생성해야할 부분, 코드 생성, 자세한 설명이 있는 한글 주석 포함, String 형식)
+                    "description" : (사용자가 입력한 프로젝트 코드 구조의 파일설명, String 형식, 필요한 경우 수정해도 됨.)
+                }
+            ]
+        }
+
+        이런 json 형식의 답변을 기대하고 있어.
+        json 응답은 다음과 같은 조건을 만족해야 돼
+
+        1. 모든 데이터가 data 안에 있고,
+        2. 그 안에 사용자가 입력한 파일 정보(name, code, description)가 있는 형식이야
+        3. data[0].name, data[0].description 이런식으로 접근 가능해야 돼.
+        4. data[0].name 로 접근하면 file 의 이름이 나와야 하는 거지.
+        5. 사용자가 입력한 파일에 대해서만 코드를 생성해면 돼. 즉 하나의 json 응답을 기대하고 있는거지.
+        6. 통합성과 일관성을 고려해줘.
+
+        이 결과를 바탕으로 코드를 모아서 실제 프로젝트를 만들 예정이야. 그래서 통합성을 잘 고려해줘.
         """);
         Message userMessage = new SystemMessage(message);
 

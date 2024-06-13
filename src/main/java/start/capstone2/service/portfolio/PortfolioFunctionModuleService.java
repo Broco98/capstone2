@@ -41,6 +41,7 @@ public class PortfolioFunctionModuleService {
                 .build();
 
         function.addModule(functionModule);
+        moduleRepository.save(functionModule);
         return functionModule.getId();
     }
 

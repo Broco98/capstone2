@@ -57,7 +57,7 @@ public class AuthController {
                 .header(HttpHeaders.SET_COOKIE, httpCookie.toString())
                 // AT 저장
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenDto.getAccessToken())
-                .build();
+                .body("Bearer " + tokenDto.getAccessToken());
     }
 
     @Operation(summary = "로그아웃", description = "헤더의 Authorization을 requestAccessToken으로 넣어 요청합니다.", responses = {

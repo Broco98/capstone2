@@ -34,6 +34,7 @@ public class PortfolioCodeService {
         }
         PortfolioCode code = PortfolioCode.builder()
                 .portfolio(portfolio)
+                .name(request.getName())
                 .code(request.getCode())
                 .description(request.getDescription())
                 .build();

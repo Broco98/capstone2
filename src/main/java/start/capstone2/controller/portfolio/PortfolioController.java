@@ -4,8 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import start.capstone2.domain.portfolio.Portfolio;
 import start.capstone2.dto.ResponseResult;
 import start.capstone2.dto.portfolio.PortfolioRequest;
 import start.capstone2.dto.portfolio.PortfolioResponse;
@@ -13,6 +13,7 @@ import start.capstone2.service.portfolio.PortfolioService;
 
 import java.util.List;
 
+@Slf4j
 @Tag(name = "Portfolio Api")
 @RestController
 @RequiredArgsConstructor
@@ -25,6 +26,7 @@ public class PortfolioController {
     @PostMapping("")
     public Long createPortfolio(PortfolioRequest request, HttpServletRequest servletRequest) {
         Long userId = (Long) servletRequest.getAttribute("userId");
+        log.info("portfolio request={}", request);
         return portfolioService.createPortfolio(userId, request);
     }
 

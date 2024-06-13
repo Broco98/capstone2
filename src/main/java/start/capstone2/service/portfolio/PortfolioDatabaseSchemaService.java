@@ -7,6 +7,7 @@ import start.capstone2.domain.portfolio.Portfolio;
 import start.capstone2.domain.portfolio.PortfolioDatabase;
 import start.capstone2.domain.portfolio.PortfolioDatabaseSchema;
 import start.capstone2.domain.portfolio.repository.PortfolioDatabaseRepository;
+import start.capstone2.domain.portfolio.repository.PortfolioDatabaseSchemaRepository;
 import start.capstone2.domain.portfolio.repository.PortfolioRepository;
 import start.capstone2.domain.user.repository.UserRepository;
 import start.capstone2.dto.portfolio.PortfolioDatabaseRequest;
@@ -22,6 +23,7 @@ import java.util.List;
 public class PortfolioDatabaseSchemaService {
 
     private final PortfolioDatabaseRepository databaseRepository;
+    private final PortfolioDatabaseSchemaRepository schemaRepository;
 
     @Transactional
     public Long createPortfolioDatabaseSchema(Long userId, Long databaseId, PortfolioDatabaseSchemaRequest request) {
@@ -37,6 +39,7 @@ public class PortfolioDatabaseSchemaService {
                 .description(request.getDescription())
                 .build();
         database.addSchema(schema);
+        schemaRepository.save(schema);
         return schema.getId();
     }
 

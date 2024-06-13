@@ -25,6 +25,7 @@ import start.capstone2.domain.Image.Image;
 import start.capstone2.domain.Image.S3Store;
 import start.capstone2.domain.portfolio.PortfolioDesign;
 import start.capstone2.domain.portfolio.PortfolioDesignDiagram;
+import start.capstone2.domain.portfolio.repository.PortfolioDesignDiagramRepository;
 import start.capstone2.domain.portfolio.repository.PortfolioDesignRepository;
 import start.capstone2.dto.portfolio.PortfolioDesignDiagramRequest;
 
@@ -41,6 +42,7 @@ import java.util.List;
 public class PortfolioDesignDiagramService {
 
     private final PortfolioDesignRepository designRepository;
+    private final PortfolioDesignDiagramRepository diagramRepository;
     private final S3Store store;
     private final ChatClient client;
 
@@ -70,12 +72,14 @@ public class PortfolioDesignDiagramService {
         }
 
         PortfolioDesignDiagram diagram = PortfolioDesignDiagram.builder()
+                .design(design)
                 .image(image)
                 .diagram(diagramData)
                 .description(request.getDescription())
                 .build();
 
         design.addDiagram(diagram);
+        diagramRepository.save(diagram);
         return diagram.getId();
     }
     

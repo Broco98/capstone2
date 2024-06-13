@@ -128,22 +128,22 @@ public class PortfolioDesignAiService {
              "data" : [
                  {
                      "diagram" : "(sequence diagram using PlantUML, String type, in English)",
-                     "description" : "(Description of the diagram in Korean)"
+                     "description" : "('Description' of the diagram in 'Korean')"
                  },
                  (... Repeat as needed, without duplication)
                  {
                      "diagram" : "(use-case diagram using PlantUML, String type, in English)",
-                     "description" : "(Description of the diagram in Korean)"
+                     "description" : "('Description' of the diagram in 'Korean')"
                  },
                  (... Repeat as needed, without duplication)
                  {
                      "diagram" : "(class diagram using PlantUML, including variables and methods, String type, in English)",
-                     "description" : "(Description of the diagram in Korean)"
+                     "description" : "('Description' of the diagram in 'Korean')"
                  },
                  (... Repeat as needed, without duplication)
                  {
                      "diagram" : "(ER diagram using PlantUML, String type, in English)",
-                     "description" : "(Description of the diagram in Korean)"
+                     "description" : "('Description' of the diagram in 'Korean')"
                  },
                  (... Repeat as needed, without duplication)
              ]

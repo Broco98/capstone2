@@ -34,6 +34,7 @@ public class PortfolioApiModuleService {
                 .build();
 
         api.addModule(module);
+        moduleRepository.save(module);
         return module.getId();
     }
     
