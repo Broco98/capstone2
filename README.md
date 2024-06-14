@@ -1,6 +1,6 @@
 # 사용법
 
-3개의 파일이 필요합니다.
+resources 밑에 3개의 파일이 필요합니다.
 
 application-aws.yml
 ```yml
